@@ -1,0 +1,2 @@
+socketConfigPath=src/main/resources/config/socketConfig/socketConfig.txt
+

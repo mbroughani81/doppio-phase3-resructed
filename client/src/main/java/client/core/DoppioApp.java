@@ -1,5 +1,6 @@
 package client.core;
 
+import client.config.socketConfig.SocketConfig;
 import client.core.network.RequestSender;
 import client.core.network.SocketRequestSender;
 import client.datatype.Page;
@@ -23,7 +24,6 @@ import java.util.List;
 
 public class DoppioApp extends Application implements ResponseHandler {
     private static RequestSender sender;
-    //    private RequestSender sender;
     private final List<Request> requests;
     private final Loop loop;
     private final Loop checkConnection;
@@ -36,7 +36,6 @@ public class DoppioApp extends Application implements ResponseHandler {
     private static FileModelController fileModelController = new FileModelController();
 
     public DoppioApp() throws InterruptedException {
-//        sender = new SocketRequestSender(new Socket("localhost", 8001));
         askNewSocket();
         requests = new LinkedList<>();
         loop = new Loop(10, this::sendRequests);
@@ -46,19 +45,10 @@ public class DoppioApp extends Application implements ResponseHandler {
     }
 
     public static void askNewSocket() {
-//        while (true) {
-//            try {
-//                sender = new SocketRequestSender(new Socket("localhost", 8001));
-//                System.out.println("successfully connected to server");
-//                break;
-//            } catch (IOException e) {
-//                System.out.println("problem connecting. please ea");
-//                Thread.sleep(5000);
-//            }
-//        }
         RequestSender newSender;
+        SocketConfig socketConfig = new SocketConfig();
         try {
-            newSender = new SocketRequestSender(new Socket("localhost", 8002));
+            newSender = new SocketRequestSender(new Socket(socketConfig.getLocalhost(), socketConfig.getPort()));
             System.out.println("successfully connected to server");
             sender = newSender;
         } catch (IOException e) {

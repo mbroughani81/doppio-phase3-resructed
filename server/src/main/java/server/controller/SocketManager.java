@@ -1,5 +1,6 @@
 package server.controller;
 
+import server.config.socketConfig.SocketConfig;
 import server.controller.network.SocketResponseSender;
 import server.db.Context;
 import server.dbcontroller.AuthController;
@@ -21,13 +22,14 @@ public class SocketManager extends Thread {
 
     @Override
     public void run() {
+        SocketConfig socketConfig = new SocketConfig();
 //        Context context = new Context();
 //        context.clearDB();
 //        TestData.testNewUser();
 //        TestData.testNewTweet();
 //        TestData.testNewPrivateChat();
         try {
-            ServerSocket serverSocket = new ServerSocket(8002);
+            ServerSocket serverSocket = new ServerSocket(socketConfig.getPort());
             while(true) {
                 System.out.println("--Waiting for new doppio client--");
                 Socket socket = serverSocket.accept();

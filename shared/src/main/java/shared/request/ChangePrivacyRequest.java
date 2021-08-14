@@ -1,0 +1,26 @@
+package shared.request;
+
+import shared.datatype.Privacy;
+import shared.response.Response;
+
+public class ChangePrivacyRequest extends Request {
+
+    private Privacy privacy;
+
+    @Override
+    public Response handle(RequestHandler requestHandler) {
+        return null;
+    }
+
+    public ChangePrivacyRequest(Privacy privacy) {
+        this.privacy = privacy;
+    }
+
+    public Privacy getPrivacy() {
+        return privacy;
+    }
+
+    public void setPrivacy(Privacy privacy) {
+        this.privacy = privacy;
+    }
+}

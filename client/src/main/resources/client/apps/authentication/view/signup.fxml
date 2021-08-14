@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="300.0" prefWidth="400.0" spacing="20.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.apps.authentication.view.SignupController">
+   <children>
+      <HBox alignment="TOP_CENTER">
+         <children>
+            <Label fx:id="panelLabel" alignment="CENTER" contentDisplay="CENTER" text="Signup Panel">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <GridPane hgap="2.0" prefHeight="302.0" prefWidth="380.0" vgap="2.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="298.0" minWidth="10.0" prefWidth="68.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="463.0" minWidth="10.0" prefWidth="270.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Name :">
+               <font>
+                  <Font size="9.0" />
+               </font></Label>
+            <Label layoutX="30.0" layoutY="32.0" text="Username :" GridPane.rowIndex="1">
+               <font>
+                  <Font size="9.0" />
+               </font></Label>
+            <Label text="Password :" GridPane.rowIndex="2">
+               <font>
+                  <Font size="9.0" />
+               </font></Label>
+            <Label layoutX="30.0" layoutY="35.0" text="Birthday :" GridPane.rowIndex="3">
+               <font>
+                  <Font size="9.0" />
+               </font></Label>
+            <Label layoutX="30.0" layoutY="35.0" text="Email :" GridPane.rowIndex="4">
+               <font>
+                  <Font size="9.0" />
+               </font></Label>
+            <Label layoutX="30.0" layoutY="35.0" text="Phone :" GridPane.rowIndex="5">
+               <font>
+                  <Font size="9.0" />
+               </font></Label>
+            <Label layoutX="30.0" layoutY="35.0" text="Bio :" GridPane.rowIndex="6">
+               <font>
+                  <Font size="9.0" />
+               </font></Label>
+            <TextField fx:id="nameTextField" GridPane.columnIndex="1">
+               <font>
+                  <Font size="9.0" />
+               </font></TextField>
+            <TextField fx:id="usernameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font size="9.0" />
+               </font></TextField>
+            <TextField fx:id="passwordTextField" layoutX="172.0" layoutY="31.0" prefHeight="24.0" prefWidth="413.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font size="9.0" />
+               </font></TextField>
+            <TextField fx:id="birthdayTextField" layoutX="172.0" layoutY="59.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font size="9.0" />
+               </font></TextField>
+            <TextField fx:id="emailTextField" layoutX="172.0" layoutY="59.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <font>
+                  <Font size="9.0" />
+               </font></TextField>
+            <TextField fx:id="phoneTextField" layoutX="30.0" layoutY="31.0" prefHeight="24.0" prefWidth="413.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <font>
+                  <Font size="9.0" />
+               </font></TextField>
+            <TextField fx:id="bioTextField" layoutX="30.0" layoutY="31.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+               <font>
+                  <Font size="9.0" />
+               </font></TextField>
+         </children>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </GridPane>
+      <HBox prefHeight="47.0" prefWidth="580.0">
+         <children>
+            <Region prefHeight="200.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" onAction="#signupClickedAction" prefHeight="22.0" prefWidth="80.0" text="Signup">
+               <font>
+                  <Font size="11.0" />
+               </font></Button>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginClickedAction" prefHeight="24.0" prefWidth="100.0" text="Goto Login">
+               <font>
+                  <Font size="11.0" />
+               </font></Button>
+            <Region prefHeight="200.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>

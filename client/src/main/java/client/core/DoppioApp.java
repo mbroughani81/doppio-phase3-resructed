@@ -58,7 +58,7 @@ public class DoppioApp extends Application implements ResponseHandler {
 //        }
         RequestSender newSender;
         try {
-            newSender = new SocketRequestSender(new Socket("localhost", 8001));
+            newSender = new SocketRequestSender(new Socket("localhost", 8002));
             System.out.println("successfully connected to server");
             sender = newSender;
         } catch (IOException e) {

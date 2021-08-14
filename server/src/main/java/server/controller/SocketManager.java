@@ -27,7 +27,7 @@ public class SocketManager extends Thread {
 //        TestData.testNewTweet();
 //        TestData.testNewPrivateChat();
         try {
-            ServerSocket serverSocket = new ServerSocket(8001);
+            ServerSocket serverSocket = new ServerSocket(8002);
             while(true) {
                 System.out.println("--Waiting for new doppio client--");
                 Socket socket = serverSocket.accept();

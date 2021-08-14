@@ -1,0 +1,8 @@
+
+/build/
+/.idea/
+/.gradle/
+/src/main/resources/clientdb/
+/src/main/resources/serverdb/
+/src/main/resources/squScreenshot (91).png
+/src/main/resources/doppio.log

@@ -1,5 +1,6 @@
 package server.dbcontroller;
 
+import org.apache.logging.log4j.LogManager;
 import server.model.*;
 import shared.datatype.ChatType;
 import shared.model.AuthToken;
@@ -45,6 +46,8 @@ public class AuthController extends AbstractController {
         context.Chats.update(savedMessageChat);
         messageData.getChatIds().add(savedMessageChatId);
         context.MessageDatas.update(messageData);
+
+        LogManager.getLogger(AuthController.class).info("signup is done " + user.toString());
     }
 
     public void changeName(ChangeNameRequest changeNameRequest) {
@@ -52,6 +55,8 @@ public class AuthController extends AbstractController {
         Profile profile = context.Profiles.get(user.getProfileId());
         profile.setName(changeNameRequest.getName());
         context.Profiles.update(profile);
+
+        LogManager.getLogger(AuthController.class).info("name is changed " + user.toString());
     }
 
     public void changeBirthday(ChangeBirthdayRequest changeBirthdayRequest) {
@@ -59,6 +64,8 @@ public class AuthController extends AbstractController {
         Profile profile = context.Profiles.get(user.getProfileId());
         profile.setBirthday(changeBirthdayRequest.getBirthday());
         context.Profiles.update(profile);
+
+        LogManager.getLogger(AuthController.class).info("birthday is changed " + user.toString());
     }
 
     public void changeEmail(ChangeEmailRequest changeEmailRequest) {
@@ -66,6 +73,8 @@ public class AuthController extends AbstractController {
         Profile profile = context.Profiles.get(user.getProfileId());
         profile.setEmail(changeEmailRequest.getEmail());
         context.Profiles.update(profile);
+
+        LogManager.getLogger(AuthController.class).info("email is changed " + user.toString());
     }
 
     public void changePhonenumber(ChangePhonenumberRequest changePhonenumberRequest) {
@@ -73,6 +82,8 @@ public class AuthController extends AbstractController {
         Profile profile = context.Profiles.get(user.getProfileId());
         profile.setPhoneNumber(changePhonenumberRequest.getPhonenumber());
         context.Profiles.update(profile);
+
+        LogManager.getLogger(AuthController.class).info("phonenumber is changed " + user.toString());
     }
 
     public void changeBio(ChangeBioRequest changeBioRequest) {
@@ -80,6 +91,8 @@ public class AuthController extends AbstractController {
         Profile profile = context.Profiles.get(user.getProfileId());
         profile.setBio(changeBioRequest.getBio());
         context.Profiles.update(profile);
+
+        LogManager.getLogger(AuthController.class).info("bio is changed " + user.toString());
     }
 
     public User getUser(String username) {

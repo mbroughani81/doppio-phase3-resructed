@@ -1,5 +1,6 @@
 package server.dbcontroller;
 
+import org.apache.logging.log4j.LogManager;
 import server.model.Tweet;
 import shared.request.NewTweetRequest;
 
@@ -12,7 +13,10 @@ public class TweetController extends AbstractController {
                 newTweetRequest.getText(),
                 newTweetRequest.getCreatorId()
         );
-        return context.Tweets.add(tweet);
+
+        int id = context.Tweets.add(tweet);
+        LogManager.getLogger(TweetController.class).info("new tweet is created with id " + id);
+        return id;
     }
 
     public LinkedList<Tweet> getUserTweets(int userId) {

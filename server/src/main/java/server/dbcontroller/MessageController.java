@@ -1,5 +1,6 @@
 package server.dbcontroller;
 
+import org.apache.logging.log4j.LogManager;
 import shared.datatype.PmVerdict;
 import shared.model.SingleUser;
 import server.model.BlockList;
@@ -41,6 +42,8 @@ public class MessageController extends AbstractController {
         messageData2.getChatIds().add(chat2Id);
         context.MessageDatas.update(messageData1);
         context.MessageDatas.update(messageData2);
+
+        LogManager.getLogger(MessageController.class).info("new private chat created with parent id : " + chat1Id);
         return chat1Id;
     }
 
@@ -73,7 +76,7 @@ public class MessageController extends AbstractController {
             messageData.getChatIds().add(chat.getId());
             context.MessageDatas.update(messageData);
         }
-//        return parentId;
+        LogManager.getLogger(MessageController.class).info("new group chat created with parent id : " + parentId);
     }
 
     public int sendNewPm(NewPmRequest newPmRequest) {
@@ -99,6 +102,8 @@ public class MessageController extends AbstractController {
                 context.Chats.update(chat);
             }
         }
+
+        LogManager.getLogger(MessageController.class).info("new pm created with id : " + id);
         return id;
     }
 

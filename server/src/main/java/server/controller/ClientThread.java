@@ -1,5 +1,6 @@
 package server.controller;
 
+import org.apache.logging.log4j.LogManager;
 import server.dbcontroller.*;
 import shared.datatype.Pair;
 import server.controller.network.SocketResponseSender;
@@ -34,6 +35,7 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public void run() {
+        LogManager.getLogger(ClientThread.class).debug("ClientThread run is started");
         while(running) {
             Request request = sender.getRequest();
             sender.sendResponse(request.handle(this));
@@ -42,6 +44,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response signupUser(SignupRequest signupRequest) {
+        LogManager.getLogger(ClientThread.class).info("SignupRequest is getting handled");
+
         authController.signupUser(signupRequest);
         LinkedList<String> errors = new LinkedList<>();
         errors.add("s1");
@@ -51,6 +55,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response loginUser(LoginRequest loginRequest) {
+        LogManager.getLogger(ClientThread.class).info("LoginRequest is getting handled");
+
         User user = authController.getUser(loginRequest.getUsername());
         if (user != null && user.getPassword().equals(loginRequest.getPassword())) {
             sessionController.setUserSession(loginRequest.getUsername());
@@ -71,12 +77,17 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response newPrivateChat(NewPrivateChatRequest newPrivateChatRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewPrivateChatRequest is getting handled");
+
         messageController.newPrivateChat(newPrivateChatRequest);
         return new NullResponse("salam");
     }
 
     @Override
     public Response newTweet(NewTweetRequest newTweetRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewTweetRequest is getting handled");
+
+
         if (newTweetRequest.getCreatorId() == -1) {
             newTweetRequest.setCreatorId(authController.getUserWithAuthToken(newTweetRequest.getAuthToken()).getId());
         }
@@ -88,6 +99,9 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response newPm(NewPmRequest newPmRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewPmRequest is getting handled");
+
+
         if (newPmRequest.getUserId() == -1) {
             newPmRequest.setUserId(authController.getUserWithAuthToken(newPmRequest.getAuthToken()).getId());
         }
@@ -97,6 +111,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response newFollow(NewFollowRequest newFollowRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewFollowRequest is getting handled");
+
         if (newFollowRequest.getFollowerId() == -1) {
             newFollowRequest.setFollowerId(authController.getUserWithAuthToken(newFollowRequest.getAuthToken()).getId());
         }
@@ -106,6 +122,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response newGroup(NewGroupRequest newGroupRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewGroupRequest is getting handled");
+
         if (newGroupRequest.getOwnerId() == -1) {
             newGroupRequest.setOwnerId(authController.getUserWithAuthToken(newGroupRequest.getAuthToken()).getId());
         }
@@ -115,36 +133,48 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response changeBio(ChangeBioRequest changeBioRequest) {
+        LogManager.getLogger(ClientThread.class).info("ChangeBioRequest is getting handled");
+
         authController.changeBio(changeBioRequest);
         return new NullResponse("bio changed");
     }
 
     @Override
     public Response changeName(ChangeNameRequest changeNameRequest) {
+        LogManager.getLogger(ClientThread.class).info("ChangeNameRequest is getting handled");
+
         authController.changeName(changeNameRequest);
         return new NullResponse("name changed");
     }
 
     @Override
     public Response changeEmail(ChangeEmailRequest changeEmailRequest) {
+        LogManager.getLogger(ClientThread.class).info("ChangeEmailRequest is getting handled");
+
         authController.changeEmail(changeEmailRequest);
         return new NullResponse("email changed");
     }
 
     @Override
     public Response changePhonenumber(ChangePhonenumberRequest changePhonenumberRequest) {
+        LogManager.getLogger(ClientThread.class).info("ChangePhonenumberRequest is getting handled");
+
         authController.changePhonenumber(changePhonenumberRequest);
         return new NullResponse("phonenumber changed");
     }
 
     @Override
     public Response changeBirthday(ChangeBirthdayRequest changeBirthdayRequest) {
+        LogManager.getLogger(ClientThread.class).info("ChangeBirthdayRequest is getting handled");
+
         authController.changeBirthday(changeBirthdayRequest);
         return new NullResponse("birthday changed");
     }
 
     @Override
     public Response changeProfile(ChangeProfileRequest changeProfileRequest) {
+        LogManager.getLogger(ClientThread.class).info("ChangeProfileRequest is getting handled");
+
         User user = authController.getUserWithAuthToken(changeProfileRequest.getAuthToken());
         FileController fileController = new FileController();
         fileController.updateProfile(user.getId(), changeProfileRequest.getImageString());
@@ -153,6 +183,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response getTimeline(GetTimelineRequest getTimelineRequest) {
+        LogManager.getLogger(ClientThread.class).info("GetTimelineRequest is getting handled");
+
         LinkedList<Tweet> tweets = tweetController.getTimeline(
                 authController.getUserWithAuthToken(getTimelineRequest.getAuthToken()).getUsername()
         );
@@ -169,6 +201,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response getExplorer(GetExplorerRequest getExplorerRequest) {
+        LogManager.getLogger(ClientThread.class).info("GetExplorerRequest is getting handled");
+
         LinkedList<Tweet> tweets = tweetController.getTimeline(
                 authController.getUserWithAuthToken(getExplorerRequest.getAuthToken()).getUsername()
         );
@@ -185,6 +219,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response getTweetPage(GetTweetPageRequest getTweetPageRequest) {
+        LogManager.getLogger(ClientThread.class).info("GetTweetPageRequest is getting handled");
+
         LinkedList<Tweet> tweets = tweetController.getTimeline(
                 authController.getUserWithAuthToken(getTweetPageRequest.getAuthToken()).getUsername()
         );
@@ -207,6 +243,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response getShowUserTweets(GetShowUserTweetsRequest getShowUserTweetsRequest) {
+        LogManager.getLogger(ClientThread.class).info("GetShowUserTweetsRequest is getting handled");
+
         LinkedList<SingleTweet> tweets = new LinkedList<>();
         User curUser = authController.getUserWithAuthToken(getShowUserTweetsRequest.getAuthToken());
         for (Tweet tweet : tweetController.getUserTweets(curUser.getId())) {
@@ -221,6 +259,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response getShowlist(GetShowlistRequest getShowlistRequest) {
+        LogManager.getLogger(ClientThread.class).info("GetShowlistRequest is getting handled");
+
         User curUser = authController.getUserWithAuthToken(getShowlistRequest.getAuthToken());
         LinkedList<Integer> f1 = socialController.getFollowingsIds(curUser.getId());
         LinkedList<Integer> f2 = socialController.getFollowersIds(curUser.getId());
@@ -242,6 +282,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response getNotificationPage(GetNotificationPageRequest getNotificationPageRequest) {
+        LogManager.getLogger(ClientThread.class).info("GetNotificationPageRequest is getting handled");
+
         LinkedList<SingleFollowNotification> singleFollowNotifications = new LinkedList<>();
         LinkedList<SingleSystemNotification> singleSystemNotifications = new LinkedList<>();
         GetNotificationPageResponse response = new GetNotificationPageResponse(
@@ -253,7 +295,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response getProfile(GetProfileRequest getProfileRequest) {
-//        System.out.println("new request with id " + getProfileRequest.getUserId() + " has come!");
+        LogManager.getLogger(ClientThread.class).info("GetProfileRequest is getting handled");
+
         if (getProfileRequest.getUserId() == -1) {
             getProfileRequest.setUserId(authController.getUserWithAuthToken(getProfileRequest.getAuthToken()).getId());
         }
@@ -269,6 +312,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response getNewGroupAlertData(GetNewGroupAlertData getNewGroupAlertData) {
+        LogManager.getLogger(ClientThread.class).info("GetNewGroupAlertData is getting handled");
+
         LinkedList<Integer> followingIds = socialController.getFollowingsIds(
                 authController.getUserWithAuthToken(getNewGroupAlertData.getAuthToken()).getId()
         );
@@ -284,6 +329,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response getProfilePic(GetProfilePicRequest getProfilePicRequest) {
+        LogManager.getLogger(ClientThread.class).info("GetProfilePicRequest is getting handled");
+
         return new GetProfilePicResponse(
                 getProfilePicRequest.getUserId(),
                 fileController.getProfileString(getProfilePicRequest.getUserId())
@@ -292,6 +339,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response searchUser(ExplorerSearchRequest explorerSearchRequest) {
+        LogManager.getLogger(ClientThread.class).info("ExplorerSearchRequest is getting handled");
+
         if (authController.getUser(explorerSearchRequest.getText()) != null) {
             return new CheckProfile(authController.getUser(explorerSearchRequest.getText()).getId());
         }
@@ -300,6 +349,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response searchUser(ExplorerSearchIdRequest explorerSearchIdRequest) {
+        LogManager.getLogger(ClientThread.class).info("ExplorerSearchIdRequest is getting handled");
+
         if (authController.getUser(explorerSearchIdRequest.getUserId()) != null) {
             return new CheckProfile(authController.getUser(explorerSearchIdRequest.getUserId()).getId());
         }
@@ -308,6 +359,8 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response fetchMessageDataModel(GetMessageDataModelRequest getMessageDataModelRequest) {
+        LogManager.getLogger(ClientThread.class).info("GetMessageDataModelRequest is getting handled");
+
         LinkedList<Pair<Integer, String>> list = new LinkedList<>();
         LinkedList<Chat> allChats = messageController.getChats(
                 authController.getUserWithAuthToken(getMessageDataModelRequest.getAuthToken()).getId()
@@ -324,11 +377,9 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response fetchChatModel(GetChatModelRequest getChatModelRequest) {
+        LogManager.getLogger(ClientThread.class).info("GetChatModelRequest is getting handled");
+
         LinkedList<SinglePm> pms = new LinkedList<>();
-//        int userId = authController.getUser("a1").getId();
-//        int user2Id = authController.getUser("a2").getId();
-//        pms.add(new SinglePm(userId, "salam"));
-//        pms.add(new SinglePm(user2Id, "gooz"));
         for (Pm pm : messageController.getPms(getChatModelRequest.getChatId())) {
             pms.add(new SinglePm(
                     pm.getUserId(),

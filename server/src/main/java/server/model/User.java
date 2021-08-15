@@ -135,4 +135,9 @@ public class User {
     public void setMutedUserListId(int mutedUserListId) {
         this.mutedUserListId = mutedUserListId;
     }
+
+    @Override
+    public String toString() {
+        return "id = " + id + ", username = " + username;
+    }
 }

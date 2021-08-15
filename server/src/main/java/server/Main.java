@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        LogManager.getLogger(Main.class).trace("Server Started");
+        LogManager.getLogger(Main.class).info("server started");
 
         SocketManager socketManager = new SocketManager();
         socketManager.start();

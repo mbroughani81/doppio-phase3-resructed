@@ -1,6 +1,7 @@
 package server.dbcontroller;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.LogManager;
 import shared.request.ChangeProfileRequest;
 import shared.util.ImageSerializer;
 
@@ -15,6 +16,8 @@ public class FileController {
                 imageString,
                 "src/main/resources/serverdb/pics/profile/" + userId + ".jpg"
         );
+
+        LogManager.getLogger(FileController.class).info("profile pic is updated userid : " + userId);
     }
 
     public void updateTweet(int tweetId, String imageString) {
@@ -22,6 +25,8 @@ public class FileController {
                 imageString,
                 "src/main/resources/serverdb/pics/tweet/" + tweetId + ".jpg"
         );
+
+        LogManager.getLogger(FileController.class).info("tweet pic is updated tweetid : " + tweetId);
     }
 
     public String getProfileString(int userId) {

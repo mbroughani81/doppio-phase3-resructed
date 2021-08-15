@@ -1,5 +1,6 @@
 package server.dbcontroller;
 
+import org.apache.logging.log4j.LogManager;
 import server.model.FollowerList;
 import server.model.FollowingList;
 import server.model.User;
@@ -20,6 +21,9 @@ public class SocialController extends AbstractController {
         followingList.getList().add(followed.getId());
         context.FollowingLists.update(followingList);
         context.FollowerLists.update(followerList);
+
+        LogManager.getLogger(SocialController.class).info("new follow is created, follower and followed " +
+                follower.toString() + " " + followed.toString());
     }
 
     public LinkedList<Integer> getFollowingsIds(int userId) {

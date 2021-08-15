@@ -1,5 +1,6 @@
 package server.controller;
 
+import org.apache.logging.log4j.LogManager;
 import server.config.socketConfig.SocketConfig;
 import server.controller.network.SocketResponseSender;
 import server.db.Context;
@@ -17,9 +18,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class SocketManager extends Thread {
-    public SocketManager() throws IOException {
-    }
-
     @Override
     public void run() {
         SocketConfig socketConfig = new SocketConfig();
@@ -30,14 +28,19 @@ public class SocketManager extends Thread {
 //        TestData.testNewPrivateChat();
         try {
             ServerSocket serverSocket = new ServerSocket(socketConfig.getPort());
+            LogManager.getLogger(SocketManager.class).info("serversocket is up");
             while(true) {
                 System.out.println("--Waiting for new doppio client--");
                 Socket socket = serverSocket.accept();
                 System.out.println("--Connected--");
+                LogManager.getLogger(SocketManager.class).info("new Socket is created");
+
                 ClientThread clientThread = new ClientThread(new SocketResponseSender(socket));
                 clientThread.start();
+                LogManager.getLogger(SocketManager.class).info("new ClientThread is created");
             }
         } catch (IOException e) {
+            LogManager.getLogger(SocketManager.class).error("can not setup serversocket");
             e.printStackTrace();
         }
     }

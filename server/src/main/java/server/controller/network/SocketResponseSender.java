@@ -2,6 +2,7 @@ package server.controller.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.apache.logging.log4j.LogManager;
 import shared.gson.Deserializer;
 import shared.gson.LocalDateTimeDeserializer;
 import shared.gson.LocalDateTimeSerializer;
@@ -35,8 +36,13 @@ public class SocketResponseSender implements ResponseSender {
 
     @Override
     public Request getRequest() {
-        String requestString = input.nextLine();
-        return gson.fromJson(requestString, Request.class);
+        try {
+            String requestString = input.nextLine();
+            return gson.fromJson(requestString, Request.class);
+        } catch (Exception e) {
+            LogManager.getLogger(SocketResponseSender.class).error("error with getting requests");
+        }
+        return null;
     }
 
     @Override

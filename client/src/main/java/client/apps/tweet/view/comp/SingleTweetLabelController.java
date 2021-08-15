@@ -13,6 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import shared.model.SingleTweet;
+import shared.request.NewLikeTweetRequest;
+import shared.request.NewRetweetRequest;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -43,16 +45,17 @@ public class SingleTweetLabelController extends BasicController implements Initi
 
     @FXML
     void likeButtonClicked(ActionEvent event) {
-
+        getListener().listen(new NewLikeTweetRequest(singleTweet.getTweetId()));
     }
 
     @FXML
     void profileLabelClicked(MouseEvent event) {
+
     }
 
     @FXML
     void retweetButtonClicked(ActionEvent event) {
-
+        getListener().listen(new NewRetweetRequest(singleTweet.getTweetId()));
     }
 
 

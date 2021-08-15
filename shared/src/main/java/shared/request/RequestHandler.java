@@ -9,6 +9,8 @@ public interface RequestHandler {
     Response newTweet(NewTweetRequest newTweetRequest);
     Response newPm(NewPmRequest newPmRequest);
     Response newFollow(NewFollowRequest newFollowRequest);
+    Response newRetweet(NewRetweetRequest newRetweetRequest);
+    Response newLikeTweet(NewLikeTweetRequest newLikeTweetRequest);
     Response newGroup(NewGroupRequest newGroupRequest);
     Response changeBio(ChangeBioRequest changeBioRequest);
     Response changeName(ChangeNameRequest changeNameRequest);

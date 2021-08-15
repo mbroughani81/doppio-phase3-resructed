@@ -146,6 +146,18 @@ public class ClientThread extends Thread implements RequestHandler {
     }
 
     @Override
+    public Response newRetweet(NewRetweetRequest newRetweetRequest) {
+        tweetController.newRetweet(newRetweetRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
+    public Response newLikeTweet(NewLikeTweetRequest newLikeTweetRequest) {
+        tweetController.newLike(newLikeTweetRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
     public Response changeBio(ChangeBioRequest changeBioRequest) {
         LogManager.getLogger(ClientThread.class).info("ChangeBioRequest is getting handled");
 

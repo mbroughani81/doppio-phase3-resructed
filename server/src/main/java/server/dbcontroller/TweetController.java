@@ -1,8 +1,12 @@
 package server.dbcontroller;
 
 import org.apache.logging.log4j.LogManager;
+import server.model.LikedTweetList;
 import server.model.Tweet;
+import server.model.User;
 import shared.model.SingleTweet;
+import shared.request.NewLikeTweetRequest;
+import shared.request.NewRetweetRequest;
 import shared.request.NewTweetRequest;
 
 import java.util.LinkedList;
@@ -18,6 +22,27 @@ public class TweetController extends AbstractController {
         int id = context.Tweets.add(tweet);
         LogManager.getLogger(TweetController.class).info("new tweet is created with id " + id);
         return id;
+    }
+
+    public void newRetweet(NewRetweetRequest newRetweetRequest) {
+        AuthController authController = new AuthController();
+        User user = authController.getUserWithAuthToken(newRetweetRequest.getAuthToken());
+        Tweet tweet = new Tweet(
+                -1,
+                "this is retweeted",
+                user.getId(),
+                newRetweetRequest.getTweetId());
+        context.Tweets.add(tweet);
+    }
+
+    public void newLike(NewLikeTweetRequest newLikeTweetRequest) {
+        AuthController authController = new AuthController();
+        User u = authController.getUserWithAuthToken(newLikeTweetRequest.getAuthToken());
+        LikedTweetList likedTweetList = context.LikedTweetLists.get(u.getLikedTweetListId());
+        if (likedTweetList.getTweetIds().contains(newLikeTweetRequest.getTweetId()))
+            return;
+        likedTweetList.getTweetIds().add(newLikeTweetRequest.getTweetId());
+        context.LikedTweetLists.update(likedTweetList);
     }
 
     public LinkedList<Tweet> getUserTweets(int userId) {

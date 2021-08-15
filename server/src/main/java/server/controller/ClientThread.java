@@ -36,7 +36,7 @@ public class ClientThread extends Thread implements RequestHandler {
     @Override
     public void run() {
         LogManager.getLogger(ClientThread.class).debug("ClientThread run is started");
-        while(running) {
+        while (running) {
             Request request = sender.getRequest();
             sender.sendResponse(request.handle(this));
         }
@@ -55,24 +55,34 @@ public class ClientThread extends Thread implements RequestHandler {
     public Response loginUser(LoginRequest loginRequest) {
         LogManager.getLogger(ClientThread.class).info("LoginRequest is getting handled");
 
-        User user = authController.getUser(loginRequest.getUsername());
-        if (user != null && user.getPassword().equals(loginRequest.getPassword())) {
-            sessionController.setUserSession(loginRequest.getUsername());
-            return new LoginResponse(
-                    loginRequest.getUsername(),
-                    user != null && user.getPassword().equals(loginRequest.getPassword()),
-                    sessionController.getUserSession(loginRequest.getUsername()).getAuthToken(),
-                    new LinkedList<>()
-            );
+        LinkedList<String> errors = new LinkedList<>();
+        if (authController.getUser(loginRequest.getUsername()) == null) {
+            errors.add("User not found");
+        } else {
+            if (!authController.getUser(loginRequest.getUsername()).getPassword().equals(loginRequest.getPassword())) {
+                errors.add("Password is not correct");
+            } else {
+                sessionController.setUserSession(loginRequest.getUsername());
+                return new LoginResponse(
+                        loginRequest.getUsername(),
+                        sessionController.getUserSession(loginRequest.getUsername()).getAuthToken(),
+                        errors
+                );
+            }
         }
         return new LoginResponse(
                 loginRequest.getUsername(),
-                user != null && user.getPassword().equals(loginRequest.getPassword()),
                 null,
-                new LinkedList<>()
+                errors
         );
     }
-
+//
+//        return new LoginResponse(
+//                loginRequest.getUsername(),
+//                user != null && user.getPassword().equals(loginRequest.getPassword()),
+//                sessionController.getUserSession(loginRequest.getUsername()).getAuthToken(),
+//                new LinkedList<>()
+//        );
     @Override
     public Response newPrivateChat(NewPrivateChatRequest newPrivateChatRequest) {
         LogManager.getLogger(ClientThread.class).info("NewPrivateChatRequest is getting handled");
@@ -89,7 +99,7 @@ public class ClientThread extends Thread implements RequestHandler {
         if (newTweetRequest.getCreatorId() == -1) {
             newTweetRequest.setCreatorId(authController.getUserWithAuthToken(newTweetRequest.getAuthToken()).getId());
         }
-       int tweetId = tweetController.newTweet(newTweetRequest);
+        int tweetId = tweetController.newTweet(newTweetRequest);
         if (newTweetRequest.getImageString() != null)
             fileController.updateTweet(tweetId, newTweetRequest.getImageString());
         return new NullResponse("salam");

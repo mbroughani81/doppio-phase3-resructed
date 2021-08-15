@@ -7,7 +7,6 @@ import java.util.LinkedList;
 public class LoginResponse implements Response {
 
     private String username;
-    private boolean isOk;
     private AuthToken authToken;
     private LinkedList<String> errors;
 
@@ -16,9 +15,8 @@ public class LoginResponse implements Response {
         responseHandler.checkLoginResponse(this);
     }
 
-    public LoginResponse(String username, boolean isOk, AuthToken authToken, LinkedList<String> errors) {
+    public LoginResponse(String username, AuthToken authToken, LinkedList<String> errors) {
         this.username = username;
-        this.isOk = isOk;
         this.authToken = authToken;
         this.errors = errors;
     }
@@ -29,14 +27,6 @@ public class LoginResponse implements Response {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public boolean isOk() {
-        return isOk;
-    }
-
-    public void setOk(boolean ok) {
-        isOk = ok;
     }
 
     public AuthToken getAuthToken() {

@@ -3,8 +3,10 @@ package client.apps.chat.view.comp;
 import client.core.DoppioApp;
 import client.datatype.BasicController;
 import client.dbcontroller.FileModelController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -35,9 +37,34 @@ public class SinglePmLabelController extends BasicController implements Initiali
     private Label pmTextLabel;
 
     @FXML
+    private Button likeButton;
+
+    @FXML
+    private Button retweetButton;
+
+    @FXML
+    private Button commentButton;
+
+    @FXML
+    void commentButtonClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void likeButtonClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void retweetButtonClicked(ActionEvent event) {
+
+    }
+
+    @FXML
     void profileLabelClicked(MouseEvent event) {
         getListener().listen(new ExplorerSearchIdRequest(singlePm.getUserId()));
     }
+
 
     public SinglePmLabelController(SinglePm singlePm) {
         this.singlePm = singlePm;

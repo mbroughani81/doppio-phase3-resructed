@@ -266,8 +266,8 @@ public class ViewSwitcher {
         // setting stage size
         switch (view) {
             case LOGIN, SIGNUP -> {
-                getInstance().stage.setWidth(400);
-                getInstance().stage.setHeight(300);
+                getInstance().stage.setWidth(500);
+                getInstance().stage.setHeight(400);
             }
             case MAINPAGE, SETTING, PERSONALPAGE, MESSENGER, CHAT, TIMELINE -> {
                 getInstance().stage.setWidth(800);
@@ -308,6 +308,14 @@ public class ViewSwitcher {
 
     public void setListener(RequestListener requestListener) {
         this.requestListener = requestListener;
+    }
+
+    public void updateLoginPage(LoginResponse loginResponse) {
+        if (lastController instanceof LoginController) {
+            Platform.runLater(() -> {
+                ((LoginController) lastController).updateErrors(loginResponse.getErrors());
+            });
+        }
     }
 
     public void updateTimeline(GetTimelineResponse getTimelineResponse) {

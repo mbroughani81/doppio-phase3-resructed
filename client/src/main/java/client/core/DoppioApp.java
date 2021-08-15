@@ -124,7 +124,7 @@ public class DoppioApp extends Application implements ResponseHandler {
 
     @Override
     public void checkLoginResponse(LoginResponse loginResponse) {
-        if (loginResponse.isOk()) {
+        if (loginResponse.getErrors().size() == 0) {
             username = loginResponse.getUsername();
             PathCreator.createClientResource(username);
             sessionModelController.setUsernameDir(username);
@@ -135,6 +135,8 @@ public class DoppioApp extends Application implements ResponseHandler {
             sessionModelController.setNewSession(loginResponse.getUsername(), loginResponse.getAuthToken());
 
             ViewSwitcher.getInstance().loginOkAction();
+        } else {
+            ViewSwitcher.getInstance().updateLoginPage(loginResponse);
         }
     }
 

@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import shared.request.LoginRequest;
 
+import java.util.LinkedList;
+
 public class LoginController extends BasicController {
 
     @FXML
@@ -21,6 +23,9 @@ public class LoginController extends BasicController {
 
     @FXML
     private TextField passwordTextField;
+
+    @FXML
+    private Label errorLabel;
 
     @FXML
     private Button signupButton;
@@ -38,4 +43,10 @@ public class LoginController extends BasicController {
         ViewSwitcher.getInstance().switchTo(new Page(View.SIGNUP, -1));
     }
 
+    public void updateErrors(LinkedList<String> errors) {
+        errorLabel.setText("");
+        for (String error : errors) {
+            errorLabel.setText(errorLabel.getText() + "\n" + error);
+        }
+    }
 }

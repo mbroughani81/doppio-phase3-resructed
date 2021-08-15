@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="profileLabel" alignment="BOTTOM_LEFT" onMouseClicked="#profileLabelClicked" text="&lt;Profile&gt;" />
+      <Label fx:id="pmTextLabel" contentDisplay="BOTTOM" prefWidth="300.0" style="-fx-background-color: #5ff58c; -fx-background-radius: 10;" text="KosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqKosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqKosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqKosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq" wrapText="true">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </Label>
+   </children>
+</HBox>

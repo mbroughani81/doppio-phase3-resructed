@@ -1,5 +1,6 @@
 package client.apps.chat.view;
 
+import client.apps.chat.view.comp.HypSinglePmLabelController;
 import client.apps.chat.view.comp.SinglePmLabelController;
 import client.core.DoppioApp;
 import client.datatype.BasicController;
@@ -50,10 +51,11 @@ public class ChatRootController extends BasicController {
     public Runnable getUpdateAction() {
         return () -> {
             pmHolder.getChildren().clear();
+            this.clearChildControllers();
             for (SinglePm pm : DoppioApp.getChatModelController().getChatModel(chatId).getPms()) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(SinglePmLabelController.class.getResource("singlepmlabel.fxml"));
-                SinglePmLabelController singlePmLabelController = new SinglePmLabelController(pm);
+                HypSinglePmLabelController singlePmLabelController = new HypSinglePmLabelController(pm);
                 fxmlLoader.setController(singlePmLabelController);
                 //                singlePmLabelController.setListener(getListener());
                 try {

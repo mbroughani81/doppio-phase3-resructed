@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import shared.request.SignupRequest;
 
 public class SignupController extends BasicController {
 
@@ -46,15 +47,15 @@ public class SignupController extends BasicController {
 
     @FXML
     void signupClickedAction(ActionEvent event) {
-//        getListener().listen(new SignupRequest(
-//                nameTextField.getText(),
-//                usernameTextField.getText(),
-//                passwordTextField.getText(),
-//                birthdayTextField.getText(),
-//                emailTextField.getText(),
-//                phoneTextField.getText(),
-//                bioTextField.getText())
-//        );
+        getListener().listen(new SignupRequest(
+                nameTextField.getText(),
+                usernameTextField.getText(),
+                passwordTextField.getText(),
+                birthdayTextField.getText(),
+                emailTextField.getText(),
+                phoneTextField.getText(),
+                bioTextField.getText()
+        ));
     }
 
 

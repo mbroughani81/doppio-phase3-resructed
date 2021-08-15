@@ -117,7 +117,9 @@ public class DoppioApp extends Application implements ResponseHandler {
     @Override
     public void checkSignupResponse(SignupResponse signupResponse) {
 //        System.out.println("DoppioApp number of errors is : " + signupResponse.getErrors().size());
-        ViewSwitcher.getInstance().signupOkAction();
+        if (signupResponse.getErrors().size() == 0) {
+            ViewSwitcher.getInstance().signupOkAction();
+        }
     }
 
     @Override

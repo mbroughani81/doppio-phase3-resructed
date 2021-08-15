@@ -48,8 +48,6 @@ public class ClientThread extends Thread implements RequestHandler {
 
         authController.signupUser(signupRequest);
         LinkedList<String> errors = new LinkedList<>();
-        errors.add("s1");
-        errors.add("s2");
         return new SignupResponse(false, errors);
     }
 

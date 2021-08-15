@@ -359,7 +359,9 @@ public class ViewSwitcher {
     }
 
     public void signupOkAction() {
-        Platform.runLater(() -> {getInstance().switchTo(new Page(View.MAINPAGE, -1));});
+        Platform.runLater(() -> {
+            ViewSwitcher.getInstance().switchTo(new Page(View.LOGIN, -1));
+        });
     }
 
     public void loginOkAction() {

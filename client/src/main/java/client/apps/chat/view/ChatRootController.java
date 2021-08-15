@@ -54,7 +54,7 @@ public class ChatRootController extends BasicController {
             this.clearChildControllers();
             for (SinglePm pm : DoppioApp.getChatModelController().getChatModel(chatId).getPms()) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(SinglePmLabelController.class.getResource("singlepmlabel.fxml"));
+                fxmlLoader.setLocation(SinglePmLabelController.class.getResource("hypsinglepmlabel.fxml"));
                 HypSinglePmLabelController singlePmLabelController = new HypSinglePmLabelController(pm);
                 fxmlLoader.setController(singlePmLabelController);
                 //                singlePmLabelController.setListener(getListener());

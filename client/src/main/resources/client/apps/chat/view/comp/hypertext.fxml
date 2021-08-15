@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.Text?>
+
+
+<Text fx:id="text" fill="RED" onMouseClicked="#textClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="hypergoeshere" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" />

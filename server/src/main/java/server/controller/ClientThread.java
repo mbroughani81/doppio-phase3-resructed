@@ -46,9 +46,15 @@ public class ClientThread extends Thread implements RequestHandler {
     public Response signupUser(SignupRequest signupRequest) {
         LogManager.getLogger(ClientThread.class).info("SignupRequest is getting handled");
 
-        authController.signupUser(signupRequest);
         LinkedList<String> errors = new LinkedList<>();
-        return new SignupResponse(false, errors);
+        if (authController.getUser(signupRequest.getUsername()) != null)
+            errors.add("Username already used");
+        if (signupRequest.getPassword().length() == 0)
+            errors.add("Password can not be empty");
+        if (errors.size() == 0)
+            authController.signupUser(signupRequest);
+
+        return new SignupResponse(errors);
     }
 
     @Override

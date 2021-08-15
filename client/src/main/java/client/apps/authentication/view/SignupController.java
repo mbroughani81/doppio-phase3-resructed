@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import shared.request.SignupRequest;
 
+import java.util.LinkedList;
+
 public class SignupController extends BasicController {
 
     @FXML
@@ -38,6 +40,9 @@ public class SignupController extends BasicController {
     private TextField bioTextField;
 
     @FXML
+    private Label errorLabel;
+
+    @FXML
     private Button loginButton;
 
     @FXML
@@ -58,5 +63,11 @@ public class SignupController extends BasicController {
         ));
     }
 
+    public void updateErrors(LinkedList<String> errors) {
+        errorLabel.setText("");
+        for (String error : errors) {
+            errorLabel.setText(errorLabel.getText() + "\n" + error);
+        }
+    }
 
 }

@@ -1,5 +1,6 @@
 package client.core;
 
+import client.apps.authentication.view.SignupController;
 import client.apps.chat.view.ChatController;
 import client.apps.mainpage.view.MainPageController;
 import client.apps.messenger.view.MessengerController;
@@ -267,7 +268,7 @@ public class ViewSwitcher {
         switch (view) {
             case LOGIN, SIGNUP -> {
                 getInstance().stage.setWidth(500);
-                getInstance().stage.setHeight(400);
+                getInstance().stage.setHeight(500);
             }
             case MAINPAGE, SETTING, PERSONALPAGE, MESSENGER, CHAT, TIMELINE -> {
                 getInstance().stage.setWidth(800);
@@ -310,11 +311,19 @@ public class ViewSwitcher {
         this.requestListener = requestListener;
     }
 
+    public void updateSignupPage(SignupResponse signupResponse) {
+        if (lastController instanceof SignupController) {
+            Platform.runLater(() ->
+                    ((SignupController)lastController).updateErrors(signupResponse.getErrors())
+            );
+        }
+    }
+
     public void updateLoginPage(LoginResponse loginResponse) {
         if (lastController instanceof LoginController) {
-            Platform.runLater(() -> {
-                ((LoginController) lastController).updateErrors(loginResponse.getErrors());
-            });
+            Platform.runLater(() ->
+                ((LoginController) lastController).updateErrors(loginResponse.getErrors())
+            );
         }
     }
 

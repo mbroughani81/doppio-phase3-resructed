@@ -10,7 +10,7 @@
 <HBox alignment="CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label fx:id="profileLabel" alignment="BOTTOM_LEFT" onMouseClicked="#profileLabelClicked" text="&lt;Profile&gt;" />
-        <Label fx:id="tweetTextLabel" alignment="CENTER" contentDisplay="BOTTOM" graphicTextGap="10.0" onMouseClicked="#tweetTextLabelClicked" prefWidth="600.0" style="-fx-background-color: #deff70; -fx-background-radius: 10;" text="KosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqKosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqKosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqKosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq" wrapText="true">
+        <Label fx:id="tweetTextLabel" alignment="CENTER" contentDisplay="BOTTOM" graphicTextGap="10.0" onMouseClicked="#tweetTextLabelClicked" prefWidth="500.0" style="-fx-background-color: #deff70; -fx-background-radius: 10;" text="KosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqKosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqKosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqKosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq" wrapText="true">
             <font>
                 <Font size="14.0" />
             </font>
@@ -21,9 +21,9 @@
             <HBox>
                <children>
                   <Button fx:id="likeButton" mnemonicParsing="false" onAction="#likeButtonClicked" text="Like" />
-                  <Region prefWidth="150.0" HBox.hgrow="ALWAYS" />
+                  <Region prefWidth="100.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="retweetButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#retweetButtonClicked" text="Retweet" />
-                  <Region prefWidth="150.0" HBox.hgrow="ALWAYS" />
+                  <Region prefWidth="100.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="commentButton" layoutX="72.0" layoutY="10.0" mnemonicParsing="false" onAction="#commentButtonClicked" text="Comment" />
                </children>
             </HBox>

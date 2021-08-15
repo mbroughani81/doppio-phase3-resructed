@@ -57,7 +57,8 @@ public class HypSinglePmLabelController extends BasicController implements Initi
         }
         profileLabel.setText("");
         ImageView view;
-        view = new ImageView(new Image("iliya1.png"));;
+        view = new ImageView(new Image("iliya1.png"));
+        ;
         view.setFitWidth(40);
         view.setFitHeight(40);
         profileLabel.setGraphic(view);
@@ -75,15 +76,48 @@ public class HypSinglePmLabelController extends BasicController implements Initi
 
     private static LinkedList<Text> getHypText(String text) {
         LinkedList<Text> texts = new LinkedList<>();
-        texts.add(getHypeText(HyperType.TWEET, "@tweetid:10"));
-        texts.add(getSimpleText("salam"));
-        texts.add(getSimpleText("salam"));
-        texts.add(getSimpleText("salam"));
-        texts.add(getHypeText(HyperType.TWEET, "@tweetid:10"));
-        texts.add(getSimpleText("salam"));
-        texts.add(getHypeText(HyperType.TWEET, "@tweetid:10"));
-        texts.add(getSimpleText("salam"));
-
+//        texts.add(getHypeText(HyperType.TWEET, "@tweetid:10"));
+//        texts.add(getSimpleText("salam"));
+//        texts.add(getSimpleText("salam"));
+//        texts.add(getSimpleText("salam"));
+//        texts.add(getHypeText(HyperType.TWEET, "@tweetid:10"));
+//        texts.add(getSimpleText("salam"));
+//        texts.add(getHypeText(HyperType.TWEET, "@tweetid:10"));
+//        texts.add(getSimpleText("salam"));
+        boolean isWordStarted = false;
+        boolean isHyperStarted = false;
+        String cur = "";
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c == '@' && !isWordStarted) {
+                if (cur.length() != 0) {
+                    texts.add(getSimpleText(cur));
+                }
+                cur = "";
+                isHyperStarted = true;
+                isWordStarted = true;
+                cur += c;
+                continue;
+            }
+            if (c == ' ') {
+                if (isHyperStarted) {
+                    texts.add(getHypeText(HyperType.TWEET, cur));
+                    cur = "";
+                }
+                isHyperStarted = false;
+                isWordStarted = false;
+                cur += c;
+                continue;
+            }
+            isWordStarted = true;
+            cur += c;
+        }
+        if (isHyperStarted) {
+            texts.add(getHypeText(HyperType.TWEET, cur));
+        } else {
+            texts.add(getSimpleText(cur));
+        }
+//        System.out.println(texts.size() + " is size!");
         return texts;
     }
 

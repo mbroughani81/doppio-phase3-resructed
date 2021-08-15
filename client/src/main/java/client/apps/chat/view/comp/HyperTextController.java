@@ -18,7 +18,7 @@ public class HyperTextController extends BasicController implements Initializabl
 
     @FXML
     void textClicked(MouseEvent event) {
-        System.out.println("now i should check id!");
+        System.out.println(pmText + " is clicked!");
     }
 
 

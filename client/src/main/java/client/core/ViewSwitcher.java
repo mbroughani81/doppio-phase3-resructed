@@ -72,7 +72,7 @@ public class ViewSwitcher {
                 fxmlLoader.setController(new TimelineController());
             }
             case NEWTWEET -> {
-                fxmlLoader.setController(new NewTweetController());
+                fxmlLoader.setController(new NewTweetController(page.getId()));
             }
             case PROFILEPAGE -> {
                 fxmlLoader.setController(new ProfilePageController(page.getId()));

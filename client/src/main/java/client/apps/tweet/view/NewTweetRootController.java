@@ -49,7 +49,11 @@ public class NewTweetRootController extends BasicController {
         selectedFile = fileChooser.showOpenDialog(imageButton.getScene().getWindow());
     }
 
-    public NewTweetRootController(int mainTweetId) {
+    public int getMainTweetId() {
+        return mainTweetId;
+    }
+
+    public void setMainTweetId(int mainTweetId) {
         this.mainTweetId = mainTweetId;
     }
 }

@@ -17,7 +17,8 @@ import java.io.File;
 
 public class NewTweetRootController extends BasicController {
 
-    File selectedFile;
+    private int mainTweetId;
+    private File selectedFile;
 
     @FXML
     private TextArea tweetTextArea;
@@ -31,7 +32,7 @@ public class NewTweetRootController extends BasicController {
     @FXML
     void sendButtonClicked(ActionEvent event) {
         getListener().listen(new NewTweetRequest(
-                -1,
+                mainTweetId,
                 tweetTextArea.getText(),
                 (selectedFile != null) ? ImageSerializer.encodeFileToBase64Binary(selectedFile) : null
         ));
@@ -46,6 +47,9 @@ public class NewTweetRootController extends BasicController {
                 new FileChooser.ExtensionFilter("image", "*.jpg", "*.jpeg", "*.png")
         );
         selectedFile = fileChooser.showOpenDialog(imageButton.getScene().getWindow());
-//        getListener().listen(new ChangeProfileRequest(ImageSerializer.encodeFileToBase64Binary(selectedFile)));
+    }
+
+    public NewTweetRootController(int mainTweetId) {
+        this.mainTweetId = mainTweetId;
     }
 }

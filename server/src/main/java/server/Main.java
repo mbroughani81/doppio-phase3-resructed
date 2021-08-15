@@ -10,7 +10,7 @@ import java.time.ZoneOffset;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        LogManager.getLogger(Main.class).info("server started  " + Instant.now());
+        LogManager.getLogger(Main.class).info("server started ");
 
         SocketManager socketManager = new SocketManager();
         socketManager.start();

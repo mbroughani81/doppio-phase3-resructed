@@ -35,8 +35,12 @@ public class BasicController {
     }
 
     final public void runChildControllerRequest() {
-        for (BasicController basicController : childControllers) {
-            basicController.getRequestAction().run();
+        try {
+            for (BasicController basicController : childControllers) {
+                basicController.getRequestAction().run();
+            }
+        } catch (Exception e) {
+
         }
     }
 

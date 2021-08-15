@@ -4,20 +4,22 @@ import client.core.ViewSwitcher;
 import client.datatype.BasicController;
 import client.datatype.Page;
 import client.datatype.View;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import shared.model.SingleTweet;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SingleTweetLabelController extends BasicController implements Initializable {
 
-    private int tweetId;
-    private String text;
+    private SingleTweet singleTweet;
 
     @FXML
     private Label profileLabel;
@@ -26,23 +28,46 @@ public class SingleTweetLabelController extends BasicController implements Initi
     private Label tweetTextLabel;
 
     @FXML
+    private Button likeButton;
+
+    @FXML
+    private Button retweetButton;
+
+    @FXML
+    private Button commentButton;
+
+    @FXML
+    void commentButtonClicked(ActionEvent event) {
+        ViewSwitcher.getInstance().switchTo(new Page(View.NEWTWEET, singleTweet.getTweetId()));
+    }
+
+    @FXML
+    void likeButtonClicked(ActionEvent event) {
+
+    }
+
+    @FXML
     void profileLabelClicked(MouseEvent event) {
     }
 
     @FXML
-    void tweetTextLabelClicked(MouseEvent event) {
-        ViewSwitcher.getInstance().switchTo(new Page(View.TWEETPAGE, tweetId));
+    void retweetButtonClicked(ActionEvent event) {
+
     }
 
 
-    public SingleTweetLabelController(int tweetId, String text) {
-        this.tweetId = tweetId;
-        this.text = text;
+    @FXML
+    void tweetTextLabelClicked(MouseEvent event) {
+        ViewSwitcher.getInstance().switchTo(new Page(View.TWEETPAGE, singleTweet.getTweetId()));
+    }
+
+    public SingleTweetLabelController(SingleTweet singleTweet) {
+        this.singleTweet = singleTweet;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        tweetTextLabel.setText(text);
+        tweetTextLabel.setText(singleTweet.getText());
         profileLabel.setText("");
         ImageView view = new ImageView(new Image("squScreenshot (91).png"));
         view.setFitWidth(40);

@@ -1,7 +1,10 @@
 package client.apps.chat.view.comp;
 
 import client.core.DoppioApp;
+import client.core.ViewSwitcher;
 import client.datatype.BasicController;
+import client.datatype.Page;
+import client.datatype.View;
 import client.dbcontroller.FileModelController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,30 +38,6 @@ public class SinglePmLabelController extends BasicController implements Initiali
 
     @FXML
     private Label pmTextLabel;
-
-    @FXML
-    private Button likeButton;
-
-    @FXML
-    private Button retweetButton;
-
-    @FXML
-    private Button commentButton;
-
-    @FXML
-    void commentButtonClicked(ActionEvent event) {
-
-    }
-
-    @FXML
-    void likeButtonClicked(ActionEvent event) {
-
-    }
-
-    @FXML
-    void retweetButtonClicked(ActionEvent event) {
-
-    }
 
     @FXML
     void profileLabelClicked(MouseEvent event) {
@@ -96,21 +75,4 @@ public class SinglePmLabelController extends BasicController implements Initiali
             }
         };
     }
-
-    //    <?xml version="1.0" encoding="UTF-8"?>
-//
-//<?import javafx.geometry.Insets?>
-//<?import javafx.scene.control.Label?>
-//<?import javafx.scene.text.Font?>
-
-
-//<Label fx:id="label" prefWidth="300.0" style="-fx-background-color: #5ff58c; -fx-background-radius: 10;" text="KosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqKosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqKosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqKosrqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq" wrapText="true" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-//   <font>
-//      <Font size="20.0" />
-//   </font>
-//   <padding>
-//      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-//   </padding>
-//</Label>
-
 }

@@ -30,8 +30,7 @@ public class TweetPageRootController extends BasicController {
         FXMLLoader fxmlLoader1 = new FXMLLoader();
         fxmlLoader1.setLocation(SingleTweetLabelController.class.getResource("singletweetlabel.fxml"));
         SingleTweetLabelController singleTweetLabelController1 = new SingleTweetLabelController(
-                mainTweet.getTweetId(),
-                mainTweet.getText()
+                mainTweet
         );
         singleTweetLabelController1.setListener(getListener());
         fxmlLoader1.setController(singleTweetLabelController1);
@@ -46,8 +45,7 @@ public class TweetPageRootController extends BasicController {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(SingleTweetLabelController.class.getResource("singletweetlabel.fxml"));
             SingleTweetLabelController singleTweetLabelController = new SingleTweetLabelController(
-                    tweet.getTweetId(),
-                    tweet.getText()
+                    tweet
             );
             singleTweetLabelController.setListener(getListener());
             fxmlLoader.setController(singleTweetLabelController);

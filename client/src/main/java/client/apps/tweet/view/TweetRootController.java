@@ -29,8 +29,7 @@ public class TweetRootController extends BasicController {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(SingleTweetLabelController.class.getResource("singletweetlabel.fxml"));
             SingleTweetLabelController singleTweetLabelController = new SingleTweetLabelController(
-                    tweet.getTweetId(),
-                    tweet.getText()
+                    tweet
             );
             singleTweetLabelController.setListener(getListener());
             fxmlLoader.setController(singleTweetLabelController);

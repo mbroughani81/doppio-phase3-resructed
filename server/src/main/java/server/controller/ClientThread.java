@@ -235,23 +235,14 @@ public class ClientThread extends Thread implements RequestHandler {
     public Response getTweetPage(GetTweetPageRequest getTweetPageRequest) {
         LogManager.getLogger(ClientThread.class).info("GetTweetPageRequest is getting handled");
 
-        LinkedList<Tweet> tweets = tweetController.getTimeline(
-                authController.getUserWithAuthToken(getTweetPageRequest.getAuthToken()).getUsername()
+        LinkedList<Tweet> tweets = tweetController.getTweetComments(
+            getTweetPageRequest.getTweetId()
         );
-        LinkedList<SingleTweet> resTweets = new LinkedList<>();
-        for (Tweet tweet : tweets) {
-            resTweets.add(new SingleTweet(
-                    tweet.getId(),
-                    tweet.getCreatorId(),
-                    tweet.getText()
-            ));
-        }
+        LinkedList<SingleTweet> resTweets = TweetController.convertToSingleTweet(tweets);
+
         Tweet tweet = tweetController.getTweet(getTweetPageRequest.getTweetId());
-        SingleTweet mainTweet = new SingleTweet(
-                tweet.getId(),
-                tweet.getCreatorId(),
-                tweet.getText()
-        );
+        SingleTweet mainTweet = TweetController.convertToSingleTweet(tweet);
+
         return new GetTweetPageResponse(getTweetPageRequest.getTweetId(), mainTweet, resTweets);
     }
 

@@ -2,6 +2,7 @@ package server.dbcontroller;
 
 import org.apache.logging.log4j.LogManager;
 import server.model.Tweet;
+import shared.model.SingleTweet;
 import shared.request.NewTweetRequest;
 
 import java.util.LinkedList;
@@ -26,6 +27,31 @@ public class TweetController extends AbstractController {
                 tweets.add(tweet);
         }
         return tweets;
+    }
+
+    public LinkedList<Tweet> getTweetComments(int tweetId) {
+        LinkedList<Tweet> tweets = new LinkedList<>();
+        for (Tweet tweet : context.Tweets.all()) {
+            if (tweet.getParentTweetId() == tweetId)
+                tweets.add(tweet);
+        }
+        return tweets;
+    }
+
+    public static LinkedList<SingleTweet> convertToSingleTweet(LinkedList<Tweet> tweets) {
+        LinkedList<SingleTweet> singleTweets = new LinkedList<>();
+        for (Tweet tweet : tweets) {
+            singleTweets.add(convertToSingleTweet(tweet));
+        }
+        return singleTweets;
+    }
+
+    public static SingleTweet convertToSingleTweet(Tweet tweet) {
+        return new SingleTweet(
+                tweet.getId(),
+                tweet.getCreatorId(),
+                tweet.getText()
+        );
     }
 
     public Tweet getTweet(int tweetId) {

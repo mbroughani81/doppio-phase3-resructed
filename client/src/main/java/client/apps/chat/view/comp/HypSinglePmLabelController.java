@@ -101,7 +101,7 @@ public class HypSinglePmLabelController extends BasicController implements Initi
             }
             if (c == ' ') {
                 if (isHyperStarted) {
-                    texts.add(getHypeText(HyperType.TWEET, cur));
+                    texts.add(getHypeText(cur, getHypeType(cur), getHypeVal(cur)));
                     cur = "";
                 }
                 isHyperStarted = false;
@@ -113,7 +113,7 @@ public class HypSinglePmLabelController extends BasicController implements Initi
             cur += c;
         }
         if (isHyperStarted) {
-            texts.add(getHypeText(HyperType.TWEET, cur));
+            texts.add(getHypeText(cur, getHypeType(cur), getHypeVal(cur)));
         } else {
             texts.add(getSimpleText(cur));
         }
@@ -121,10 +121,54 @@ public class HypSinglePmLabelController extends BasicController implements Initi
         return texts;
     }
 
-    private static Text getHypeText(HyperType hyperType, String text) {
+    private static HyperType getHypeType(String text) {
+        text = text.substring(1, text.length());
+        text = text.toLowerCase();
+        text += "######";
+        HyperType[] types = {
+                HyperType.TWEET,
+                HyperType.JOINGROUP,
+                HyperType.CHAT,
+        };
+        // chat : is a group that already joined
+        // tweet : checks tweeet
+        // user :
+        // join : joins
+        for (int i = 0; i < types.length; i++) {
+            if (types[i].getVal().equals(text.substring(0, types[i].getVal().length()))) {
+                return types[i];
+            }
+        }
+        return HyperType.UNDEFINED;
+    }
+
+    private static String getHypeVal(String text) {
+        text = text.substring(1, text.length());
+        text = text.toLowerCase();
+        String src = text;
+        text += "######";
+        System.out.println(src);
+        HyperType[] types = {
+                HyperType.TWEET,
+                HyperType.JOINGROUP,
+                HyperType.CHAT,
+        };
+        // chat : is a group that already joined
+        // tweet : checks tweeet
+        // user :
+        // join : joins
+        for (int i = 0; i < types.length; i++) {
+            if (types[i].getVal().equals(text.substring(0, types[i].getVal().length()))) {
+                return src.substring(types[i].getVal().length(), src.length());
+            }
+        }
+        return src;
+    }
+
+    private static Text getHypeText(String text, HyperType hyperType, String val) {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(HypSinglePmLabelController.class.getResource("hypertext.fxml"));
-        fxmlLoader.setController(new HyperTextController(text));
+        fxmlLoader.setController(new HyperTextController(text, hyperType, val));
         try {
             return fxmlLoader.load();
         } catch (IOException e) {

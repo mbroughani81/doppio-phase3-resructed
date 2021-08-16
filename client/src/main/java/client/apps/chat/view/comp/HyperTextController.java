@@ -11,19 +11,24 @@ import java.util.ResourceBundle;
 
 public class HyperTextController extends BasicController implements Initializable {
 
+    private HyperType type;
+    private String val;
     private String pmText;
+
 
     @FXML
     private Text text;
 
     @FXML
     void textClicked(MouseEvent event) {
-        System.out.println(pmText + " is clicked!");
+        System.out.println(type.getVal() + ":type " + val + ":val" + " is clicked!");
     }
 
 
-    public HyperTextController(String pmText) {
+    public HyperTextController(String pmText, HyperType type, String val) {
         this.pmText = pmText;
+        this.type = type;
+        this.val = val;
     }
 
     @Override
@@ -34,7 +39,18 @@ public class HyperTextController extends BasicController implements Initializabl
 }
 
 enum HyperType {
-    CHAT,
-    TWEET,
-    JOINGROUP;
+    CHAT("chat"),
+    TWEET("tweet"),
+    JOINGROUP("join"),
+    UNDEFINED("");
+
+    private String val;
+
+    HyperType(String val) {
+        this.val = val;
+    }
+
+    public String getVal() {
+        return val;
+    }
 }

@@ -50,7 +50,7 @@ public class SingleTweetLabelController extends BasicController implements Initi
 
     @FXML
     void profileLabelClicked(MouseEvent event) {
-
+        ViewSwitcher.getInstance().switchTo(new Page(View.PROFILEPAGE, singleTweet.getUserId()));
     }
 
     @FXML

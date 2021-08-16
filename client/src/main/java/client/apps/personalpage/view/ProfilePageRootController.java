@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import shared.request.GetProfileRequest;
 import shared.request.NewFollowRequest;
+import shared.request.NewPrivateChatRequest;
 import shared.response.GetProfileResponse;
 
 public class ProfilePageRootController extends BasicController {
@@ -34,7 +35,7 @@ public class ProfilePageRootController extends BasicController {
 
     @FXML
     void chatButtonClicked(ActionEvent event) {
-
+        getListener().listen(new NewPrivateChatRequest(userId));
     }
 
     @FXML

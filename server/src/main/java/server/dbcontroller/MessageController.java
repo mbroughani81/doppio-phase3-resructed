@@ -18,6 +18,9 @@ public class MessageController extends AbstractController {
     public int newPrivateChat(NewPrivateChatRequest request) {
         int id1 = context.Users.get(request.getUser1Id()).getMessageDataId();
         int id2 = context.Users.get(request.getUser2Id()).getMessageDataId();
+        if (hasPrivateChat(id1, id2) != -1) {
+            return hasPrivateChat(id1, id2);
+        }
         String username1 = context.Users.get(id1).getUsername();
         String username2 = context.Users.get(id2).getUsername();
         MessageData messageData1 = context.MessageDatas.get(id1);
@@ -122,5 +125,22 @@ public class MessageController extends AbstractController {
             pms.add(context.Pms.get(pmId));
         }
         return pms;
+    }
+
+    public LinkedList<Chat> getPrivateChats(int userId) {
+        LinkedList<Chat> chats = new LinkedList<>();
+        for (Chat chat : context.Chats.all()) {
+            if (chat.getOwnerId() == userId && chat.getChatType() == ChatType.PRIVATE)
+                chats.add(chat);
+        }
+        return chats;
+    }
+
+    private int hasPrivateChat(int followerId, int followedId) {
+        for (Chat chat : getPrivateChats(followerId)) {
+            if (chat.getChatType() == ChatType.PRIVATE && chat.getMemberIds().contains(followedId))
+                return chat.getId();
+        }
+        return -1;
     }
 }

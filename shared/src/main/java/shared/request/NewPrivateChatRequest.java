@@ -17,6 +17,11 @@ public class NewPrivateChatRequest extends Request {
         this.user2Id = user2Id;
     }
 
+    public NewPrivateChatRequest(int user2Id) {
+        this.user1Id = -1;
+        this.user2Id = user2Id;
+    }
+
     public int getUser1Id() {
         return user1Id;
     }

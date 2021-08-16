@@ -93,6 +93,12 @@ public class ClientThread extends Thread implements RequestHandler {
     public Response newPrivateChat(NewPrivateChatRequest newPrivateChatRequest) {
         LogManager.getLogger(ClientThread.class).info("NewPrivateChatRequest is getting handled");
 
+        if (newPrivateChatRequest.getUser1Id() == -1) {
+            newPrivateChatRequest.setUser1Id(
+                    authController.getUserWithAuthToken(newPrivateChatRequest.getAuthToken()).getId()
+            );
+        }
+
         messageController.newPrivateChat(newPrivateChatRequest);
         return new NullResponse("salam");
     }

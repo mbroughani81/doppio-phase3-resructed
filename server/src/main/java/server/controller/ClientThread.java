@@ -394,6 +394,7 @@ public class ClientThread extends Thread implements RequestHandler {
         LinkedList<SinglePm> pms = new LinkedList<>();
         for (Pm pm : messageController.getPms(getChatModelRequest.getChatId())) {
             pms.add(new SinglePm(
+                    pm.getId(),
                     pm.getUserId(),
                     pm.getPmVerdict(),
                     pm.getText()

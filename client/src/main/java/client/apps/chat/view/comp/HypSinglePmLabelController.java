@@ -6,7 +6,9 @@ import client.dbcontroller.FileModelController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -48,6 +50,14 @@ public class HypSinglePmLabelController extends BasicController implements Initi
         textFlow.getChildren().clear();
         textFlow.getChildren().addAll(HypSinglePmLabelController.getHypText(singlePm.getText()));
         HypSinglePmLabelConfig hypSinglePmLabelConfig = new HypSinglePmLabelConfig();
+
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem editItem = new MenuItem("Edit pm");
+        editItem.setOnAction((event) -> System.out.println("edit clickec" + singlePm.getText()));
+        MenuItem deleteItem = new MenuItem("Delete pm");
+        deleteItem.setOnAction((event) -> System.out.println("delete clicked" + singlePm.getText()));
+        contextMenu.getItems().addAll(editItem, deleteItem);
+        pmTextLabel.setContextMenu(contextMenu);
 
         switch (singlePm.getPmVerdict()) {
             case OFFLINE -> pmTextLabel.setStyle(

@@ -2,6 +2,7 @@ package client.apps.chat.view;
 
 import client.apps.chat.view.comp.HypSinglePmLabelController;
 import client.apps.chat.view.comp.SinglePmLabelController;
+import client.config.apps.chat.ChatRootConfig;
 import client.core.DoppioApp;
 import client.datatype.BasicController;
 import client.dbcontroller.ChatModelController;
@@ -23,7 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ChatRootController extends BasicController {
+public class ChatRootController extends BasicController implements Initializable {
 
     ChatModelController chatModelController = DoppioApp.getChatModelController();
     int chatId;
@@ -73,6 +74,12 @@ public class ChatRootController extends BasicController {
         return () -> {
             runChildControllerRequest();
         };
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ChatRootConfig chatRootConfig = new ChatRootConfig();
+        sendButton.setText(chatRootConfig.getSendButtonText());
     }
 
     public int getChatId() {

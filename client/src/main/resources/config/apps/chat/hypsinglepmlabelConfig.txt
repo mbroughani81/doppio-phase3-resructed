@@ -1,0 +1,5 @@
+offlineColor=#f54949
+sentColor=#ed4ca2
+notseenColor=#6b5ffa
+seenColor=#4ced54
+profileSize=40

@@ -1,3 +1,7 @@
 socketConfigPath=src/main/resources/config/socketConfig/socketConfig.txt
 loginConfigPath=src/main/resources/config/apps/authentication/loginConfig.txt
 signupConfigPath=src/main/resources/config/apps/authentication/signupConfig.txt
+chatrootConfigPath=src/main/resources/config/apps/chat/chatrootConfig.txt
+hypsinglepmlabelConfigPath=src/main/resources/config/apps/chat/hypsinglepmlabelConfig.txt
+simpletextConfigPath=src/main/resources/config/apps/chat/simpletextConfig.txt
+hypertextConfigPath=src/main/resources/config/apps/chat/hypertextConfig.txt

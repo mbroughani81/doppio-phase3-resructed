@@ -11,6 +11,10 @@ public class MainConfig {
     private String socketConfigPath;
     private String loginConfigPath;
     private String signupConfigPath;
+    private String chatrootConfigPath;
+    private String hypsinglepmlabelConfigPath;
+    private String simpletextConfigPath;
+    private String hypertextConfigPath;
 
     public MainConfig() {
         try {
@@ -28,6 +32,10 @@ public class MainConfig {
         socketConfigPath = properties.getProperty("socketConfigPath");
         loginConfigPath = properties.getProperty("loginConfigPath");
         signupConfigPath = properties.getProperty("signupConfigPath");
+        chatrootConfigPath = properties.getProperty("chatrootConfigPath");
+        hypsinglepmlabelConfigPath = properties.getProperty("hypsinglepmlabelConfigPath");
+        simpletextConfigPath = properties.getProperty("simpletextConfigPath");
+        hypertextConfigPath = properties.getProperty("hypertextConfigPath");
     }
 
     public String getSocketConfigPath() {
@@ -40,5 +48,21 @@ public class MainConfig {
 
     public String getSignupConfigPath() {
         return signupConfigPath;
+    }
+
+    public String getChatrootConfigPath() {
+        return chatrootConfigPath;
+    }
+
+    public String getHypsinglepmlabelConfigPath() {
+        return hypsinglepmlabelConfigPath;
+    }
+
+    public String getSimpletextConfigPath() {
+        return simpletextConfigPath;
+    }
+
+    public String getHypertextConfigPath() {
+        return hypertextConfigPath;
     }
 }

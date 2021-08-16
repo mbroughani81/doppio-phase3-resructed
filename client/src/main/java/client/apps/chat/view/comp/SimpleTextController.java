@@ -1,8 +1,11 @@
 package client.apps.chat.view.comp;
 
+import client.config.apps.chat.SimpleTextConfig;
 import client.datatype.BasicController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -21,6 +24,9 @@ public class SimpleTextController extends BasicController implements Initializab
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        SimpleTextConfig simpleTextConfig = new SimpleTextConfig();
         text.setText(pmText);
+        text.setFont(new Font(simpleTextConfig.getFontSize()));
+        text.setFill(Paint.valueOf(simpleTextConfig.getColor()));
     }
 }

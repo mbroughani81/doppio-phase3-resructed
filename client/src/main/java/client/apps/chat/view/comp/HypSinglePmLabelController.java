@@ -1,5 +1,6 @@
 package client.apps.chat.view.comp;
 
+import client.config.apps.chat.HypSinglePmLabelConfig;
 import client.datatype.BasicController;
 import client.dbcontroller.FileModelController;
 import javafx.fxml.FXML;
@@ -38,29 +39,31 @@ public class HypSinglePmLabelController extends BasicController implements Initi
         getListener().listen(new ExplorerSearchIdRequest(singlePm.getUserId()));
     }
 
-
     public HypSinglePmLabelController(SinglePm singlePm) {
         this.singlePm = singlePm;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        pmTextLabel.setText(singlePm.getUserId() + " :\n" + singlePm.getText());
         textFlow.getChildren().clear();
         textFlow.getChildren().addAll(HypSinglePmLabelController.getHypText(singlePm.getText()));
+        HypSinglePmLabelConfig hypSinglePmLabelConfig = new HypSinglePmLabelConfig();
 
         switch (singlePm.getPmVerdict()) {
-            case OFFLINE -> pmTextLabel.setStyle(pmTextLabel.getStyle() + "-fx-background-color: #f54949;");
-            case SENT -> pmTextLabel.setStyle(pmTextLabel.getStyle() + "-fx-background-color: #ed4ca2;");
-            case NOTSEEN -> pmTextLabel.setStyle(pmTextLabel.getStyle() + "-fx-background-color: #6b5ffa;");
-            case SEEN -> pmTextLabel.setStyle(pmTextLabel.getStyle() + "-fx-background-color: #4ced54;");
+            case OFFLINE -> pmTextLabel.setStyle(
+                    pmTextLabel.getStyle() + "-fx-background-color: " + hypSinglePmLabelConfig.getOfflineColor() + ";");
+            case SENT -> pmTextLabel.setStyle(
+                    pmTextLabel.getStyle() + "-fx-background-color: " + hypSinglePmLabelConfig.getSentColor() + ";");
+            case NOTSEEN -> pmTextLabel.setStyle(
+                    pmTextLabel.getStyle() + "-fx-background-color: " + hypSinglePmLabelConfig.getNotseenColor() + ";");
+            case SEEN -> pmTextLabel.setStyle(
+                    pmTextLabel.getStyle() + "-fx-background-color: " + hypSinglePmLabelConfig.getSeenColor() + ";");
         }
         profileLabel.setText("");
         ImageView view;
         view = new ImageView(new Image("iliya1.png"));
-        ;
-        view.setFitWidth(40);
-        view.setFitHeight(40);
+        view.setFitWidth(hypSinglePmLabelConfig.getProfileSize());
+        view.setFitHeight(hypSinglePmLabelConfig.getProfileSize());
         profileLabel.setGraphic(view);
     }
 
@@ -147,7 +150,6 @@ public class HypSinglePmLabelController extends BasicController implements Initi
         text = text.toLowerCase();
         String src = text;
         text += "######";
-        System.out.println(src);
         HyperType[] types = {
                 HyperType.TWEET,
                 HyperType.JOINGROUP,

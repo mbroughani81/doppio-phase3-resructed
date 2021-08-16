@@ -1,0 +1,2 @@
+fontSize=13
+color=#ff0000

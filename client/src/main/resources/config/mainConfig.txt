@@ -5,3 +5,4 @@ chatrootConfigPath=src/main/resources/config/apps/chat/chatrootConfig.txt
 hypsinglepmlabelConfigPath=src/main/resources/config/apps/chat/hypsinglepmlabelConfig.txt
 simpletextConfigPath=src/main/resources/config/apps/chat/simpletextConfig.txt
 hypertextConfigPath=src/main/resources/config/apps/chat/hypertextConfig.txt
+mainpageConfigPath=src/main/resources/config/apps/mainpage/mainpageConfig.txt

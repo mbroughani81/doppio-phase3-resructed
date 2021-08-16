@@ -1,0 +1,10 @@
+connectionVerdictConnectedColor=#18ed00
+connectionVerdictDisconnectedColor=#ee0004
+backButtonText=<--
+mainpageButtonText=Main page
+exitButtonText=Exit
+personalpageButtonText=Personal page
+timelineButtonText=Timeline
+explorerButtonText=Explorer
+messengerButtonText=Messenger
+settingButtonText=Setting

@@ -15,6 +15,7 @@ public class MainConfig {
     private String hypsinglepmlabelConfigPath;
     private String simpletextConfigPath;
     private String hypertextConfigPath;
+    private String mainpageConfigPath;
 
     public MainConfig() {
         try {
@@ -36,6 +37,7 @@ public class MainConfig {
         hypsinglepmlabelConfigPath = properties.getProperty("hypsinglepmlabelConfigPath");
         simpletextConfigPath = properties.getProperty("simpletextConfigPath");
         hypertextConfigPath = properties.getProperty("hypertextConfigPath");
+        mainpageConfigPath = properties.getProperty("mainpageConfigPath");
     }
 
     public String getSocketConfigPath() {
@@ -64,5 +66,9 @@ public class MainConfig {
 
     public String getHypertextConfigPath() {
         return hypertextConfigPath;
+    }
+
+    public String getMainpageConfigPath() {
+        return mainpageConfigPath;
     }
 }

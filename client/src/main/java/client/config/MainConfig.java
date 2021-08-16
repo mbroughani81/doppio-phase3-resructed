@@ -9,6 +9,8 @@ public class MainConfig {
     private String mainConfigPath = "src/main/resources/config/mainConfig.txt";
 
     private String socketConfigPath;
+    private String loginConfigPath;
+    private String signupConfigPath;
 
     public MainConfig() {
         try {
@@ -24,9 +26,19 @@ public class MainConfig {
         properties.load(fileReader);
 
         socketConfigPath = properties.getProperty("socketConfigPath");
+        loginConfigPath = properties.getProperty("loginConfigPath");
+        signupConfigPath = properties.getProperty("signupConfigPath");
     }
 
     public String getSocketConfigPath() {
         return socketConfigPath;
+    }
+
+    public String getLoginConfigPath() {
+        return loginConfigPath;
+    }
+
+    public String getSignupConfigPath() {
+        return signupConfigPath;
     }
 }

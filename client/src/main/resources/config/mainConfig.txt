@@ -1,2 +1,3 @@
 socketConfigPath=src/main/resources/config/socketConfig/socketConfig.txt
-
+loginConfigPath=src/main/resources/config/apps/authentication/loginConfig.txt
+signupConfigPath=src/main/resources/config/apps/authentication/signupConfig.txt

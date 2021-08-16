@@ -1,0 +1,2 @@
+loginButtonText=login
+signupButtonText=goto signup

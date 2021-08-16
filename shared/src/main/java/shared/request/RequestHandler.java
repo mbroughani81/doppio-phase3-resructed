@@ -8,6 +8,7 @@ public interface RequestHandler {
     Response newPrivateChat(NewPrivateChatRequest newPrivateChatRequest);
     Response newTweet(NewTweetRequest newTweetRequest);
     Response newPm(NewPmRequest newPmRequest);
+    Response newScheduledPm(NewScheduledPmRequest newScheduledPmRequest);
     Response newFollow(NewFollowRequest newFollowRequest);
     Response newRetweet(NewRetweetRequest newRetweetRequest);
     Response newLikeTweet(NewLikeTweetRequest newLikeTweetRequest);

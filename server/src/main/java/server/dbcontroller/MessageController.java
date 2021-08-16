@@ -105,6 +105,18 @@ public class MessageController extends AbstractController {
         return id;
     }
 
+    public void sendNewScheduledPm(NewScheduledPmRequest newScheduledPmRequest) {
+        AuthController authController = new AuthController();
+        User user = authController.getUserWithAuthToken(newScheduledPmRequest.getAuthToken());
+        ScheduledPm scheduledPm = new ScheduledPm(
+                user.getId(),
+                PmVerdict.SENT,
+                newScheduledPmRequest.getText(),
+                newScheduledPmRequest.getDate()
+        );
+        context.ScheduledPms.add(scheduledPm);
+    }
+
     public void editPm(EditPmRequest editPmRequest) {
         AuthController authController = new AuthController();
         User user = authController.getUserWithAuthToken(editPmRequest.getAuthToken());

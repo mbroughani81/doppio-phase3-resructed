@@ -130,6 +130,14 @@ public class ClientThread extends Thread implements RequestHandler {
     }
 
     @Override
+    public Response newScheduledPm(NewScheduledPmRequest newScheduledPmRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewScheduledPmRequest is getting handled");
+
+        messageController.sendNewScheduledPm(newScheduledPmRequest);
+        return new NullResponse("scheduled is ok");
+    }
+
+    @Override
     public Response newFollow(NewFollowRequest newFollowRequest) {
         LogManager.getLogger(ClientThread.class).info("NewFollowRequest is getting handled");
 

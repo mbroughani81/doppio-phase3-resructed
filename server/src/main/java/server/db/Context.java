@@ -20,6 +20,7 @@ public class Context {
     public DBSet<LikedTweetList> LikedTweetLists = new LikedTweetListDB();
     public DBSet<ReportedTweetList> ReportedTweetLists = new ReportedTweetListDB();
     public DBSet<MutedUserList> MutedUserLists = new MutedUserListDB();
+    public DBSet<ScheduledPm> ScheduledPms = new ScheduledPmDB();
     public void clearDB() {
         Tweets.clear();
         Users.clear();
@@ -38,5 +39,6 @@ public class Context {
         LikedTweetLists.clear();
         ReportedTweetLists.clear();
         MutedUserLists.clear();
+        ScheduledPms.clear();
     }
 }

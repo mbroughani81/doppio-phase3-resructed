@@ -6,21 +6,22 @@ import client.dbcontroller.FileModelController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import shared.model.SinglePm;
+import shared.request.DeletePmRequest;
+import shared.request.EditPmRequest;
 import shared.request.ExplorerSearchIdRequest;
 import shared.request.GetProfilePicRequest;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class HypSinglePmLabelController extends BasicController implements Initializable {
@@ -53,9 +54,15 @@ public class HypSinglePmLabelController extends BasicController implements Initi
 
         ContextMenu contextMenu = new ContextMenu();
         MenuItem editItem = new MenuItem("Edit pm");
-        editItem.setOnAction((event) -> System.out.println("edit clickec" + singlePm.getText()));
+        editItem.setOnAction((event) -> {
+            System.out.println("edit clickec" + singlePm.getText());
+            openEditDialog();
+        });
         MenuItem deleteItem = new MenuItem("Delete pm");
-        deleteItem.setOnAction((event) -> System.out.println("delete clicked" + singlePm.getText()));
+        deleteItem.setOnAction((event) -> {
+            System.out.println("delete clicked" + singlePm.getText());
+            openDeleteDialog();
+        });
         contextMenu.getItems().addAll(editItem, deleteItem);
         pmTextLabel.setContextMenu(contextMenu);
 
@@ -87,16 +94,32 @@ public class HypSinglePmLabelController extends BasicController implements Initi
         };
     }
 
+    public void openEditDialog() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Editing pm");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Enter new pm : ");
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(name -> {
+            System.out.println("edit completed");
+            getListener().listen(new EditPmRequest(singlePm.getPmId(), name));
+        });
+    }
+
+    public void openDeleteDialog() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Deleting pm");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure to delete pm?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            System.out.println("delete completed");
+            getListener().listen(new DeletePmRequest(singlePm.getPmId()));
+        }
+    }
+
     private static LinkedList<Text> getHypText(String text) {
         LinkedList<Text> texts = new LinkedList<>();
-//        texts.add(getHypeText(HyperType.TWEET, "@tweetid:10"));
-//        texts.add(getSimpleText("salam"));
-//        texts.add(getSimpleText("salam"));
-//        texts.add(getSimpleText("salam"));
-//        texts.add(getHypeText(HyperType.TWEET, "@tweetid:10"));
-//        texts.add(getSimpleText("salam"));
-//        texts.add(getHypeText(HyperType.TWEET, "@tweetid:10"));
-//        texts.add(getSimpleText("salam"));
         boolean isWordStarted = false;
         boolean isHyperStarted = false;
         String cur = "";
@@ -130,7 +153,6 @@ public class HypSinglePmLabelController extends BasicController implements Initi
         } else {
             texts.add(getSimpleText(cur));
         }
-//        System.out.println(texts.size() + " is size!");
         return texts;
     }
 

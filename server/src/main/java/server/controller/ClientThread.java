@@ -214,6 +214,22 @@ public class ClientThread extends Thread implements RequestHandler {
     }
 
     @Override
+    public Response editPm(EditPmRequest editPmRequest) {
+        LogManager.getLogger(ClientThread.class).info("EditPmRequest is getting handled");
+
+        messageController.editPm(editPmRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
+    public Response deletePm(DeletePmRequest deletePmRequest) {
+        LogManager.getLogger(ClientThread.class).info("DeletePmRequest is getting handled");
+
+        messageController.deletePm(deletePmRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
     public Response getTimeline(GetTimelineRequest getTimelineRequest) {
         LogManager.getLogger(ClientThread.class).info("GetTimelineRequest is getting handled");
 

@@ -18,6 +18,8 @@ public interface RequestHandler {
     Response changePhonenumber(ChangePhonenumberRequest changePhonenumberRequest);
     Response changeBirthday(ChangeBirthdayRequest changeBirthdayRequest);
     Response changeProfile(ChangeProfileRequest changeProfileRequest);
+    Response editPm(EditPmRequest editPmRequest);
+    Response deletePm(DeletePmRequest deletePmRequest);
     Response getTimeline(GetTimelineRequest getTimelineRequest);
     Response getExplorer(GetExplorerRequest getExplorerRequest);
     Response getTweetPage(GetTweetPageRequest getTweetPageRequest);
@@ -31,5 +33,4 @@ public interface RequestHandler {
     Response searchUser(ExplorerSearchIdRequest explorerSearchIdRequest);
     Response fetchMessageDataModel(GetMessageDataModelRequest getMessageDataModelRequest);
     Response fetchChatModel(GetChatModelRequest getChatModelRequest);
-
 }

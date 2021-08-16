@@ -1,16 +1,11 @@
 package server.dbcontroller;
 
 import org.apache.logging.log4j.LogManager;
+import server.model.*;
 import shared.datatype.PmVerdict;
 import shared.model.SingleUser;
-import server.model.BlockList;
-import server.model.Chat;
-import server.model.MessageData;
-import server.model.Pm;
 import shared.datatype.ChatType;
-import shared.request.NewGroupRequest;
-import shared.request.NewPmRequest;
-import shared.request.NewPrivateChatRequest;
+import shared.request.*;
 
 import java.util.LinkedList;
 
@@ -108,6 +103,28 @@ public class MessageController extends AbstractController {
 
         LogManager.getLogger(MessageController.class).info("new pm created with id : " + id);
         return id;
+    }
+
+    public void editPm(EditPmRequest editPmRequest) {
+        AuthController authController = new AuthController();
+        User user = authController.getUserWithAuthToken(editPmRequest.getAuthToken());
+        Pm pm = context.Pms.get(editPmRequest.getPmId());
+        if (user.getId() != pm.getUserId()) {
+            return;
+        }
+        pm.setText(editPmRequest.getText());
+        context.Pms.update(pm);
+    }
+
+    public void deletePm(DeletePmRequest deletePmRequest) {
+        AuthController authController = new AuthController();
+        User user = authController.getUserWithAuthToken(deletePmRequest.getAuthToken());
+        Pm pm = context.Pms.get(deletePmRequest.getPmId());
+        if (user.getId() != pm.getUserId()) {
+            return;
+        }
+        pm.setText("(This is deleted)");
+        context.Pms.update(pm);
     }
 
     public LinkedList<Chat> getChats(int userId) {

@@ -17,7 +17,7 @@
          <content>
             <VBox fx:id="mainTweetHolder" spacing="10.0">
                <children>
-                  <Label layoutX="10.0" layoutY="901.0" prefWidth="700.0" text="11111111111111111111111111111111111111111111111111111SalaaaaaaaaaaaaoioioioioioiooioioaaaaaaaaaaaaaeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeemkljkjkjkjjkjSalaaaaaaaaaaaaoioioioioioiooioioaaaaaaaaaaaaaeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeemkljkjkjkjjkj" wrapText="true">
+                  <Label layoutX="10.0" layoutY="901.0" text="Loading..." wrapText="true">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -30,7 +30,7 @@
          <content>
             <VBox fx:id="tweetHolder" spacing="10.0">
                <children>
-                  <Label layoutX="10.0" layoutY="901.0" prefWidth="700.0" text="11111111111111111111111111111111111111111111111111111SalaaaaaaaaaaaaoioioioioioiooioioaaaaaaaaaaaaaeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeemkljkjkjkjjkjSalaaaaaaaaaaaaoioioioioioiooioioaaaaaaaaaaaaaeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeemkljkjkjkjjkj" wrapText="true">
+                  <Label layoutX="10.0" layoutY="901.0" text="Loading..." wrapText="true">
                      <font>
                         <Font size="18.0" />
                      </font>

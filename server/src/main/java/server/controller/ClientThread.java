@@ -218,16 +218,9 @@ public class ClientThread extends Thread implements RequestHandler {
         LogManager.getLogger(ClientThread.class).info("GetTimelineRequest is getting handled");
 
         LinkedList<Tweet> tweets = tweetController.getTimeline(
-                authController.getUserWithAuthToken(getTimelineRequest.getAuthToken()).getUsername()
+                authController.getUserWithAuthToken(getTimelineRequest.getAuthToken()).getId()
         );
-        LinkedList<SingleTweet> resTweets = new LinkedList<>();
-        for (Tweet tweet : tweets) {
-            resTweets.add(new SingleTweet(
-                    tweet.getId(),
-                    tweet.getCreatorId(),
-                    tweet.getText()
-            ));
-        }
+        LinkedList<SingleTweet> resTweets = TweetController.convertToSingleTweet(tweets);
         return new GetTimelineResponse(resTweets);
     }
 
@@ -235,17 +228,13 @@ public class ClientThread extends Thread implements RequestHandler {
     public Response getExplorer(GetExplorerRequest getExplorerRequest) {
         LogManager.getLogger(ClientThread.class).info("GetExplorerRequest is getting handled");
 
-        LinkedList<Tweet> tweets = tweetController.getTimeline(
-                authController.getUserWithAuthToken(getExplorerRequest.getAuthToken()).getUsername()
+//        LinkedList<Tweet> tweets = tweetController.getTimeline(
+//                authController.getUserWithAuthToken(getExplorerRequest.getAuthToken()).getUsername()
+//        );
+        LinkedList<Tweet> tweets = tweetController.getExplorer(
+                authController.getUserWithAuthToken(getExplorerRequest.getAuthToken()).getId()
         );
-        LinkedList<SingleTweet> resTweets = new LinkedList<>();
-        for (Tweet tweet : tweets) {
-            resTweets.add(new SingleTweet(
-                    tweet.getId(),
-                    tweet.getCreatorId(),
-                    tweet.getText()
-            ));
-        }
+        LinkedList<SingleTweet> resTweets = TweetController.convertToSingleTweet(tweets);
         return new GetExplorerResponse(resTweets);
     }
 

@@ -12,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import shared.gson.LocalDateTimeSerializer;
+import shared.model.ChatModel;
 import shared.model.SinglePm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,6 +32,7 @@ public class ChatRootController extends BasicController implements Initializable
 
     ChatModelController chatModelController = DoppioApp.getChatModelController();
     int chatId;
+    ChatModel curChatModel;
 
     @FXML
     private ScrollPane scrollPane;
@@ -79,14 +81,18 @@ public class ChatRootController extends BasicController implements Initializable
     @Override
     public Runnable getUpdateAction() {
         return () -> {
+            ChatModel newChatModel = DoppioApp.getChatModelController().getChatModel(chatId);
+            if (!ChatModelUtility.isChatModelChanged(curChatModel, newChatModel))
+                return;
+            curChatModel = newChatModel;
+            System.out.println("chat model changed!");
             pmHolder.getChildren().clear();
             this.clearChildControllers();
-            for (SinglePm pm : DoppioApp.getChatModelController().getChatModel(chatId).getPms()) {
+            for (SinglePm pm : curChatModel.getPms()) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(SinglePmLabelController.class.getResource("hypsinglepmlabel.fxml"));
                 HypSinglePmLabelController singlePmLabelController = new HypSinglePmLabelController(pm);
                 fxmlLoader.setController(singlePmLabelController);
-                //                singlePmLabelController.setListener(getListener());
                 try {
                     pmHolder.getChildren().add(fxmlLoader.load());
                     this.addToChildControllers(singlePmLabelController);
@@ -134,5 +140,30 @@ public class ChatRootController extends BasicController implements Initializable
             }
         });
     }
+}
 
+class ChatModelUtility {
+    public static boolean isChatModelChanged(ChatModel chatModel1, ChatModel chatModel2) {
+        if (chatModel1 == null)
+            return true;
+        if (chatModel1.getPms().size() != chatModel2.getPms().size()) {
+            return true;
+        }
+        for (int i = 0; i < chatModel1.getPms().size(); i++) {
+            SinglePm pm1 = chatModel1.getPms().get(i);
+            SinglePm pm2 = chatModel2.getPms().get(i);
+            if (!SinglePmUtility.isSinglePmChange(pm1, pm2))
+                return true;
+        }
+        return false;
+    }
+}
+
+class SinglePmUtility {
+    public static boolean isSinglePmChange(SinglePm pm1, SinglePm pm2) {
+        if (pm1.getText().equals(pm2.getText()) && pm1.getPmVerdict() == pm2.getPmVerdict() &&
+        pm1.getUserId() == pm2.getUserId())
+            return true;
+        return false;
+    }
 }

@@ -87,7 +87,6 @@ public class HypSinglePmLabelController extends BasicController implements Initi
     @Override
     public Runnable getRequestAction() {
         return () -> {
-//            getListener().listen(new NullRequest("i should have asked for new profile"));
             if (FileModelController.canUpdate("profilepics/" + singlePm.getUserId() + ".jpg")) {
                 getListener().listen(new GetProfilePicRequest(singlePm.getUserId()));
             }

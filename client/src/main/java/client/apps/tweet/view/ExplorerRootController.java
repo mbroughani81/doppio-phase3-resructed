@@ -38,6 +38,8 @@ public class ExplorerRootController extends BasicController {
     }
 
     public void updateExplorer(LinkedList<SingleTweet> tweets) {
+
+        // fixme : for loading images, one should open that image atleast on time before
         if (!SingleTweetUtility.isSingleTweetListChanged(
                 curTweets,
                 tweets

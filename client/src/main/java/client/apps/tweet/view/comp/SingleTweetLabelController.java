@@ -1,9 +1,11 @@
 package client.apps.tweet.view.comp;
 
+import client.core.DoppioApp;
 import client.core.ViewSwitcher;
 import client.datatype.BasicController;
 import client.datatype.Page;
 import client.datatype.View;
+import client.dbcontroller.FileModelController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,9 +15,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import shared.model.SingleTweet;
+import shared.request.GetProfilePicRequest;
 import shared.request.NewLikeTweetRequest;
 import shared.request.NewRetweetRequest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -72,9 +79,36 @@ public class SingleTweetLabelController extends BasicController implements Initi
     public void initialize(URL location, ResourceBundle resources) {
         tweetTextLabel.setText(singleTweet.getText());
         profileLabel.setText("");
-        ImageView view = new ImageView(new Image("squScreenshot (91).png"));
-        view.setFitWidth(40);
-        view.setFitHeight(40);
-        profileLabel.setGraphic(view);
+        if (DoppioApp.getFileModelController().profileExists(singleTweet.getUserId())) {
+            ImageView view;
+            File img = new File(DoppioApp.getFileModelController().getProfilePicPath(
+                    singleTweet.getUserId()
+            ));
+            InputStream isImage = null;
+            try {
+                isImage = new FileInputStream(img);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            view = new ImageView(new Image(isImage));
+            view.setFitWidth(40);
+            view.setFitHeight(40);
+            profileLabel.setGraphic(view);
+        } else {
+            ImageView view;
+            view = new ImageView(new Image("iliya1.png"));
+            view.setFitWidth(40);
+            view.setFitHeight(40);
+            profileLabel.setGraphic(view);
+        }
+    }
+
+    @Override
+    public Runnable getRequestAction() {
+        return () -> {
+            if (FileModelController.canUpdate("profilepics/" + singleTweet.getUserId() + ".jpg")) {
+                getListener().listen(new GetProfilePicRequest(singleTweet.getUserId()));
+            }
+        };
     }
 }

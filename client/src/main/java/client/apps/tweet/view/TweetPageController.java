@@ -19,7 +19,8 @@ public class TweetPageController extends MainPageController {
         setCenter(root);
         this.tweetPageRootController = tweetPageRootController;
         this.tweetPageRootController.setTweetId(tweetId);
-        this.tweetPageRootController.setListener(getListener());
+        this.addToChildControllers(tweetPageRootController);
+//        this.tweetPageRootController.setListener(getListener());
     }
 
     @Override
@@ -29,7 +30,10 @@ public class TweetPageController extends MainPageController {
 
     @Override
     public Runnable getRequestAction() {
-        return () -> getListener().listen(new GetTweetPageRequest(tweetId));
+        return () -> {
+            getListener().listen(new GetTweetPageRequest(tweetId));
+            runChildControllerRequest();
+        };
     }
 
     public void updatePage(GetTweetPageResponse getTweetPageResponse) {

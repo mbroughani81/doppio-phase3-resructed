@@ -18,6 +18,9 @@ public class ShowTweetsPageController extends TweetController {
 
     @Override
     public Runnable getRequestAction() {
-        return () -> getListener().listen(new GetShowUserTweetsRequest());
+        return () -> {
+            getListener().listen(new GetShowUserTweetsRequest());
+            runChildControllerRequest();
+        };
     }
 }

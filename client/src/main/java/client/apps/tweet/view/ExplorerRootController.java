@@ -36,9 +36,8 @@ public class ExplorerRootController extends BasicController {
 
     public void updateExplorer(LinkedList<SingleTweet> tweets) {
         tweetHolder.getChildren().clear();
+        this.clearChildControllers();
         for (SingleTweet tweet : tweets) {
-//            SingleTweetLabel singleTweetLabel = new SingleTweetLabel(tweet);
-//            tweetHolder.getChildren().add(singleTweetLabel);
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(SingleTweetLabelController.class.getResource("singletweetlabel.fxml"));
             SingleTweetLabelController singleTweetLabelController = new SingleTweetLabelController(
@@ -48,9 +47,17 @@ public class ExplorerRootController extends BasicController {
             fxmlLoader.setController(singleTweetLabelController);
             try {
                 tweetHolder.getChildren().add(fxmlLoader.load());
+                this.addToChildControllers(singleTweetLabelController);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public Runnable getRequestAction() {
+        return () -> {
+            runChildControllerRequest();
+        };
     }
 }

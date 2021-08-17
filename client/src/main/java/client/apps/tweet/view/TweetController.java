@@ -10,7 +10,7 @@ public class TweetController extends MainPageController {
     public void setTweetRootController(Parent root, TweetRootController tweetRootController) {
         setCenter(root);
         this.tweetRootController = tweetRootController;
-        this.tweetRootController.setListener(getListener());
+        this.addToChildControllers(tweetRootController);
     }
 
     @Override
@@ -20,6 +20,8 @@ public class TweetController extends MainPageController {
 
     @Override
     public Runnable getRequestAction() {
-        return super.getRequestAction();
+        return () -> {
+            runChildControllerRequest();
+        };
     }
 }

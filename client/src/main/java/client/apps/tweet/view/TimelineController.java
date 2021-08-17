@@ -20,6 +20,9 @@ public class TimelineController extends TweetController {
 
     @Override
     public Runnable getRequestAction() {
-        return () -> getListener().listen(new GetTimelineRequest());
+        return () -> {
+            getListener().listen(new GetTimelineRequest());
+            runChildControllerRequest();
+        };
     }
 }

@@ -25,6 +25,7 @@ public class TweetPageRootController extends BasicController {
     private VBox tweetHolder;
 
     public void updatePage(SingleTweet mainTweet, LinkedList<SingleTweet> tweets) {
+        this.clearChildControllers();
         tweetHolder.getChildren().clear();
         mainTweetHolder.getChildren().clear();
         FXMLLoader fxmlLoader1 = new FXMLLoader();
@@ -36,12 +37,11 @@ public class TweetPageRootController extends BasicController {
         fxmlLoader1.setController(singleTweetLabelController1);
         try {
             mainTweetHolder.getChildren().add(fxmlLoader1.load());
+            this.addToChildControllers(singleTweetLabelController1);
         } catch (IOException e) {
             e.printStackTrace();
         }
         for (SingleTweet tweet : tweets) {
-//            SingleTweetLabel singleTweetLabel = new SingleTweetLabel(tweet);
-//            tweetHolder.getChildren().add(singleTweetLabel);
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(SingleTweetLabelController.class.getResource("singletweetlabel.fxml"));
             SingleTweetLabelController singleTweetLabelController = new SingleTweetLabelController(
@@ -51,10 +51,18 @@ public class TweetPageRootController extends BasicController {
             fxmlLoader.setController(singleTweetLabelController);
             try {
                 tweetHolder.getChildren().add(fxmlLoader.load());
+                this.addToChildControllers(singleTweetLabelController);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public Runnable getRequestAction() {
+        return () -> {
+            runChildControllerRequest();
+        };
     }
 
     public int getTweetId() {

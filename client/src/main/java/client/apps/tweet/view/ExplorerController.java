@@ -13,7 +13,7 @@ public class ExplorerController extends MainPageController {
     public void setExplorerRoot(Parent root, ExplorerRootController explorerRootController) {
         setCenter(root);
         this.explorerRootController = explorerRootController;
-        this.explorerRootController.setListener(getListener());
+        this.addToChildControllers(explorerRootController);
     }
 
     public void updateExplorer(GetExplorerResponse getExplorerResponse) {
@@ -22,6 +22,9 @@ public class ExplorerController extends MainPageController {
 
     @Override
     public Runnable getRequestAction() {
-        return () -> getListener().listen(new GetExplorerRequest());
+        return () -> {
+            getListener().listen(new GetExplorerRequest());
+            runChildControllerRequest();
+        };
     }
 }

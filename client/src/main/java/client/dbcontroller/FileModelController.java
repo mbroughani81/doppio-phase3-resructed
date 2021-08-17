@@ -32,12 +32,18 @@ public class FileModelController extends AbstractModelController {
             if (str1.equals(str2))
                 return;
         }
-//        System.out.println("Image profile of " + getProfilePicResponse.getUserId() + " is changed!");
         saveImage(
                 getProfilePicResponse.getImageString(),
                 "src/main/resources/clientdb/" + usernameDir + "/profilepics/" +
                         getProfilePicResponse.getUserId() + ".jpg"
         );
+    }
+
+    public boolean profileExists(int userId) {
+        String path = "src/main/resources/clientdb/" + usernameDir + "/profilepics/" +
+                userId + ".jpg";
+        File file = new File(path);
+        return file.exists();
     }
 
     private void saveImage(String imageString, String path) {
@@ -70,19 +76,6 @@ public class FileModelController extends AbstractModelController {
         return "src/main/resources/clientdb/" + usernameDir + "/profilepics/" + userId + ".jpg";
     }
 
-    public static boolean recentlyUpdated(String usernameDir, String p) {
-        String pp = "src/main/resources/clientdb/" + usernameDir + "/" + p;
-        File file = new File(pp);
-        if (!file.exists())
-            return false;
-        LocalDateTime fileDate = Instant.ofEpochMilli(file.lastModified())
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-        Duration duration = Duration.between(fileDate, LocalDateTime.now()).abs();
-        System.out.println(duration.getSeconds());
-        return true;
-    }
-
     public static boolean isBefore(LocalDateTime date, String usernameDir, String p ) {
         String pp = "src/main/resources/clientdb/" + usernameDir + "/" + p;
         File file = new File(pp);
@@ -97,4 +90,19 @@ public class FileModelController extends AbstractModelController {
     private static void updateLastRequest(String filepath) {
         lastRequest.put(filepath, Instant.now());
     }
+/*
+    public static boolean recentlyUpdated(String usernameDir, String p) {
+        String pp = "src/main/resources/clientdb/" + usernameDir + "/" + p;
+        File file = new File(pp);
+        if (!file.exists())
+            return false;
+        LocalDateTime fileDate = Instant.ofEpochMilli(file.lastModified())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+        Duration duration = Duration.between(fileDate, LocalDateTime.now()).abs();
+        System.out.println(duration.getSeconds());
+        return true;
+    }
+*/
+
 }

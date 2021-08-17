@@ -1,8 +1,10 @@
 package client.apps.setting.view;
 
+import client.config.apps.setting.SettingRootConfig;
 import client.datatype.BasicController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
@@ -10,10 +12,12 @@ import shared.datatype.LastSeenPrivacy;
 import shared.datatype.Privacy;
 import shared.request.*;
 
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class SettingRootController extends BasicController {
+public class SettingRootController extends BasicController implements Initializable {
 
     @FXML
     private Button privacyButton;
@@ -127,5 +131,16 @@ public class SettingRootController extends BasicController {
                 }
             }
         });
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        SettingRootConfig settingRootConfig = new SettingRootConfig();
+        privacyButton.setText(settingRootConfig.getPrivacyButtonText());
+        lastseenprivacyButton.setText(settingRootConfig.getLastseenprivacyButtonText());
+        setactivityButton.setText(settingRootConfig.getSetactivityButtonText());
+        changepasswordButton.setText(settingRootConfig.getChangepasswordButtonText());
+        deleteaccountButton.setText(settingRootConfig.getDeleteaccountButtonText());
+        logoutButton.setText(settingRootConfig.getLogoutButtonText());
     }
 }

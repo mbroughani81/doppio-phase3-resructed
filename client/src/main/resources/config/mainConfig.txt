@@ -7,3 +7,4 @@ simpletextConfigPath=src/main/resources/config/apps/chat/simpletextConfig.txt
 hypertextConfigPath=src/main/resources/config/apps/chat/hypertextConfig.txt
 mainpageConfigPath=src/main/resources/config/apps/mainpage/mainpageConfig.txt
 messengerrootConfigPath=src/main/resources/config/apps/messenger/messengerrootConfig.txt
+settingrootConfigPath=src/main/resources/config/apps/setting/settingrootConfig.txt

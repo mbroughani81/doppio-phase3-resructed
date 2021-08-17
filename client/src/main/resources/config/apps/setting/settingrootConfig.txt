@@ -1,0 +1,7 @@
+privacyButtonText=Privacy
+lastseenprivacyButtonText=Last seen privacy
+setactivityButtonText=Set activity
+changepasswordButtonText=Change password
+deleteaccountButtonText=Delete account
+logoutButtonText=Logout
+

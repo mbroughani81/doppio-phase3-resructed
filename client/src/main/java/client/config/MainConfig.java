@@ -16,6 +16,7 @@ public class MainConfig {
     private String simpletextConfigPath;
     private String hypertextConfigPath;
     private String mainpageConfigPath;
+    private String messengerrootConfigPath;
 
     public MainConfig() {
         try {
@@ -38,6 +39,7 @@ public class MainConfig {
         simpletextConfigPath = properties.getProperty("simpletextConfigPath");
         hypertextConfigPath = properties.getProperty("hypertextConfigPath");
         mainpageConfigPath = properties.getProperty("mainpageConfigPath");
+        messengerrootConfigPath = properties.getProperty("messengerrootConfigPath");
     }
 
     public String getSocketConfigPath() {
@@ -70,5 +72,9 @@ public class MainConfig {
 
     public String getMainpageConfigPath() {
         return mainpageConfigPath;
+    }
+
+    public String getMessengerrootConfigPath() {
+        return messengerrootConfigPath;
     }
 }

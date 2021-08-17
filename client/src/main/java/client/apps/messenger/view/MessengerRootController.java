@@ -3,6 +3,7 @@ package client.apps.messenger.view;
 import client.apps.messenger.view.comp.GetGroupMembersController;
 import client.apps.messenger.view.comp.GetGroupnameController;
 import client.apps.messenger.view.comp.MessageLabel;
+import client.config.apps.messenger.MessengerRootConfig;
 import client.core.DoppioApp;
 import client.core.ViewSwitcher;
 import client.datatype.BasicController;
@@ -54,31 +55,6 @@ public class MessengerRootController extends BasicController implements Initiali
 
     @FXML
     void newgroupButtonClicked(ActionEvent event) {
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//        alert.setTitle("Info dialoge");
-//        alert.setHeaderText(null);
-//        alert.setContentText("this is message");
-//        FXMLLoader fxmlLoader = new FXMLLoader();
-//        fxmlLoader.setLocation(TweetController.class.getResource(View.EXPLORER.getFileName()));
-//        try {
-//            alert.getDialogPane().setContent(fxmlLoader.load());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        alert.showAndWait();
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//        alert.setTitle("Input groupname");
-//        alert.setHeaderText("Enter groupname : ");
-//        FXMLLoader fxmlLoader = new FXMLLoader();
-//        fxmlLoader.setLocation(GetGroupnameController.class.getResource("getgroupname.fxml"));
-//        fxmlLoader.setController(new GetGroupnameController());
-//        try {
-//            alert.getDialogPane().setContent(fxmlLoader.load());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        alert.showAndWait();
-//        System.out.println("finished!");
         getListener().listen(new GetNewGroupAlertData());
     }
 
@@ -97,6 +73,11 @@ public class MessengerRootController extends BasicController implements Initiali
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         listView.getSelectionModel().selectedItemProperty().addListener(this);
+
+        MessengerRootConfig messengerRootConfig = new MessengerRootConfig();
+        multipmButton.setText(messengerRootConfig.getMultipmButtonText());
+        newgroupButton.setText(messengerRootConfig.getNewgroupButtonText());
+        newtypeButton.setText(messengerRootConfig.getNewtypeButtonText());
     }
 
     @Override

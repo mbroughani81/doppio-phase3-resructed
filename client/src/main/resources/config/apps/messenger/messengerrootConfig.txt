@@ -1,0 +1,3 @@
+multipmButtonText=Multipm
+newgroupButtonText=New group
+newtypeButtonText=New type

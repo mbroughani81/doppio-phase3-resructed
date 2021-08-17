@@ -1,8 +1,11 @@
 package client.apps.chat.view.comp;
 
 import client.config.apps.chat.HyperTextConfig;
+import client.core.ViewSwitcher;
 import client.datatype.BasicController;
 import client.datatype.HyperType;
+import client.datatype.Page;
+import client.datatype.View;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
@@ -25,7 +28,21 @@ public class HyperTextController extends BasicController implements Initializabl
 
     @FXML
     void textClicked(MouseEvent event) {
-        System.out.println(type.getVal() + ":type " + val + ":val" + " is clicked!");
+//        System.out.println(type.getVal() + ":type " + val + ":val" + " is clicked!");
+        int id;
+        try {
+            id = Integer.parseInt(val);
+        } catch (NumberFormatException e) {
+            return;
+        }
+        switch (type) {
+            case TWEET -> {
+                ViewSwitcher.getInstance().switchTo(new Page(View.TWEETPAGE, id));
+            }
+            case CHAT -> {
+                ViewSwitcher.getInstance().switchTo(new Page(View.CHAT, id));
+            }
+        }
     }
 
 

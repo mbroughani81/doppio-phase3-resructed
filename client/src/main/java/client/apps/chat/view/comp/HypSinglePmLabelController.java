@@ -107,7 +107,6 @@ public class HypSinglePmLabelController extends BasicController implements Initi
                 view = new ImageView(new Image(isImage));
                 view.setFitWidth(hypSinglePmLabelConfig.getProfileSize());
                 view.setFitHeight(hypSinglePmLabelConfig.getProfileSize());
-                System.out.println("profile of user " + singlePm.getUserId() + " is changed");
                 profileLabel.setGraphic(view);
 
                 lastImageUpdate = LocalDateTime.now();

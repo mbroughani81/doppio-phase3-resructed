@@ -2,6 +2,7 @@ package client.apps.tweet.view;
 
 import client.apps.tweet.view.comp.SingleTweetLabelController;
 import client.datatype.BasicController;
+import client.utils.SingleTweetUtility;
 import shared.model.SingleTweet;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ import java.util.LinkedList;
 public class TweetPageRootController extends BasicController {
 
     int tweetId;
+    LinkedList<SingleTweet> curTweets;
 
     @FXML
     private VBox mainTweetHolder;
@@ -25,6 +27,14 @@ public class TweetPageRootController extends BasicController {
     private VBox tweetHolder;
 
     public void updatePage(SingleTweet mainTweet, LinkedList<SingleTweet> tweets) {
+        if (!SingleTweetUtility.isSingleTweetListChanged(
+                curTweets,
+                tweets
+
+        ))
+            return;
+        curTweets = tweets;
+
         this.clearChildControllers();
         tweetHolder.getChildren().clear();
         mainTweetHolder.getChildren().clear();

@@ -38,6 +38,9 @@ public class SingleTweetLabelController extends BasicController implements Initi
     private Label tweetTextLabel;
 
     @FXML
+    private Label tweetimagelabel;
+
+    @FXML
     private Button likeButton;
 
     @FXML
@@ -80,6 +83,7 @@ public class SingleTweetLabelController extends BasicController implements Initi
     public void initialize(URL location, ResourceBundle resources) {
         tweetTextLabel.setText(singleTweet.getText());
         profileLabel.setText("");
+        // load the tweet pics
         if (DoppioApp.getFileModelController().profileExists(singleTweet.getUserId())) {
             ImageView view;
             File img = new File(DoppioApp.getFileModelController().getProfilePicPath(
@@ -101,6 +105,29 @@ public class SingleTweetLabelController extends BasicController implements Initi
             view.setFitWidth(40);
             view.setFitHeight(40);
             profileLabel.setGraphic(view);
+        }
+        // load the tweet image
+        if (DoppioApp.getFileModelController().tweetExists(singleTweet.getTweetId())) {
+            ImageView view;
+            File img = new File(DoppioApp.getFileModelController().getTweetPicPath(
+                    singleTweet.getTweetId()
+            ));
+            InputStream isImage = null;
+            try {
+                isImage = new FileInputStream(img);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            view = new ImageView(new Image(isImage));
+            view.setFitWidth(400);
+            view.setFitHeight(400);
+            tweetimagelabel.setGraphic(view);
+        } else {
+//            ImageView view;
+//            view = new ImageView(new Image("iliya1.png"));
+//            view.setFitWidth(100);
+//            view.setFitHeight(400);
+//            profileLabel.setGraphic(view);
         }
     }
 

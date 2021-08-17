@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <HBox alignment="CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
@@ -18,15 +19,20 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
          <graphic>
-            <HBox>
+            <VBox alignment="TOP_CENTER">
                <children>
-                  <Button fx:id="likeButton" mnemonicParsing="false" onAction="#likeButtonClicked" text="Like" />
-                  <Region prefWidth="100.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="retweetButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#retweetButtonClicked" text="Retweet" />
-                  <Region prefWidth="100.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="commentButton" layoutX="72.0" layoutY="10.0" mnemonicParsing="false" onAction="#commentButtonClicked" text="Comment" />
+                  <Label fx:id="tweetimagelabel" contentDisplay="GRAPHIC_ONLY" text="Label" />
+                  <HBox>
+                     <children>
+                        <Button fx:id="likeButton" mnemonicParsing="false" onAction="#likeButtonClicked" text="Like" />
+                        <Region prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="retweetButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#retweetButtonClicked" text="Retweet" />
+                        <Region prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="commentButton" layoutX="72.0" layoutY="10.0" mnemonicParsing="false" onAction="#commentButtonClicked" text="Comment" />
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
+            </VBox>
          </graphic>
         </Label>
     </children>

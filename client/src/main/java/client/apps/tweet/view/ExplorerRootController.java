@@ -2,6 +2,7 @@ package client.apps.tweet.view;
 
 import client.apps.tweet.view.comp.SingleTweetLabelController;
 import client.datatype.BasicController;
+import client.utils.SingleTweetUtility;
 import shared.model.SingleTweet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 public class ExplorerRootController extends BasicController {
+
+    private LinkedList<SingleTweet> curTweets;
 
     @FXML
     private ScrollPane scrollPane;
@@ -35,6 +38,14 @@ public class ExplorerRootController extends BasicController {
     }
 
     public void updateExplorer(LinkedList<SingleTweet> tweets) {
+        if (!SingleTweetUtility.isSingleTweetListChanged(
+                curTweets,
+                tweets
+
+        ))
+            return;
+        curTweets = tweets;
+
         tweetHolder.getChildren().clear();
         this.clearChildControllers();
         for (SingleTweet tweet : tweets) {

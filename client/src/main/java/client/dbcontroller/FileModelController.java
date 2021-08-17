@@ -64,6 +64,13 @@ public class FileModelController extends AbstractModelController {
         return file.exists();
     }
 
+    public boolean tweetExists(int tweetId) {
+        String path = "src/main/resources/clientdb/" + usernameDir + "/tweetpics/" +
+                tweetId + ".jpg";
+        File file = new File(path);
+        return file.exists();
+    }
+
     private void saveImage(String imageString, String path) {
         Base64 decoder = new Base64();
         byte[] imgBytes = decoder.decode(imageString);
@@ -93,6 +100,10 @@ public class FileModelController extends AbstractModelController {
 
     public String getProfilePicPath(int userId) {
         return "src/main/resources/clientdb/" + usernameDir + "/profilepics/" + userId + ".jpg";
+    }
+
+    public String getTweetPicPath(int tweetId) {
+        return "src/main/resources/clientdb/" + usernameDir + "/tweetpics/" + tweetId + ".jpg";
     }
 
     public static boolean isBefore(LocalDateTime date, String usernameDir, String p ) {

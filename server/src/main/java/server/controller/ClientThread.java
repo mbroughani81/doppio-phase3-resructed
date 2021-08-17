@@ -366,7 +366,11 @@ public class ClientThread extends Thread implements RequestHandler {
     @Override
     public Response getProfilePic(GetProfilePicRequest getProfilePicRequest) {
         LogManager.getLogger(ClientThread.class).info("GetProfilePicRequest is getting handled");
-
+        if (getProfilePicRequest.getUserId() == -1) {
+            getProfilePicRequest.setUserId(
+                    authController.getUserWithAuthToken(getProfilePicRequest.getAuthToken()).getId()
+            );
+        }
         return new GetProfilePicResponse(
                 getProfilePicRequest.getUserId(),
                 fileController.getProfileString(getProfilePicRequest.getUserId())
@@ -386,7 +390,11 @@ public class ClientThread extends Thread implements RequestHandler {
     @Override
     public Response searchUser(ExplorerSearchIdRequest explorerSearchIdRequest) {
         LogManager.getLogger(ClientThread.class).info("ExplorerSearchIdRequest is getting handled");
-
+        if (explorerSearchIdRequest.getUserId() == -1) {
+            explorerSearchIdRequest.setUserId(
+                    authController.getUserWithAuthToken(explorerSearchIdRequest.getAuthToken()).getId()
+            );
+        }
         if (authController.getUser(explorerSearchIdRequest.getUserId()) != null) {
             return new CheckProfile(authController.getUser(explorerSearchIdRequest.getUserId()).getId());
         }

@@ -17,6 +17,7 @@ public class PersonalPageController extends MainPageController {
     public void setPersonalPageRoot(Parent root, PersonalPageRootController personalPageRootController) {
         setCenter(root);
         this.personalPageRootController = personalPageRootController;
+        this.addToChildControllers(personalPageRootController);
     }
 
     @Override

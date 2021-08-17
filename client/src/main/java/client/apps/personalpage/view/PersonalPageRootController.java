@@ -1,5 +1,6 @@
 package client.apps.personalpage.view;
 
+import client.core.DoppioApp;
 import client.core.ViewSwitcher;
 import client.datatype.BasicController;
 import client.datatype.Page;
@@ -7,6 +8,7 @@ import client.datatype.View;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import shared.request.ExplorerSearchIdRequest;
 
 public class PersonalPageRootController extends BasicController {
 
@@ -35,7 +37,9 @@ public class PersonalPageRootController extends BasicController {
 
     @FXML
     void infoButtonClicked(ActionEvent event) {
-        ViewSwitcher.getInstance().switchTo(new Page(View.PROFILEPAGE, -1));
+//        ViewSwitcher.getInstance().switchTo(new Page(View.PROFILEPAGE,
+//                DoppioApp.getSessionModelController()));
+        getListener().listen(new ExplorerSearchIdRequest(-1));
     }
 
     @FXML

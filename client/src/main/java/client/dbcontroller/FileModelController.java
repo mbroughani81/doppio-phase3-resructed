@@ -2,6 +2,7 @@ package client.dbcontroller;
 
 import org.apache.commons.codec.binary.Base64;
 import shared.response.GetProfilePicResponse;
+import shared.util.ImageSerializer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,23 +17,18 @@ public class FileModelController extends AbstractModelController {
     private static final Map<String, Instant> lastRequest = new HashMap<>();
 
     public void updateProfilePic(GetProfilePicResponse getProfilePicResponse) {
-//        String filepath = "src/main/resources/clientdb/" + usernameDir + "/profilepics/" +
-//                getProfilePicResponse.getUserId() + ".jpg";
-//        File file = new File(filepath);
         if (getProfilePicResponse.getImageString() == null)
             return;
-//        if (file.exists()) {
-//            Path path = Paths.get(filepath);
-//            try {
-//                BasicFileAttributes attr = Files.readAttributes(path, BasicFileAttributes.class);
-//                FileTime ft = attr.lastModifiedTime();
-//                Instant now = Instant.now();
-//                if (Math.abs(now.compareTo(ft.toInstant())) < 5)
-//                    return;
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        String path = "src/main/resources/clientdb/" + usernameDir + "/profilepics/" +
+                getProfilePicResponse.getUserId() + ".jpg";
+        File file = new File(path);
+        if (file.exists()) {
+            String str1 = getProfilePicResponse.getImageString();
+            String str2 = ImageSerializer.encodeFileToBase64Binary(new File(path));
+            if (str1.equals(str2))
+                return;
+        }
+        System.out.println("Image profile of " + getProfilePicResponse.getUserId() + " is changed!");
         saveImage(
                 getProfilePicResponse.getImageString(),
                 "src/main/resources/clientdb/" + usernameDir + "/profilepics/" +

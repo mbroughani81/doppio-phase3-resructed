@@ -18,9 +18,16 @@ public class ProfilePageController extends MainPageController {
     public void setProfilePageRoot(Parent root, ProfilePageRootController profilePageRootController) {
         setCenter(root);
         this.profilePageRootController = profilePageRootController;
-        this.profilePageRootController.setListener(getListener());
+        this.addToChildControllers(profilePageRootController);
         this.profilePageRootController.setUserId(userId);
         this.profilePageRootController.init();
+    }
+
+    @Override
+    public Runnable getRequestAction() {
+        return () -> {
+            runChildControllerRequest();
+        };
     }
 
     public void updateProfile(GetProfileResponse getProfileResponse) {

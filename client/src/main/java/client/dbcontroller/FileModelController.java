@@ -59,6 +59,7 @@ public class FileModelController extends AbstractModelController {
         }
     }
 
+
     public static boolean canUpdate(String filepath) {
         if (!lastRequest.containsKey(filepath)) {
             updateLastRequest(filepath);

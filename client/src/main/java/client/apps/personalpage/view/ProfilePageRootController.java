@@ -1,19 +1,35 @@
 package client.apps.personalpage.view;
 
+import client.core.DoppioApp;
 import client.datatype.BasicController;
+import client.dbcontroller.FileModelController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import shared.request.GetProfilePicRequest;
 import shared.request.GetProfileRequest;
 import shared.request.NewFollowRequest;
 import shared.request.NewPrivateChatRequest;
 import shared.response.GetProfileResponse;
 
-public class ProfilePageRootController extends BasicController {
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-    int userId;
+public class ProfilePageRootController extends BasicController implements Initializable {
+
+    private int userId;
+
+    @FXML
+    private Label profilepicLabel;
 
     @FXML
     private Label usernameLabel;
@@ -43,10 +59,44 @@ public class ProfilePageRootController extends BasicController {
         getListener().listen(new NewFollowRequest(userId));
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+    @Override
+    public Runnable getRequestAction() {
+        return () -> {
+            if (FileModelController.canUpdate("profilepics/" + userId + ".jpg")) {
+                getListener().listen(new GetProfilePicRequest(userId));
+            }
+        };
+    }
+
     public void init() {
-        // now, send request and wait for response;
         getListener().listen(new GetProfileRequest(userId));
-//        System.out.println(userId + " is profile");
+        if (DoppioApp.getFileModelController().profileExists(userId)) {
+            ImageView view;
+            File img = new File(DoppioApp.getFileModelController().getProfilePicPath(
+                    userId
+            ));
+            InputStream isImage = null;
+            try {
+                isImage = new FileInputStream(img);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            view = new ImageView(new Image(isImage));
+            view.setFitWidth(150);
+            view.setFitHeight(150);
+            profilepicLabel.setGraphic(view);
+        } else {
+            ImageView view;
+            view = new ImageView(new Image("iliya1.png"));
+            view.setFitWidth(150);
+            view.setFitHeight(150);
+            profilepicLabel.setGraphic(view);
+        }
     }
 
     public void updateProfile(GetProfileResponse getProfileResponse) {
@@ -65,6 +115,7 @@ public class ProfilePageRootController extends BasicController {
     }
 
     public void setUserId(int userId) {
+        System.out.println(userId + "is id!");
         this.userId = userId;
     }
 }

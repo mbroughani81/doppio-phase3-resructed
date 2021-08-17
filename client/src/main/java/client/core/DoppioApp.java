@@ -203,7 +203,7 @@ public class DoppioApp extends Application implements ResponseHandler {
 
     @Override
     public void updateProfilePic(GetProfilePicResponse getProfilePicResponse) {
-        System.out.println("new has come : " + (getProfilePicResponse.getImageString() == null));
+//        System.out.println("new has come : " + (getProfilePicResponse.getImageString() == null));
         fileModelController.updateProfilePic(getProfilePicResponse);
     }
 

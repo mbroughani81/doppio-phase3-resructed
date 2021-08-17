@@ -6,6 +6,7 @@ import client.config.apps.chat.ChatRootConfig;
 import client.core.DoppioApp;
 import client.datatype.BasicController;
 import client.dbcontroller.ChatModelController;
+import client.utils.ChatModelUtility;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -82,24 +83,25 @@ public class ChatRootController extends BasicController implements Initializable
     public Runnable getUpdateAction() {
         return () -> {
             ChatModel newChatModel = DoppioApp.getChatModelController().getChatModel(chatId);
-            if (!ChatModelUtility.isChatModelChanged(curChatModel, newChatModel))
-                return;
-            curChatModel = newChatModel;
-            System.out.println("chat model changed!");
-            pmHolder.getChildren().clear();
-            this.clearChildControllers();
-            for (SinglePm pm : curChatModel.getPms()) {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(SinglePmLabelController.class.getResource("hypsinglepmlabel.fxml"));
-                HypSinglePmLabelController singlePmLabelController = new HypSinglePmLabelController(pm);
-                fxmlLoader.setController(singlePmLabelController);
-                try {
-                    pmHolder.getChildren().add(fxmlLoader.load());
-                    this.addToChildControllers(singlePmLabelController);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            if (ChatModelUtility.isChatModelChanged(curChatModel, newChatModel)) {
+                curChatModel = newChatModel;
+                System.out.println("chat model changed!");
+                pmHolder.getChildren().clear();
+                this.clearChildControllers();
+                for (SinglePm pm : curChatModel.getPms()) {
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(SinglePmLabelController.class.getResource("hypsinglepmlabel.fxml"));
+                    HypSinglePmLabelController singlePmLabelController = new HypSinglePmLabelController(pm);
+                    fxmlLoader.setController(singlePmLabelController);
+                    try {
+                        pmHolder.getChildren().add(fxmlLoader.load());
+                        this.addToChildControllers(singlePmLabelController);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+            runChildControllerUpdate();
         };
     }
 
@@ -139,31 +141,5 @@ public class ChatRootController extends BasicController implements Initializable
                 }
             }
         });
-    }
-}
-
-class ChatModelUtility {
-    public static boolean isChatModelChanged(ChatModel chatModel1, ChatModel chatModel2) {
-        if (chatModel1 == null)
-            return true;
-        if (chatModel1.getPms().size() != chatModel2.getPms().size()) {
-            return true;
-        }
-        for (int i = 0; i < chatModel1.getPms().size(); i++) {
-            SinglePm pm1 = chatModel1.getPms().get(i);
-            SinglePm pm2 = chatModel2.getPms().get(i);
-            if (!SinglePmUtility.isSinglePmChange(pm1, pm2))
-                return true;
-        }
-        return false;
-    }
-}
-
-class SinglePmUtility {
-    public static boolean isSinglePmChange(SinglePm pm1, SinglePm pm2) {
-        if (pm1.getText().equals(pm2.getText()) && pm1.getPmVerdict() == pm2.getPmVerdict() &&
-        pm1.getUserId() == pm2.getUserId())
-            return true;
-        return false;
     }
 }

@@ -2,6 +2,7 @@ package client.apps.chat.view.comp;
 
 import client.config.apps.chat.HyperTextConfig;
 import client.datatype.BasicController;
+import client.datatype.HyperType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
@@ -43,21 +44,4 @@ public class HyperTextController extends BasicController implements Initializabl
 
     }
     //    private HyperType
-}
-
-enum HyperType {
-    CHAT("chat"),
-    TWEET("tweet"),
-    JOINGROUP("join"),
-    UNDEFINED("");
-
-    private String val;
-
-    HyperType(String val) {
-        this.val = val;
-    }
-
-    public String getVal() {
-        return val;
-    }
 }

@@ -371,6 +371,7 @@ public class ClientThread extends Thread implements RequestHandler {
     @Override
     public Response getProfilePic(GetProfilePicRequest getProfilePicRequest) {
         LogManager.getLogger(ClientThread.class).info("GetProfilePicRequest is getting handled");
+
         if (getProfilePicRequest.getUserId() == -1) {
             getProfilePicRequest.setUserId(
                     authController.getUserWithAuthToken(getProfilePicRequest.getAuthToken()).getId()
@@ -379,6 +380,16 @@ public class ClientThread extends Thread implements RequestHandler {
         return new GetProfilePicResponse(
                 getProfilePicRequest.getUserId(),
                 fileController.getProfileString(getProfilePicRequest.getUserId())
+        );
+    }
+
+    @Override
+    public Response getTweetPic(GetTweetPicRequest getTweetPicRequest) {
+        LogManager.getLogger(ClientThread.class).info("GetTweetPicRequest is getting handled");
+
+        return new GetTweetPicResponse(
+                getTweetPicRequest.getTweetId(),
+                fileController.getTweetString(getTweetPicRequest.getTweetId())
         );
     }
 

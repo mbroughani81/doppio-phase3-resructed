@@ -208,6 +208,11 @@ public class DoppioApp extends Application implements ResponseHandler {
     }
 
     @Override
+    public void updateTweetPic(GetTweetPicResponse getTweetPicResponse) {
+        fileModelController.updateTweetPic(getTweetPicResponse);
+    }
+
+    @Override
     public void socketConnectionIsDown(DisconnectResponse disconnectResponse) {
         isConnected = false;
         ViewSwitcher.getInstance().showDisconnectionMessage();

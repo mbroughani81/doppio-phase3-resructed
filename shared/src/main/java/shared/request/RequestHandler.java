@@ -30,6 +30,7 @@ public interface RequestHandler {
     Response getProfile(GetProfileRequest getProfileRequest);
     Response getNewGroupAlertData(GetNewGroupAlertData getNewGroupAlertData);
     Response getProfilePic(GetProfilePicRequest getProfilePicRequest);
+    Response getTweetPic(GetTweetPicRequest getTweetPicRequest);
     Response searchUser(ExplorerSearchRequest explorerSearchRequest);
     Response searchUser(ExplorerSearchIdRequest explorerSearchIdRequest);
     Response fetchMessageDataModel(GetMessageDataModelRequest getMessageDataModelRequest);

@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import shared.model.SingleTweet;
 import shared.request.GetProfilePicRequest;
+import shared.request.GetTweetPicRequest;
 import shared.request.NewLikeTweetRequest;
 import shared.request.NewRetweetRequest;
 
@@ -108,6 +109,9 @@ public class SingleTweetLabelController extends BasicController implements Initi
         return () -> {
             if (FileModelController.canUpdate("profilepics/" + singleTweet.getUserId() + ".jpg")) {
                 getListener().listen(new GetProfilePicRequest(singleTweet.getUserId()));
+            }
+            if (FileModelController.canUpdate("tweetpics/" + singleTweet.getTweetId() + ".jpg")) {
+                getListener().listen(new GetTweetPicRequest(singleTweet.getTweetId()));
             }
         };
     }

@@ -36,6 +36,13 @@ public class FileController {
         return ImageSerializer.encodeFileToBase64Binary(file);
     }
 
+    public String getTweetString(int tweetId) {
+        File file = new File("src/main/resources/serverdb/pics/tweet/" + tweetId + ".jpg");
+        if (!file.exists())
+            return null;
+        return ImageSerializer.encodeFileToBase64Binary(file);
+    }
+
     private void saveImage(String imageString, String path) {
         Base64 decoder = new Base64();
         byte[] imgBytes = decoder.decode(imageString);

@@ -2,6 +2,7 @@ package client.dbcontroller;
 
 import org.apache.commons.codec.binary.Base64;
 import shared.response.GetProfilePicResponse;
+import shared.response.GetTweetPicResponse;
 import shared.util.ImageSerializer;
 
 import java.io.File;
@@ -34,8 +35,25 @@ public class FileModelController extends AbstractModelController {
         }
         saveImage(
                 getProfilePicResponse.getImageString(),
-                "src/main/resources/clientdb/" + usernameDir + "/profilepics/" +
-                        getProfilePicResponse.getUserId() + ".jpg"
+                path
+        );
+    }
+
+    public void updateTweetPic(GetTweetPicResponse getTweetPicResponse) {
+        if (getTweetPicResponse.getImageString() == null)
+            return;
+        String path = "src/main/resources/clientdb/" + usernameDir + "/tweetpics/" +
+                getTweetPicResponse.getTweetId() + ".jpg";
+        File file = new File(path);
+        if (file.exists()) {
+            String str1 = getTweetPicResponse.getImageString();
+            String str2 = ImageSerializer.encodeFileToBase64Binary(new File(path));
+            if (str1.equals(str2))
+                return;
+        }
+        saveImage(
+                getTweetPicResponse.getImageString(),
+                path
         );
     }
 

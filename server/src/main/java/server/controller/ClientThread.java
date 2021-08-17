@@ -125,6 +125,11 @@ public class ClientThread extends Thread implements RequestHandler {
         if (newPmRequest.getUserId() == -1) {
             newPmRequest.setUserId(authController.getUserWithAuthToken(newPmRequest.getAuthToken()).getId());
         }
+        // fixme : in final make only possible to send pm with authtoken
+        User user = authController.getUser(newPmRequest.getUserId());
+        if (!messageController.isMemberOfChat(user.getId(), newPmRequest.getChatId())) {
+            return new NullResponse("pm not affected!");
+        }
         messageController.sendNewPm(newPmRequest);
         return new NullResponse("salam");
     }
@@ -422,17 +427,19 @@ public class ClientThread extends Thread implements RequestHandler {
     @Override
     public Response fetchChatModel(GetChatModelRequest getChatModelRequest) {
         LogManager.getLogger(ClientThread.class).info("GetChatModelRequest is getting handled");
-
-        LinkedList<SinglePm> pms = new LinkedList<>();
-        for (Pm pm : messageController.getPms(getChatModelRequest.getChatId())) {
-            pms.add(new SinglePm(
-                    pm.getId(),
-                    pm.getUserId(),
-                    pm.getPmVerdict(),
-                    pm.getText()
-            ));
+        User user = authController.getUserWithAuthToken(getChatModelRequest.getAuthToken());
+        if (!messageController.isMemberOfChat(user.getId(), getChatModelRequest.getChatId())) {
+            return sendErrorChatModel(getChatModelRequest.getChatId());
         }
+        LinkedList<SinglePm> pms = MessageController.convertToSinglePm(
+                messageController.getPms(getChatModelRequest.getChatId())
+        );
         ChatModel chatModel = new ChatModel(getChatModelRequest.getChatId(), pms);
         return new GetChatModelResponse(chatModel);
+    }
+
+    private Response sendErrorChatModel(int chatId) {
+        ChatModel errorChatModel = MessageController.getErrorChatModel(chatId);
+        return new GetChatModelResponse(errorChatModel);
     }
 }

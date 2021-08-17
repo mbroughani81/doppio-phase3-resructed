@@ -3,6 +3,9 @@ package server.dbcontroller;
 import org.apache.logging.log4j.LogManager;
 import server.model.*;
 import shared.datatype.PmVerdict;
+import shared.model.ChatModel;
+import shared.model.SinglePm;
+import shared.model.SingleTweet;
 import shared.model.SingleUser;
 import shared.datatype.ChatType;
 import shared.request.*;
@@ -50,6 +53,7 @@ public class MessageController extends AbstractController {
         MessageData messageData = context.MessageDatas.get(messageDataId);
         Chat chat = new Chat(newGroupRequest.getOwnerId(), ChatType.GROUP);
         chat.setChatName(newGroupRequest.getGroupname());
+        chat.getMemberIds().add(newGroupRequest.getOwnerId());
         for (SingleUser user : newGroupRequest.getSingleUsers()) {
             chat.getMemberIds().add(user.getUserId());
         }
@@ -66,6 +70,7 @@ public class MessageController extends AbstractController {
             messageData = context.MessageDatas.get(messageDataId);
             chat = new Chat(user.getUserId(), ChatType.GROUP);
             chat.setChatName(newGroupRequest.getGroupname());
+            chat.getMemberIds().add(newGroupRequest.getOwnerId());
             for (SingleUser userr : newGroupRequest.getSingleUsers()) {
                 chat.getMemberIds().add(userr.getUserId());
             }
@@ -139,6 +144,17 @@ public class MessageController extends AbstractController {
         context.Pms.update(pm);
     }
 
+    public boolean isMemberOfChat(int userId, int chatId) {
+        Chat chat = context.Chats.get(chatId);
+        return chat.getMemberIds().contains(userId);
+    }
+
+    public static ChatModel getErrorChatModel(int chatId) {
+        LinkedList<SinglePm> pms = new LinkedList<>();
+        pms.add(new SinglePm(-1, -1, PmVerdict.SEEN, "You don't have access to this chat"));
+        return new ChatModel(chatId, pms);
+    }
+
     public LinkedList<Chat> getChats(int userId) {
         LinkedList<Chat> chats = new LinkedList<>();
         for (Chat chat : context.Chats.all()) {
@@ -163,6 +179,23 @@ public class MessageController extends AbstractController {
                 chats.add(chat);
         }
         return chats;
+    }
+
+    public static LinkedList<SinglePm> convertToSinglePm(LinkedList<Pm> pms) {
+        LinkedList<SinglePm> singlePms = new LinkedList<>();
+        for (Pm pm : pms) {
+            singlePms.add(convertToSinglePm(pm));
+        }
+        return singlePms;
+    }
+
+    public static SinglePm convertToSinglePm(Pm pm) {
+        return new SinglePm(
+                pm.getId(),
+                pm.getUserId(),
+                pm.getPmVerdict(),
+                pm.getText()
+        );
     }
 
     private int hasPrivateChat(int followerId, int followedId) {

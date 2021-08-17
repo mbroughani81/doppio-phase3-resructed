@@ -12,6 +12,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import shared.gson.LocalDateTimeSerializer;
 import shared.model.ChatModel;
 import shared.model.SinglePm;
@@ -22,7 +23,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
 import shared.request.NewPmRequest;
 import shared.request.NewScheduledPmRequest;
+import shared.util.ImageSerializer;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -34,6 +37,7 @@ public class ChatRootController extends BasicController implements Initializable
     ChatModelController chatModelController = DoppioApp.getChatModelController();
     int chatId;
     ChatModel curChatModel;
+    File selectedFile;
 
     @FXML
     private ScrollPane scrollPane;
@@ -60,6 +64,19 @@ public class ChatRootController extends BasicController implements Initializable
     private Button sendButton;
 
     @FXML
+    private Button selectImageButton;
+
+    @FXML
+    void selectImageButtonClicked(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose pm pic");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("image", "*.png")
+        );
+        selectedFile = fileChooser.showOpenDialog(selectImageButton.getScene().getWindow());
+    }
+
+    @FXML
     void sendButtonClicked(ActionEvent event) {
         if (messageTextArea.getText().length() == 0)
             return;
@@ -73,10 +90,16 @@ public class ChatRootController extends BasicController implements Initializable
             );
             getListener().listen(new NewScheduledPmRequest(chatId, messageTextArea.getText(), date));
         } else {
-            getListener().listen(new NewPmRequest(chatId, messageTextArea.getText()));
-            chatModelController.sendNewPm(new NewPmRequest(chatId, messageTextArea.getText()));
+            NewPmRequest request = new NewPmRequest(
+                    chatId,
+                    messageTextArea.getText(),
+                    (selectedFile != null) ? ImageSerializer.encodeFileToBase64Binary(selectedFile) : null
+            );
+            getListener().listen(request);
+            chatModelController.sendNewPm(request);
         }
         messageTextArea.setText("");
+        selectedFile = null;
     }
 
     @Override

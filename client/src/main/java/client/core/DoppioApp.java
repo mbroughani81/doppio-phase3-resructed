@@ -213,6 +213,11 @@ public class DoppioApp extends Application implements ResponseHandler {
     }
 
     @Override
+    public void updatePmPic(GetPmPicResponse getPmPicResponse) {
+        fileModelController.updatePmPic(getPmPicResponse);
+    }
+
+    @Override
     public void socketConnectionIsDown(DisconnectResponse disconnectResponse) {
         isConnected = false;
         ViewSwitcher.getInstance().showDisconnectionMessage();

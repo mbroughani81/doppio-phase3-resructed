@@ -1,6 +1,7 @@
 package client.dbcontroller;
 
 import org.apache.commons.codec.binary.Base64;
+import shared.response.GetPmPicResponse;
 import shared.response.GetProfilePicResponse;
 import shared.response.GetTweetPicResponse;
 import shared.util.ImageSerializer;
@@ -57,6 +58,24 @@ public class FileModelController extends AbstractModelController {
         );
     }
 
+    public void updatePmPic(GetPmPicResponse getPmPicResponse) {
+        if (getPmPicResponse.getImageString() == null)
+            return;
+        String path = "src/main/resources/clientdb/" + usernameDir + "/pmpics/" +
+                getPmPicResponse.getPmId() + ".jpg";
+        File file = new File(path);
+        if (file.exists()) {
+            String str1 = getPmPicResponse.getImageString();
+            String str2 = ImageSerializer.encodeFileToBase64Binary(new File(path));
+            if (str1.equals(str2))
+                return;
+        }
+        saveImage(
+                getPmPicResponse.getImageString(),
+                path
+        );
+    }
+
     public boolean profileExists(int userId) {
         String path = "src/main/resources/clientdb/" + usernameDir + "/profilepics/" +
                 userId + ".jpg";
@@ -104,6 +123,10 @@ public class FileModelController extends AbstractModelController {
 
     public String getTweetPicPath(int tweetId) {
         return "src/main/resources/clientdb/" + usernameDir + "/tweetpics/" + tweetId + ".jpg";
+    }
+
+    public String getPmPicPath(int pmId) {
+        return "src/main/resources/clientdb/" + usernameDir + "/pmpics/" + pmId + ".jpg";
     }
 
     public static boolean isBefore(LocalDateTime date, String usernameDir, String p ) {

@@ -143,6 +143,7 @@ public class SocketManager extends Thread {
             messageController.sendNewPm(new NewPmRequest(
                     id1,
                     "salam, a2!",
+                    null,
                     authController.getUser("a1").getId()
             ));
         }

@@ -29,6 +29,15 @@ public class FileController {
         LogManager.getLogger(FileController.class).info("tweet pic is updated tweetid : " + tweetId);
     }
 
+    public void updatePm(int pmId, String imageString) {
+        saveImage(
+                imageString,
+                "src/main/resources/serverdb/pics/pm/" + pmId + ".jpg"
+        );
+
+        LogManager.getLogger(FileController.class).info("pm pic is updated pmid : " + pmId);
+    }
+
     public String getProfileString(int userId) {
         File file = new File("src/main/resources/serverdb/pics/profile/" + userId + ".jpg");
         if (!file.exists())
@@ -38,6 +47,13 @@ public class FileController {
 
     public String getTweetString(int tweetId) {
         File file = new File("src/main/resources/serverdb/pics/tweet/" + tweetId + ".jpg");
+        if (!file.exists())
+            return null;
+        return ImageSerializer.encodeFileToBase64Binary(file);
+    }
+
+    public String getPmString(int pmId) {
+        File file = new File("src/main/resources/serverdb/pics/pm/" + pmId + ".jpg");
         if (!file.exists())
             return null;
         return ImageSerializer.encodeFileToBase64Binary(file);

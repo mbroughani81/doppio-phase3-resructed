@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
@@ -18,18 +19,23 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <graphic>
-            <TextFlow fx:id="textFlow">
+            <VBox alignment="TOP_CENTER">
                <children>
-                  <Text layoutX="39.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="op[jk er we rwere  er werwerweop[jk er we rwere  er werwerweop[jk er we rwere  er werwerweop[jk er we rwere  er werwerweop[jk er we rwere  er werwerweop[jk er we rwere  er werwerwe" />
-                  <Text layoutX="67.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TextTt" />
-                  <Text fill="#a30b0b" layoutX="125.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\@Tweetid:10" />
-                  <Text layoutX="210.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ree" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="TextText" />
-                  <Text fill="#a30b0b" strokeType="OUTSIDE" strokeWidth="0.0" text="\@Tweetid:10" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <TextFlow fx:id="textFlow">
+                     <children>
+                        <Text layoutX="39.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="op[jk er we rwere  er werwerweop[jk er we rwere  er werwerweop[jk er we rwere  er werwerweop[jk er we rwere  er werwerweop[jk er we rwere  er werwerweop[jk er we rwere  er werwerwe" />
+                        <Text layoutX="67.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TextTt" />
+                        <Text fill="#a30b0b" layoutX="125.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\@Tweetid:10" />
+                        <Text layoutX="210.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ree" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="TextText" />
+                        <Text fill="#a30b0b" strokeType="OUTSIDE" strokeWidth="0.0" text="\@Tweetid:10" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                     </children>
+                  </TextFlow>
+                  <Label fx:id="pmPicLabel" contentDisplay="GRAPHIC_ONLY" />
                </children>
-            </TextFlow>
+            </VBox>
          </graphic>
       </Label>
    </children>

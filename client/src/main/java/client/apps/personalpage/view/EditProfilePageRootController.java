@@ -87,7 +87,7 @@ public class EditProfilePageRootController extends BasicController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose new profile");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("image", "*.jpg", "*.jpeg", "*.png")
+                new FileChooser.ExtensionFilter("image",  "*.png")
         );
         File selectedFile = fileChooser.showOpenDialog(newprofileButton.getScene().getWindow());
         getListener().listen(new ChangeProfileRequest(ImageSerializer.encodeFileToBase64Binary(selectedFile)));

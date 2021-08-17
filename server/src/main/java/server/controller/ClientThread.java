@@ -121,7 +121,6 @@ public class ClientThread extends Thread implements RequestHandler {
     public Response newPm(NewPmRequest newPmRequest) {
         LogManager.getLogger(ClientThread.class).info("NewPmRequest is getting handled");
 
-
         if (newPmRequest.getUserId() == -1) {
             newPmRequest.setUserId(authController.getUserWithAuthToken(newPmRequest.getAuthToken()).getId());
         }
@@ -130,7 +129,9 @@ public class ClientThread extends Thread implements RequestHandler {
         if (!messageController.isMemberOfChat(user.getId(), newPmRequest.getChatId())) {
             return new NullResponse("pm not affected!");
         }
-        messageController.sendNewPm(newPmRequest);
+        int pmId = messageController.sendNewPm(newPmRequest);
+        if (newPmRequest.getImageString() != null)
+            fileController.updatePm(pmId, newPmRequest.getImageString());
         return new NullResponse("salam");
     }
 
@@ -390,6 +391,16 @@ public class ClientThread extends Thread implements RequestHandler {
         return new GetTweetPicResponse(
                 getTweetPicRequest.getTweetId(),
                 fileController.getTweetString(getTweetPicRequest.getTweetId())
+        );
+    }
+
+    @Override
+    public Response getPmPic(GetPmPicRequest getPmPicRequest) {
+        LogManager.getLogger(ClientThread.class).info("GetTweetPicRequest is getting handled");
+
+        return new GetPmPicResponse(
+                getPmPicRequest.getPmId(),
+                fileController.getPmString(getPmPicRequest.getPmId())
         );
     }
 

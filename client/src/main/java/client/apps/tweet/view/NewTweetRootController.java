@@ -44,7 +44,7 @@ public class NewTweetRootController extends BasicController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose tweet pic");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("image", "*.jpg", "*.jpeg", "*.png")
+                new FileChooser.ExtensionFilter("image", "*.png")
         );
         selectedFile = fileChooser.showOpenDialog(imageButton.getScene().getWindow());
     }

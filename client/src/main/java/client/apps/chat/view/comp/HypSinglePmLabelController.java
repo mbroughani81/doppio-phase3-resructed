@@ -13,22 +13,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.TextFlow;
 import shared.model.SinglePm;
-import shared.request.DeletePmRequest;
-import shared.request.EditPmRequest;
-import shared.request.ExplorerSearchIdRequest;
-import shared.request.GetProfilePicRequest;
+import shared.request.*;
 
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class HypSinglePmLabelController extends BasicController implements Initializable {
 
     private SinglePm singlePm;
-    private LocalDateTime lastImageUpdate = LocalDateTime.now().minusYears(1);
+    private LocalDateTime lastProfileImageUpdate = LocalDateTime.now().minusYears(1);
+    private LocalDateTime lastPmImageUpdate = LocalDateTime.now().minusYears(1);
 
     @FXML
     private Label profileLabel;
@@ -38,6 +35,9 @@ public class HypSinglePmLabelController extends BasicController implements Initi
 
     @FXML
     private TextFlow textFlow;
+
+    @FXML
+    private Label pmPicLabel;
 
     @FXML
     void profileLabelClicked(MouseEvent event) {
@@ -90,7 +90,7 @@ public class HypSinglePmLabelController extends BasicController implements Initi
     public Runnable getUpdateAction() {
         return () -> {
             if (FileModelController.isBefore(
-                    lastImageUpdate,
+                    lastProfileImageUpdate,
                     DoppioApp.getFileModelController().getUsernameDir(),
                     "profilepics/" + singlePm.getUserId() + ".jpg")) {
                 HypSinglePmLabelConfig hypSinglePmLabelConfig = new HypSinglePmLabelConfig();
@@ -109,7 +109,29 @@ public class HypSinglePmLabelController extends BasicController implements Initi
                 view.setFitHeight(hypSinglePmLabelConfig.getProfileSize());
                 profileLabel.setGraphic(view);
 
-                lastImageUpdate = LocalDateTime.now();
+                lastProfileImageUpdate = LocalDateTime.now();
+            }
+            if (FileModelController.isBefore(
+                    lastPmImageUpdate,
+                    DoppioApp.getFileModelController().getUsernameDir(),
+                    "pmpics/" + singlePm.getPmId() + ".jpg")) {
+                System.out.println("this pm is ok : " + singlePm.getPmId());
+                ImageView view;
+                File img = new File(DoppioApp.getFileModelController().getPmPicPath(
+                        singlePm.getPmId()
+                ));
+                InputStream isImage = null;
+                try {
+                    isImage = new FileInputStream(img);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                view = new ImageView(new Image(isImage));
+                view.setFitWidth(400);
+                view.setFitHeight(400);
+                pmPicLabel.setGraphic(view);
+
+                lastPmImageUpdate = LocalDateTime.now();
             }
         };
     }
@@ -119,6 +141,9 @@ public class HypSinglePmLabelController extends BasicController implements Initi
         return () -> {
             if (FileModelController.canUpdate("profilepics/" + singlePm.getUserId() + ".jpg")) {
                 getListener().listen(new GetProfilePicRequest(singlePm.getUserId()));
+            }
+            if (FileModelController.canUpdate("pmpics/" + singlePm.getPmId() + ".jpg")) {
+                getListener().listen(new GetPmPicRequest(singlePm.getPmId()));
             }
         };
     }

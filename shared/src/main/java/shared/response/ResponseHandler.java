@@ -1,8 +1,5 @@
 package shared.response;
 
-import shared.request.GetProfilePicRequest;
-import shared.request.GetProfileRequest;
-import shared.request.GetTweetPicRequest;
 
 public interface ResponseHandler {
     void checkSignupResponse(SignupResponse signupResponse);
@@ -20,6 +17,7 @@ public interface ResponseHandler {
     void updateChatModelDB(GetChatModelResponse getChatModelResponse);
     void updateProfilePic(GetProfilePicResponse getProfilePicResponse);
     void updateTweetPic(GetTweetPicResponse getTweetPicResponse);
+    void updatePmPic(GetPmPicResponse getPmPicResponse);
     void socketConnectionIsDown(DisconnectResponse disconnectResponse);
     void socketConnectionInUp(CheckConnectionResponse checkConnectionResponse);
 }

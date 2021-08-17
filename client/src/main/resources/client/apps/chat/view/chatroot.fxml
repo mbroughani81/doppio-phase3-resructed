@@ -21,9 +21,9 @@
       </Label>
       <ScrollPane fx:id="scrollPane" vvalue="1.0" VBox.vgrow="ALWAYS">
          <content>
-            <VBox fx:id="pmHolder" spacing="10.0">
+            <VBox fx:id="pmHolder" fillWidth="false" spacing="10.0">
                <children>
-                  <Label layoutX="10.0" layoutY="901.0" prefWidth="300.0" text="Loading..." wrapText="true">
+                  <Label layoutX="10.0" layoutY="901.0" text="Loading..." wrapText="true">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -47,10 +47,23 @@
                   </HBox>
                </children>
             </VBox>
-            <Button fx:id="sendButton" mnemonicParsing="false" onAction="#sendButtonClicked" text="Send" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font size="17.0" />
-               </font></Button>
+            <VBox alignment="BASELINE_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button fx:id="sendButton" mnemonicParsing="false" onAction="#sendButtonClicked" text="Send">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="selectImageButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#selectImageButtonClicked" text="Select Image">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
          </children>
          <VBox.margin>
             <Insets />

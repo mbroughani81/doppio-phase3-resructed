@@ -18,6 +18,15 @@ public class MainConfig {
     private String mainpageConfigPath;
     private String messengerrootConfigPath;
     private String settingrootConfigPath;
+    private String editprofilepagerootConfigPath;
+    private String notificationpagerootConfigPath;
+    private String personalpagerootConfigPath;
+    private String profilepagerootConfigPath;
+    private String showlistrootConfigPath;
+    private String explorerrootConfigPath;
+    private String newtweetrootConfigPath;
+    private String tweetpagerootConfigPath;
+    private String tweetrootConfigPath;
 
     public MainConfig() {
         try {
@@ -42,6 +51,16 @@ public class MainConfig {
         mainpageConfigPath = properties.getProperty("mainpageConfigPath");
         messengerrootConfigPath = properties.getProperty("messengerrootConfigPath");
         settingrootConfigPath = properties.getProperty("settingrootConfigPath");
+        editprofilepagerootConfigPath = properties.getProperty("editprofilepagerootConfigPath");
+        notificationpagerootConfigPath = properties.getProperty("notificationpagerootConfigPath");
+        personalpagerootConfigPath = properties.getProperty("personalpagerootConfigPath");
+        profilepagerootConfigPath = properties.getProperty("profilepagerootConfigPath");
+        showlistrootConfigPath = properties.getProperty("showlistrootConfigPath");
+        explorerrootConfigPath = properties.getProperty("explorerrootConfigPath");
+        newtweetrootConfigPath = properties.getProperty("newtweetrootConfigPath");
+        tweetpagerootConfigPath = properties.getProperty("tweetpagerootConfigPath");
+        tweetrootConfigPath = properties.getProperty("tweetrootConfigPath");
+
     }
 
     public String getSocketConfigPath() {
@@ -82,5 +101,41 @@ public class MainConfig {
 
     public String getSettingrootConfigPath() {
         return settingrootConfigPath;
+    }
+
+    public String getEditprofilepagerootConfigPath() {
+        return editprofilepagerootConfigPath;
+    }
+
+    public String getNotificationpagerootConfigPath() {
+        return notificationpagerootConfigPath;
+    }
+
+    public String getPersonalpagerootConfigPath() {
+        return personalpagerootConfigPath;
+    }
+
+    public String getProfilepagerootConfigPath() {
+        return profilepagerootConfigPath;
+    }
+
+    public String getShowlistrootConfigPath() {
+        return showlistrootConfigPath;
+    }
+
+    public String getExplorerrootConfigPath() {
+        return explorerrootConfigPath;
+    }
+
+    public String getNewtweetrootConfigPath() {
+        return newtweetrootConfigPath;
+    }
+
+    public String getTweetpagerootConfigPath() {
+        return tweetpagerootConfigPath;
+    }
+
+    public String getTweetrootConfigPath() {
+        return tweetrootConfigPath;
     }
 }

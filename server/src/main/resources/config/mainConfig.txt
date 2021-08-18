@@ -1,2 +1,8 @@
 socketConfigPath=src/main/resources/config/socketConfig/socketConfig.txt
 dbConfigPath=src/main/resources/config/dbConfig/dbConfig.txt
+authcontrollerConfigPath=src/main/resources/config/dbcontrollerConfig/authcontrollerConfig.txt
+filecontrollerConfigPath=src/main/resources/config/dbcontrollerConfig/filecontrollerConfig.txt
+messagecontrollerConfigPath=src/main/resources/config/dbcontrollerConfig/messagecontrollerConfig.txt
+sessioncontrollerConfigPath=src/main/resources/config/dbcontrollerConfig/sessioncontrollerConfig.txt
+socialcontrollerConfigPath=src/main/resources/config/dbcontrollerConfig/socialcontrollerConfig.txt
+tweetcontrollerConfigPath=src/main/resources/config/dbcontrollerConfig/tweetcontrollerConfig.txt

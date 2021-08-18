@@ -18,17 +18,44 @@
          <children>
             <ScrollPane vvalue="1.0" HBox.hgrow="ALWAYS">
                <content>
-                  <VBox fx:id="followingHolder" spacing="10.0" />
+                  <VBox spacing="20.0">
+                     <children>
+                        <Label text="Followings">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <VBox fx:id="followingHolder" spacing="10.0" />
+                     </children>
+                  </VBox>
                </content>
             </ScrollPane>
             <ScrollPane vvalue="1.0" HBox.hgrow="ALWAYS">
                <content>
-                  <VBox fx:id="followerHolder" spacing="10.0" />
+                  <VBox spacing="20.0">
+                     <children>
+                        <Label text="Followers">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <VBox fx:id="followerHolder" spacing="10.0" />
+                     </children>
+                  </VBox>
                </content>
             </ScrollPane>
             <ScrollPane vvalue="1.0" HBox.hgrow="ALWAYS">
                <content>
-                  <VBox fx:id="blacklistHolder" spacing="10.0" />
+                  <VBox spacing="20.0">
+                     <children>
+                        <Label text="Blacklist">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <VBox fx:id="blacklistHolder" spacing="10.0" />
+                     </children>
+                  </VBox>
                </content>
             </ScrollPane>
          </children>

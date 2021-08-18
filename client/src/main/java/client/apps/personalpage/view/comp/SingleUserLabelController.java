@@ -1,5 +1,6 @@
 package client.apps.personalpage.view.comp;
 
+import client.core.DoppioApp;
 import client.core.ViewSwitcher;
 import client.datatype.BasicController;
 import javafx.fxml.FXML;
@@ -10,7 +11,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import shared.request.ExplorerSearchIdRequest;
 import shared.request.ExplorerSearchRequest;
+import shared.request.GetProfilePicRequest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -33,9 +39,29 @@ public class SingleUserLabelController extends BasicController implements Initia
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         profileLabel.setText("");
-        ImageView view = new ImageView(new Image("squScreenshot (91).png"));
-        view.setFitWidth(50);
-        view.setFitHeight(50);
-        profileLabel.setGraphic(view);
+        if (DoppioApp.getFileModelController().profileExists(userId)) {
+            ImageView view;
+            File img = new File(DoppioApp.getFileModelController().getProfilePicPath(
+                    userId
+            ));
+            InputStream isImage = null;
+            try {
+                isImage = new FileInputStream(img);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            view = new ImageView(new Image(isImage));
+            view.setFitWidth(40);
+            view.setFitHeight(40);
+            profileLabel.setGraphic(view);
+        } else {
+            ImageView view;
+            view = new ImageView(new Image("iliya1.png"));
+            view.setFitWidth(40);
+            view.setFitHeight(40);
+            profileLabel.setGraphic(view);
+        }
+        // ask for image to load in furthur openings
+        getListener().listen(new GetProfilePicRequest(userId));
     }
 }

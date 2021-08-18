@@ -105,6 +105,9 @@ public class MessageController extends AbstractController {
                 context.Chats.update(chat);
             }
         }
+        FileController fileController = new FileController();
+        if (newPmRequest.getImageString() != null)
+            fileController.updatePm(id, newPmRequest.getImageString());
 
         LogManager.getLogger(MessageController.class).info("new pm created with id : " + id);
         return id;
@@ -142,6 +145,34 @@ public class MessageController extends AbstractController {
         }
         pm.setText("(This is deleted)");
         context.Pms.update(pm);
+    }
+
+    public void reportSpam(NewReportSpamRequest newReportSpamRequest) {
+        AuthController authController = new AuthController();
+        User user = authController.getUserWithAuthToken(newReportSpamRequest.getAuthToken());
+        ReportedTweetList reportedTweetList = context.ReportedTweetLists.get(user.getReportedTweetListId());
+        if (reportedTweetList.getTweetIds().contains(newReportSpamRequest.getTweetId()))
+            return;
+        Tweet tweet = context.Tweets.get(newReportSpamRequest.getTweetId());
+        tweet.setSpamCounter(tweet.getSpamCounter() + 1);
+        context.Tweets.update(tweet);
+        reportedTweetList.getTweetIds().add(newReportSpamRequest.getTweetId());
+        context.ReportedTweetLists.update(reportedTweetList);
+    }
+
+    public void saveTweetInSavedMessage(SaveTweetInSavedMessageRequest saveTweetInSavedMessageRequest) {
+        AuthController authController = new AuthController();
+        FileController fileController = new FileController();
+        TweetController tweetController = new TweetController();
+        int userId = authController.getUserWithAuthToken(saveTweetInSavedMessageRequest.getAuthToken()).getId();
+        int savedMessageChatId = hasSavedMessage(userId);
+        Tweet tweet = tweetController.getTweet(saveTweetInSavedMessageRequest.getTweetId());
+        sendNewPm(new NewPmRequest(
+                savedMessageChatId,
+                "Forwarded from tweet : \n" + tweet.getText(),
+                fileController.getTweetString(tweet.getId()),
+                userId
+        ));
     }
 
     public boolean isMemberOfChat(int userId, int chatId) {
@@ -201,6 +232,14 @@ public class MessageController extends AbstractController {
     private int hasPrivateChat(int followerId, int followedId) {
         for (Chat chat : getPrivateChats(followerId)) {
             if (chat.getChatType() == ChatType.PRIVATE && chat.getMemberIds().contains(followedId))
+                return chat.getId();
+        }
+        return -1;
+    }
+
+    private int hasSavedMessage(int userId) {
+        for (Chat chat : getPrivateChats(userId)) {
+            if (chat.getChatType() == ChatType.PRIVATE && chat.getMemberIds().size() == 1)
                 return chat.getId();
         }
         return -1;

@@ -129,9 +129,7 @@ public class ClientThread extends Thread implements RequestHandler {
         if (!messageController.isMemberOfChat(user.getId(), newPmRequest.getChatId())) {
             return new NullResponse("pm not affected!");
         }
-        int pmId = messageController.sendNewPm(newPmRequest);
-        if (newPmRequest.getImageString() != null)
-            fileController.updatePm(pmId, newPmRequest.getImageString());
+        messageController.sendNewPm(newPmRequest);
         return new NullResponse("salam");
     }
 
@@ -174,6 +172,30 @@ public class ClientThread extends Thread implements RequestHandler {
     @Override
     public Response newLikeTweet(NewLikeTweetRequest newLikeTweetRequest) {
         tweetController.newLike(newLikeTweetRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
+    public Response newBlock(NewBlockRequest newBlockRequest) {
+        authController.newBlock(newBlockRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
+    public Response newMute(NewMuteRequest newMuteRequest) {
+        authController.newMute(newMuteRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
+    public Response newReportSpam(NewReportSpamRequest newReportSpamRequest) {
+        messageController.reportSpam(newReportSpamRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
+    public Response saveTweetInSaveMessage(SaveTweetInSavedMessageRequest saveTweetInSavedMessageRequest) {
+        messageController.saveTweetInSavedMessage(saveTweetInSavedMessageRequest);
         return new CheckConnectionResponse();
     }
 

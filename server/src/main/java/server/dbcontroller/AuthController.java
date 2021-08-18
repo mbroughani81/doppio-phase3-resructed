@@ -95,6 +95,24 @@ public class AuthController extends AbstractController {
         LogManager.getLogger(AuthController.class).info("bio is changed " + user.toString());
     }
 
+    public void newBlock(NewBlockRequest newBlockRequest) {
+        User blocker = getUserWithAuthToken(newBlockRequest.getAuthToken());
+        BlockList blockList = context.BlockLists.get(blocker.getBlockListId());
+        if (blockList.getList().contains(newBlockRequest.getUserId()))
+            return;
+        blockList.getList().add(newBlockRequest.getUserId());
+        context.BlockLists.update(blockList);
+    }
+
+    public void newMute(NewMuteRequest newMuteRequest) {
+        User muter = getUserWithAuthToken(newMuteRequest.getAuthToken());
+        MutedUserList mutedUserList = context.MutedUserLists.get(muter.getMutedUserListId());
+        if (mutedUserList.getUserIds().contains(newMuteRequest.getUserId()))
+            return;
+        mutedUserList.getUserIds().add(newMuteRequest.getUserId());
+        context.MutedUserLists.update(mutedUserList);
+    }
+
     public User getUser(String username) {
         for (User user : context.Users.all()) {
             if (user.getUsername().equals(username))

@@ -10,15 +10,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import shared.model.SingleTweet;
-import shared.request.GetProfilePicRequest;
-import shared.request.GetTweetPicRequest;
-import shared.request.NewLikeTweetRequest;
-import shared.request.NewRetweetRequest;
+import shared.request.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -72,7 +72,9 @@ public class SingleTweetLabelController extends BasicController implements Initi
 
     @FXML
     void tweetTextLabelClicked(MouseEvent event) {
-        ViewSwitcher.getInstance().switchTo(new Page(View.TWEETPAGE, singleTweet.getTweetId()));
+        if (event.getButton() == MouseButton.PRIMARY) {
+            ViewSwitcher.getInstance().switchTo(new Page(View.TWEETPAGE, singleTweet.getTweetId()));
+        }
     }
 
     public SingleTweetLabelController(SingleTweet singleTweet) {
@@ -129,6 +131,46 @@ public class SingleTweetLabelController extends BasicController implements Initi
 //            view.setFitHeight(400);
 //            profileLabel.setGraphic(view);
         }
+
+        // setting context meni
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem saveToSavedMessagesItem = new MenuItem("save to saved messages");
+        saveToSavedMessagesItem.setOnAction((event) -> {
+            System.out.println("save to saved clickec" + singleTweet.getText());
+            getListener().listen(new SaveTweetInSavedMessageRequest(singleTweet.getTweetId()));
+        });
+        MenuItem forwardItem = new MenuItem("forward");
+        forwardItem.setOnAction((event) -> {
+            System.out.println("forward clicked" + singleTweet.getText());
+//            openDeleteDialog();
+        });
+
+
+        MenuItem blockItem = new MenuItem("block");
+        blockItem.setOnAction((event) -> {
+            System.out.println("block clicked" + singleTweet.getText());
+            getListener().listen(new NewBlockRequest(singleTweet.getUserId()));
+        });
+        MenuItem muteItem = new MenuItem("mute");
+        muteItem.setOnAction((event) -> {
+            System.out.println("mute clicked" + singleTweet.getText());
+            getListener().listen(new NewMuteRequest(singleTweet.getUserId()));
+        });
+
+        MenuItem reportSpamItem = new MenuItem("report spam");
+        reportSpamItem.setOnAction((event) -> {
+            System.out.println("report clicked" + singleTweet.getText());
+            getListener().listen(new NewReportSpamRequest(singleTweet.getTweetId()));
+        });
+
+        contextMenu.getItems().addAll(
+                saveToSavedMessagesItem,
+                forwardItem,
+                blockItem,
+                muteItem,
+                reportSpamItem
+        );
+        tweetTextLabel.setContextMenu(contextMenu);
     }
 
     @Override

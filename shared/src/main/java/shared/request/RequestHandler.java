@@ -13,6 +13,10 @@ public interface RequestHandler {
     Response newRetweet(NewRetweetRequest newRetweetRequest);
     Response newLikeTweet(NewLikeTweetRequest newLikeTweetRequest);
     Response newGroup(NewGroupRequest newGroupRequest);
+    Response newBlock(NewBlockRequest newBlockRequest);
+    Response newMute(NewMuteRequest newMuteRequest);
+    Response newReportSpam(NewReportSpamRequest newReportSpamRequest);
+    Response saveTweetInSaveMessage(SaveTweetInSavedMessageRequest saveTweetInSavedMessageRequest);
     Response changeBio(ChangeBioRequest changeBioRequest);
     Response changeName(ChangeNameRequest changeNameRequest);
     Response changeEmail(ChangeEmailRequest changeEmailRequest);

@@ -10,6 +10,7 @@ public class MainConfig {
     private String mainConfigPath = "src/main/resources/config/mainConfig.txt";
 
     private String socketConfigPath;
+    private String dbConfigPath;
 
     public MainConfig() {
         try {
@@ -25,9 +26,14 @@ public class MainConfig {
         properties.load(fileReader);
 
         socketConfigPath = properties.getProperty("socketConfigPath");
+        dbConfigPath = properties.getProperty("dbConfigPath");
     }
 
     public String getSocketConfigPath() {
         return socketConfigPath;
+    }
+
+    public String getDbConfigPath() {
+        return dbConfigPath;
     }
 }

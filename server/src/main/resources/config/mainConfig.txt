@@ -1,2 +1,2 @@
 socketConfigPath=src/main/resources/config/socketConfig/socketConfig.txt
-
+dbConfigPath=src/main/resources/config/dbConfig/dbConfig.txt

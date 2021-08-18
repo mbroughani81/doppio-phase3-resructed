@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.MutedUserList;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 public class MutedUserListDB implements DBSet<MutedUserList> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public MutedUserListDB() {
         builder = new GsonBuilder();

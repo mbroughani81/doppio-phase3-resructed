@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.FollowingList;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 public class FollowingListDB implements DBSet<FollowingList> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public FollowingListDB() {
         builder = new GsonBuilder();
@@ -30,11 +32,11 @@ public class FollowingListDB implements DBSet<FollowingList> {
     @Override
     public LinkedList<FollowingList> all() {
         LinkedList<FollowingList> followingLists = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/followinglists/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getFollowinglistroot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/followinglists/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getFollowinglistroot() + s));
                 followingLists.add(gson.fromJson(reader, FollowingList.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -57,7 +59,7 @@ public class FollowingListDB implements DBSet<FollowingList> {
 //        logger.trace("add followingList" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/followinglists/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getFollowinglistroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -72,15 +74,15 @@ public class FollowingListDB implements DBSet<FollowingList> {
     public void remove(int id) {
 //        logger.trace("remove followingList " + id);
 
-        File f = new File("src/main/resources/serverdb/followinglists/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getFollowinglistroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/followinglists/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getFollowinglistroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/followinglists/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getFollowinglistroot() + s);
             f.delete();
         }
     }

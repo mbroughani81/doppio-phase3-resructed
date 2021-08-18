@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.NotificationBox;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 public class NotificationBoxDB implements DBSet<NotificationBox> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public NotificationBoxDB() {
         builder = new GsonBuilder();
@@ -30,11 +32,11 @@ public class NotificationBoxDB implements DBSet<NotificationBox> {
     @Override
     public LinkedList<NotificationBox> all() {
         LinkedList<NotificationBox> notificationBoxes = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/notificationboxes/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getNotificationboxroot() );
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/notificationboxes/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getNotificationboxroot() + s));
                 notificationBoxes.add(gson.fromJson(reader, NotificationBox.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -57,7 +59,7 @@ public class NotificationBoxDB implements DBSet<NotificationBox> {
 //        logger.trace("add notificationBox" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/notificationboxes/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getNotificationboxroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -72,15 +74,15 @@ public class NotificationBoxDB implements DBSet<NotificationBox> {
     public void remove(int id) {
 //        logger.trace("remove notificationBox " + id);
 
-        File f = new File("src/main/resources/serverdb/notificationboxes/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getNotificationboxroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/notificationboxes/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getNotificationboxroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/notificationboxes/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getNotificationboxroot() + s);
             f.delete();
         }
     }

@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.MessageData;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 public class MessageDataDB implements DBSet<MessageData>{
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public MessageDataDB() {
         builder = new GsonBuilder();
@@ -30,11 +32,11 @@ public class MessageDataDB implements DBSet<MessageData>{
     @Override
     public LinkedList<MessageData> all() {
         LinkedList<MessageData> messageDatas = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/messagedatas/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getMessagedataroot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/messagedatas/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getMessagedataroot() + s));
                 messageDatas.add(gson.fromJson(reader, MessageData.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -57,7 +59,7 @@ public class MessageDataDB implements DBSet<MessageData>{
 //        logger.trace("add messageData" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/messagedatas/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getMessagedataroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -72,15 +74,15 @@ public class MessageDataDB implements DBSet<MessageData>{
     public void remove(int id) {
 //        logger.trace("remove messageData " + id);
 
-        File f = new File("src/main/resources/serverdb/messagedatas/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getMessagedataroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/messagedatas/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getMessagedataroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/messagedatas/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getMessagedataroot() + s);
             f.delete();
         }
     }

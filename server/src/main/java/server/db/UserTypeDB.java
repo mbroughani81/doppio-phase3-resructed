@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.UserType;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 public class UserTypeDB implements DBSet<UserType> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public UserTypeDB() {
         builder = new GsonBuilder();
@@ -30,11 +32,11 @@ public class UserTypeDB implements DBSet<UserType> {
     @Override
     public LinkedList<UserType> all() {
         LinkedList<UserType> userTypes = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/usertypes/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getUsertyperoot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/usertypes/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getUsertyperoot() + s));
                 userTypes.add(gson.fromJson(reader, UserType.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -57,7 +59,7 @@ public class UserTypeDB implements DBSet<UserType> {
 //        logger.trace("add usertype" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/usertypes/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getUsertyperoot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -72,15 +74,15 @@ public class UserTypeDB implements DBSet<UserType> {
     public void remove(int id) {
 //        logger.trace("remove usertype " + id);
 
-        File f = new File("src/main/resources/serverdb/usertypes/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getUsertyperoot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/usertypes/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getUsertyperoot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/usertypes/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getUsertyperoot() + s);
             f.delete();
         }
     }

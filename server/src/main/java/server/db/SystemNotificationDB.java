@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.SystemNotification;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 public class SystemNotificationDB implements DBSet<SystemNotification> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public SystemNotificationDB() {
         builder = new GsonBuilder();
@@ -30,11 +32,11 @@ public class SystemNotificationDB implements DBSet<SystemNotification> {
     @Override
     public LinkedList<SystemNotification> all() {
         LinkedList<SystemNotification> systemNotifications = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/systemnotifications/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getSystemnotificationroot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/systemnotifications/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getSystemnotificationroot() + s));
                 systemNotifications.add(gson.fromJson(reader, SystemNotification.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -57,7 +59,7 @@ public class SystemNotificationDB implements DBSet<SystemNotification> {
 //        logger.trace("add systemnotification" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/systemnotifications/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getSystemnotificationroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -72,15 +74,15 @@ public class SystemNotificationDB implements DBSet<SystemNotification> {
     public void remove(int id) {
 //        logger.trace("remove systemnotification " + id);
 
-        File f = new File("src/main/resources/serverdb/systemnotifications/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getSystemnotificationroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/systemnotifications/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getSystemnotificationroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/systemnotifications/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getSystemnotificationroot() + s);
             f.delete();
         }
     }

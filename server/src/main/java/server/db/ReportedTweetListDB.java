@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.ReportedTweetList;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 public class ReportedTweetListDB implements DBSet<ReportedTweetList> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public ReportedTweetListDB() {
         builder = new GsonBuilder();
@@ -30,11 +32,11 @@ public class ReportedTweetListDB implements DBSet<ReportedTweetList> {
     @Override
     public LinkedList<ReportedTweetList> all() {
         LinkedList<ReportedTweetList> reportedTweetLists = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/reportedtweetlists/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getReportedtweetlistroot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/reportedtweetlists/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getReportedtweetlistroot() + s));
                 reportedTweetLists.add(gson.fromJson(reader, ReportedTweetList.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -57,7 +59,7 @@ public class ReportedTweetListDB implements DBSet<ReportedTweetList> {
 //        logger.trace("add reportedtweetlist" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/reportedtweetlists/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getReportedtweetlistroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -72,15 +74,15 @@ public class ReportedTweetListDB implements DBSet<ReportedTweetList> {
     public void remove(int id) {
 //        logger.trace("remove reportedtweetlist" + id);
 
-        File f = new File("src/main/resources/serverdb/reportedtweetlists/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getReportedtweetlistroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/reportedtweetlists/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getReportedtweetlistroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/reportedtweetlists/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getReportedtweetlistroot() + s);
             f.delete();
         }
     }

@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.Pm;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 public class PmDB implements DBSet<Pm> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public PmDB() {
         builder = new GsonBuilder();

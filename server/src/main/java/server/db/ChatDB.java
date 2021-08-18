@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.Chat;;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 public class ChatDB implements DBSet<Chat> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public ChatDB() {
         builder = new GsonBuilder();
@@ -30,11 +32,11 @@ public class ChatDB implements DBSet<Chat> {
     @Override
     public LinkedList<Chat> all() {
         LinkedList<Chat> chats = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/chats/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getChatroot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/chats/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getChatroot() + s));
                 chats.add(gson.fromJson(reader, Chat.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -57,7 +59,7 @@ public class ChatDB implements DBSet<Chat> {
 //        logger.trace("add chat" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/chats/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getChatroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -72,15 +74,15 @@ public class ChatDB implements DBSet<Chat> {
     public void remove(int id) {
 //        logger.trace("remove chat " + id);
 
-        File f = new File("src/main/resources/serverdb/chats/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getChatroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/chats/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getChatroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/chats/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getChatroot() + s);
             f.delete();
         }
     }

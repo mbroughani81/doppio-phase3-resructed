@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.ScheduledPm;
 import shared.gson.LocalDateTimeDeserializer;
 import shared.gson.LocalDateTimeSerializer;
@@ -14,6 +15,7 @@ import java.util.LinkedList;
 public class ScheduledPmDB implements DBSet<ScheduledPm> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public ScheduledPmDB() {
         builder = new GsonBuilder();
@@ -35,11 +37,11 @@ public class ScheduledPmDB implements DBSet<ScheduledPm> {
     @Override
     public LinkedList<ScheduledPm> all() {
         LinkedList<ScheduledPm> scheduledPms = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/scheduledpms/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getScheduledpmroot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/scheduledpms/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getScheduledpmroot() + s));
                 scheduledPms.add(gson.fromJson(reader, ScheduledPm.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -62,7 +64,7 @@ public class ScheduledPmDB implements DBSet<ScheduledPm> {
 //        logger.trace("add profile" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/scheduledpms/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getScheduledpmroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -75,15 +77,15 @@ public class ScheduledPmDB implements DBSet<ScheduledPm> {
 
     @Override
     public void remove(int id) {
-        File f = new File("src/main/resources/serverdb/scheduledpms/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getScheduledpmroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/scheduledpms/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getScheduledpmroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/scheduledpms/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getScheduledpmroot() + s);
             f.delete();
         }
     }

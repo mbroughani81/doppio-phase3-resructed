@@ -63,6 +63,10 @@ public class DBConfig {
         usertyperoot = properties.getProperty("usertyperoot");
     }
 
+    public String getDbroot() {
+        return dbroot;
+    }
+
     public String getBlocklistroot() {
         return blocklistroot;
     }

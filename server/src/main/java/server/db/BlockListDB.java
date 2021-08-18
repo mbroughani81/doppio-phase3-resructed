@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.BlockList;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 public class BlockListDB implements DBSet<BlockList> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public BlockListDB() {
         builder = new GsonBuilder();
@@ -30,11 +32,11 @@ public class BlockListDB implements DBSet<BlockList> {
     @Override
     public LinkedList<BlockList> all() {
         LinkedList<BlockList> blockLists = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/blocklists/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getBlocklistroot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/blocklists/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getBlocklistroot() + s));
                 blockLists.add(gson.fromJson(reader, BlockList.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -57,7 +59,7 @@ public class BlockListDB implements DBSet<BlockList> {
 //        logger.trace("add blockList" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/blocklists/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getBlocklistroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -72,15 +74,15 @@ public class BlockListDB implements DBSet<BlockList> {
     public void remove(int id) {
 //        logger.trace("remove blockList" + id);
 
-        File f = new File("src/main/resources/serverdb/blocklists/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getBlocklistroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/blocklists/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getBlocklistroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/blocklists/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getBlocklistroot() + s);
             f.delete();
         }
     }

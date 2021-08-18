@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.Session;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 public class SessionDB implements DBSet<Session> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public SessionDB() {
         builder = new GsonBuilder();
@@ -30,11 +32,11 @@ public class SessionDB implements DBSet<Session> {
     @Override
     public LinkedList<Session> all() {
         LinkedList<Session> sessions = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/sessions/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getSessionroot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/sessions/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getSessionroot() + s));
                 sessions.add(gson.fromJson(reader, Session.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -57,7 +59,7 @@ public class SessionDB implements DBSet<Session> {
 //        logger.trace("add session" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/sessions/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getSessionroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -72,15 +74,15 @@ public class SessionDB implements DBSet<Session> {
     public void remove(int id) {
 //        logger.trace("remove session " + id);
 
-        File f = new File("src/main/resources/serverdb/sessions/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getSessionroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/sessions/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getSessionroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/sessions/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getSessionroot() + s);
             f.delete();
         }
     }

@@ -5,6 +5,7 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.Profile;
 import server.model.User;
 import shared.gson.LocalDateTimeDeserializer;
@@ -15,29 +16,16 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 public class UserDB implements DBSet<User> {
+
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public UserDB() {
         builder = new GsonBuilder();
         builder.setPrettyPrinting();
         builder.serializeNulls();
-//        ExclusionStrategy strategy = new ExclusionStrategy() {
-//            @Override
-//            public boolean shouldSkipField(FieldAttributes f) {
-//                if (f.getDeclaringClass().equals(Profile.class) && !f.getName().equals("id")) {
-//                    return true;
-//                }
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean shouldSkipClass(Class<?> clazz) {
-//                return false;
-//            }
-//        };
         builder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
         builder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer());
-//        builder.addSerializationExclusionStrategy(strategy);
     }
 
     @Override
@@ -52,11 +40,11 @@ public class UserDB implements DBSet<User> {
     @Override
     public LinkedList<User> all() {
         LinkedList<User> users = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/users/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getUserroot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/users/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getUserroot() + s));
                 users.add(gson.fromJson(reader, User.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -77,7 +65,7 @@ public class UserDB implements DBSet<User> {
         String json = gson.toJson(user);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/users/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getUserroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -90,15 +78,15 @@ public class UserDB implements DBSet<User> {
 
     @Override
     public void remove(int id) {
-        File f = new File("src/main/resources/serverdb/users/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getUserroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/users/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getUserroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/users/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getUserroot() + s);
             f.delete();
         }
     }

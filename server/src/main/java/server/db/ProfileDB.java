@@ -2,6 +2,7 @@ package server.db;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.Profile;
 import shared.gson.LocalDateTimeDeserializer;
 import shared.gson.LocalDateTimeSerializer;
@@ -17,6 +18,7 @@ public class ProfileDB implements DBSet<Profile> {
 //    static Logger logger = LogManager.getLogger(ProfileDB.class);
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public ProfileDB() {
         builder = new GsonBuilder();
@@ -38,11 +40,11 @@ public class ProfileDB implements DBSet<Profile> {
     @Override
     public LinkedList<Profile> all() {
         LinkedList<Profile> profiles = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/profiles/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getProfileroot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/profiles/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getProfileroot() + s));
                 profiles.add(gson.fromJson(reader, Profile.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -65,7 +67,7 @@ public class ProfileDB implements DBSet<Profile> {
 //        logger.trace("add profile" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/profiles/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getProfileroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -80,15 +82,15 @@ public class ProfileDB implements DBSet<Profile> {
     public void remove(int id) {
 //        logger.trace("remove profile " + id);
 
-        File f = new File("src/main/resources/serverdb/profiles/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getProfileroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/profiles/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getProfileroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/profiles/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getProfileroot() + s);
             f.delete();
         }
     }
@@ -114,20 +116,3 @@ public class ProfileDB implements DBSet<Profile> {
         }
     }
 }
-//class LocalDateTimeSerializer implements JsonSerializer<LocalDateTime> {
-//    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d::MMM::uuuu HH::mm::ss");
-//
-//    @Override
-//    public JsonElement serialize(LocalDateTime localDateTime, Type srcType, JsonSerializationContext context) {
-//        return new JsonPrimitive(formatter.format(localDateTime));
-//    }
-//}
-//
-//class LocalDateTimeDeserializer implements JsonDeserializer < LocalDateTime > {
-//    @Override
-//    public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-//            throws JsonParseException {
-//        return LocalDateTime.parse(json.getAsString(),
-//                DateTimeFormatter.ofPattern("d::MMM::uuuu HH::mm::ss").withLocale(Locale.ENGLISH));
-//    }
-//}

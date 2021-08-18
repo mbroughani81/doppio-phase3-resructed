@@ -3,6 +3,7 @@ package server.db;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.LikedTweetList;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 public class LikedTweetListDB implements DBSet<LikedTweetList> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public LikedTweetListDB() {
         builder = new GsonBuilder();
@@ -30,11 +32,11 @@ public class LikedTweetListDB implements DBSet<LikedTweetList> {
     @Override
     public LinkedList<LikedTweetList> all() {
         LinkedList<LikedTweetList> likedTweetLists = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/likedtweetlists/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getLikedtweetlistroot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/likedtweetlists/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getLikedtweetlistroot() + s));
                 likedTweetLists.add(gson.fromJson(reader, LikedTweetList.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -57,7 +59,7 @@ public class LikedTweetListDB implements DBSet<LikedTweetList> {
 //        logger.trace("add likedtweetlist" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/likedtweetlists/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getLikedtweetlistroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -72,15 +74,15 @@ public class LikedTweetListDB implements DBSet<LikedTweetList> {
     public void remove(int id) {
 //        logger.trace("remove likedtweetlist" + id);
 
-        File f = new File("src/main/resources/serverdb/likedtweetlists/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getLikedtweetlistroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/likedtweetlists/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getLikedtweetlistroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/likedtweetlists/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getLikedtweetlistroot() + s);
             f.delete();
         }
     }

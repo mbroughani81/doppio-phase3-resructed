@@ -5,6 +5,7 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import server.config.dbConfig.DBConfig;
 import server.model.Tweet;
 
 import java.io.*;
@@ -13,25 +14,12 @@ import java.util.LinkedList;
 public class TweetDB implements DBSet<Tweet> {
 
     GsonBuilder builder;
+    DBConfig dbConfig = new DBConfig();
 
     public TweetDB() {
         builder = new GsonBuilder();
         builder.setPrettyPrinting();
         builder.serializeNulls();
-//        ExclusionStrategy strategy = new ExclusionStrategy() {
-//            @Override
-//            public boolean shouldSkipField(FieldAttributes f) {
-//                if (f.getDeclaringClass().equals(User.class) && !f.getName().equals("id"))
-//                    return true;
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean shouldSkipClass(Class<?> clazz) {
-//                return false;
-//            }
-//        };
-//        builder.setExclusionStrategies(strategy);
     }
 
     @Override
@@ -46,11 +34,11 @@ public class TweetDB implements DBSet<Tweet> {
     @Override
     public LinkedList<Tweet> all() {
         LinkedList<Tweet> tweets = new LinkedList<>();
-        File file = new File("src/main/resources/serverdb/tweets/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getTweetroot());
         Gson gson = builder.create();
         for (String s : file.list()) {
             try {
-                JsonReader reader = new JsonReader(new FileReader("src/main/resources/serverdb/tweets/" + s));
+                JsonReader reader = new JsonReader(new FileReader(dbConfig.getDbroot() + dbConfig.getTweetroot() + s));
                 tweets.add(gson.fromJson(reader, Tweet.class));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -73,7 +61,7 @@ public class TweetDB implements DBSet<Tweet> {
 //        logger.trace("add tweet" + json);
 
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/serverdb/tweets/" + id + ".txt");
+            FileWriter fileWriter = new FileWriter(dbConfig.getDbroot() + dbConfig.getTweetroot() + id + ".txt");
             fileWriter.write(json);
 
             fileWriter.flush();
@@ -88,15 +76,15 @@ public class TweetDB implements DBSet<Tweet> {
     public void remove(int id) {
 //        logger.trace("remove tweet " + id);
 
-        File f = new File("src/main/resources/serverdb/tweets/" + id + ".txt");
+        File f = new File(dbConfig.getDbroot() + dbConfig.getTweetroot() + id + ".txt");
         f.delete();
     }
 
     @Override
     public void clear() {
-        File file = new File("src/main/resources/serverdb/tweets/");
+        File file = new File(dbConfig.getDbroot() + dbConfig.getTweetroot());
         for (String s : file.list()) {
-            File f = new File("src/main/resources/serverdb/tweets/" + s);
+            File f = new File(dbConfig.getDbroot() + dbConfig.getTweetroot() + s);
             f.delete();
         }
     }

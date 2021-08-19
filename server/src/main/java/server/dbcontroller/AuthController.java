@@ -133,4 +133,23 @@ public class AuthController extends AbstractController {
     public Profile getProfile(int userId) {
         return context.Profiles.get(userId);
     }
+
+    public boolean hasEmail(String email) {
+        for (User user : context.Users.all()) {
+            Profile p = context.Profiles.get(user.getProfileId());
+            if (p.getEmail().equals(email))
+                return true;
+        }
+        return false;
+    }
+
+
+    public boolean hasPhone(String phone) {
+        for (User user : context.Users.all()) {
+            Profile p = context.Profiles.get(user.getProfileId());
+            if (p.getPhoneNumber().equals(phone))
+                return true;
+        }
+        return false;
+    }
 }

@@ -51,6 +51,10 @@ public class ClientThread extends Thread implements RequestHandler {
             errors.add("Username already used");
         if (signupRequest.getPassword().length() == 0)
             errors.add("Password can not be empty");
+        if (authController.hasEmail(signupRequest.getEmail()))
+            errors.add("Email already used");
+        if (authController.hasPhone(signupRequest.getPhone()))
+            errors.add("Phone already used");
         if (errors.size() == 0)
             authController.signupUser(signupRequest);
 
@@ -67,28 +71,24 @@ public class ClientThread extends Thread implements RequestHandler {
         } else {
             if (!authController.getUser(loginRequest.getUsername()).getPassword().equals(loginRequest.getPassword())) {
                 errors.add("Password is not correct");
-            } else {
-                sessionController.setUserSession(loginRequest.getUsername());
-                return new LoginResponse(
-                        loginRequest.getUsername(),
-                        sessionController.getUserSession(loginRequest.getUsername()).getAuthToken(),
-                        errors
-                );
             }
         }
-        return new LoginResponse(
-                loginRequest.getUsername(),
-                null,
-                errors
-        );
+        if (errors.size() == 0) {
+            sessionController.setUserSession(loginRequest.getUsername());
+            return new LoginResponse(
+                    loginRequest.getUsername(),
+                    sessionController.getUserSession(loginRequest.getUsername()).getAuthToken(),
+                    errors
+            );
+        } else {
+            return new LoginResponse(
+                    loginRequest.getUsername(),
+                    null,
+                    errors
+            );
+        }
     }
-//
-//        return new LoginResponse(
-//                loginRequest.getUsername(),
-//                user != null && user.getPassword().equals(loginRequest.getPassword()),
-//                sessionController.getUserSession(loginRequest.getUsername()).getAuthToken(),
-//                new LinkedList<>()
-//        );
+
     @Override
     public Response newPrivateChat(NewPrivateChatRequest newPrivateChatRequest) {
         LogManager.getLogger(ClientThread.class).info("NewPrivateChatRequest is getting handled");

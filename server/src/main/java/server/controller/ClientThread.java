@@ -481,10 +481,20 @@ public class ClientThread extends Thread implements RequestHandler {
         messageController.updateReadCount(getChatModelRequest.getChatId());
         LinkedList<SinglePm> pms = MessageController.convertToSinglePm(
                 messageController.getPms(getChatModelRequest.getChatId()),
-                messageController.getReadCount(getChatModelRequest.getChatId())
+                messageController.getReadCount(getChatModelRequest.getChatId()),
+                messageController.getIgnoredCount(getChatModelRequest.getChatId())
         );
         ChatModel chatModel = new ChatModel(getChatModelRequest.getChatId(), pms);
         return new GetChatModelResponse(chatModel);
+    }
+
+    @Override
+    public Response updateUserOnline(CheckConnection checkConnection) {
+        if (checkConnection.getAuthToken() != null) {
+            User user = authController.getUserWithAuthToken(checkConnection.getAuthToken());
+            messageController.updateIgnoredCount(user.getId());
+        }
+        return new CheckConnectionResponse();
     }
 
     private Response sendErrorChatModel(int chatId) {

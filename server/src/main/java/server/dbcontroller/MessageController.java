@@ -194,8 +194,36 @@ public class MessageController extends AbstractController {
             }
         }
         Chat pairChat1 = context.Chats.get(pairChatId);
-        System.out.println("i have found pair " + pairChatId);
+//        System.out.println("i have found pair " + pairChatId);
         pairChat1.setReadPmCount(pairChat1.getPmIds().size());
+        context.Chats.update(pairChat1);
+    }
+
+    public void updateIgnoredCount(int userId) {
+        for (Chat chat : getPrivateChats(userId))
+            updateSingleIgnoredCount(chat.getId());
+    }
+
+    private void updateSingleIgnoredCount(int chatId) {
+        Chat chat1 = context.Chats.get(chatId);
+        if (chat1.getChatType() == ChatType.GROUP ||
+                chat1.getMemberIds().size() == 1)
+            return;
+        int otherMemberId;
+        if (chat1.getOwnerId() != chat1.getMemberIds().get(0))
+            otherMemberId = chat1.getMemberIds().get(0);
+        else
+            otherMemberId = chat1.getMemberIds().get(1);
+        int pairChatId = -1;
+        for (Chat chat : getPrivateChats(otherMemberId)) {
+            if (chat.getParentChatId() == chat1.getParentChatId()) {
+                pairChatId = chat.getId();
+                break;
+            }
+        }
+        Chat pairChat1 = context.Chats.get(pairChatId);
+//        System.out.println("i have found pair " + pairChatId);
+        pairChat1.setIgnoredPmCount(pairChat1.getPmIds().size());
         context.Chats.update(pairChat1);
     }
 
@@ -240,6 +268,10 @@ public class MessageController extends AbstractController {
         return context.Chats.get(chatId).getReadPmCount();
     }
 
+    public int getIgnoredCount(int chatId) {
+        return context.Chats.get(chatId).getIgnoredPmCount();
+    }
+
     public static LinkedList<SinglePm> convertToSinglePm(LinkedList<Pm> pms) {
         LinkedList<SinglePm> singlePms = new LinkedList<>();
         for (Pm pm : pms) {
@@ -248,7 +280,7 @@ public class MessageController extends AbstractController {
         return singlePms;
     }
 
-    public static LinkedList<SinglePm> convertToSinglePm(LinkedList<Pm> pms, int readCount) {
+    public static LinkedList<SinglePm> convertToSinglePm(LinkedList<Pm> pms, int readCount, int ignoredCount) {
         LinkedList<SinglePm> singlePms = new LinkedList<>();
 //        for (Pm pm : pms) {
 //            singlePms.add(convertToSinglePm(pm));
@@ -256,6 +288,8 @@ public class MessageController extends AbstractController {
         for (int i = 0; i < pms.size(); i++) {
             if (i < readCount) {
                 singlePms.add(convertToSinglePm(pms.get(i), PmVerdict.SEEN));
+            } else if (i < ignoredCount) {
+                singlePms.add(convertToSinglePm(pms.get(i), PmVerdict.NOTSEEN));
             } else {
                 singlePms.add(convertToSinglePm(pms.get(i), PmVerdict.SENT));
             }

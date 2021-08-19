@@ -15,7 +15,7 @@ public class Chat {
     private LinkedList<Integer> pmIds;
     private int unreadCount;
     private int readPmCount;
-//    private int seenPmCountl
+    private int ignoredPmCount;
 
     public Chat(int ownerId, ChatType chatType) {
         this.id = -1;
@@ -26,6 +26,7 @@ public class Chat {
         this.memberIds = new LinkedList<>();
         this.pmIds = new LinkedList<>();
         this.unreadCount = 0;
+        this.ignoredPmCount = 0;
         this.readPmCount = 0;
     }
 
@@ -91,6 +92,14 @@ public class Chat {
 
     public void setUnreadCount(int unreadCount) {
         this.unreadCount = unreadCount;
+    }
+
+    public int getIgnoredPmCount() {
+        return ignoredPmCount;
+    }
+
+    public void setIgnoredPmCount(int ignoredPmCount) {
+        this.ignoredPmCount = ignoredPmCount;
     }
 
     public int getReadPmCount() {

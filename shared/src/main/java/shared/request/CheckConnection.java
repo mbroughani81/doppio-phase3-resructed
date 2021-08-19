@@ -7,6 +7,7 @@ import shared.response.Response;
 public class CheckConnection extends Request {
     @Override
     public Response handle(RequestHandler requestHandler) {
-        return new CheckConnectionResponse();
+//        return new CheckConnectionResponse();
+        return requestHandler.updateUserOnline(this);
     }
 }

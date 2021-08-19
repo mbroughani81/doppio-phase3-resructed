@@ -40,4 +40,5 @@ public interface RequestHandler {
     Response searchUser(ExplorerSearchIdRequest explorerSearchIdRequest);
     Response fetchMessageDataModel(GetMessageDataModelRequest getMessageDataModelRequest);
     Response fetchChatModel(GetChatModelRequest getChatModelRequest);
+    Response updateUserOnline(CheckConnection checkConnection);
 }

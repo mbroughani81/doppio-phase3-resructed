@@ -4,7 +4,10 @@ import client.apps.chat.view.comp.HypSinglePmLabelController;
 import client.apps.chat.view.comp.SinglePmLabelController;
 import client.config.apps.chat.ChatRootConfig;
 import client.core.DoppioApp;
+import client.core.ViewSwitcher;
 import client.datatype.BasicController;
+import client.datatype.Page;
+import client.datatype.View;
 import client.dbcontroller.ChatModelController;
 import client.utils.ChatModelUtility;
 import javafx.application.Platform;
@@ -22,6 +25,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
+import shared.request.LeaveGroupRequest;
 import shared.request.NewPmRequest;
 import shared.request.NewScheduledPmRequest;
 import shared.util.ImageSerializer;
@@ -72,7 +76,8 @@ public class ChatRootController extends BasicController implements Initializable
 
     @FXML
     void leavegroupButtonClicked(ActionEvent event) {
-
+        getListener().listen(new LeaveGroupRequest(chatId));
+        ViewSwitcher.getInstance().switchTo(new Page(View.MESSENGER, -1));
     }
 
 

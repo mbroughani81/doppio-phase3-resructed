@@ -169,6 +169,12 @@ public class ClientThread extends Thread implements RequestHandler {
     }
 
     @Override
+    public Response leaveGroup(LeaveGroupRequest leaveGroupRequest) {
+        messageController.leaveGroup(leaveGroupRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
     public Response newRetweet(NewRetweetRequest newRetweetRequest) {
         tweetController.newRetweet(newRetweetRequest);
         return new CheckConnectionResponse();

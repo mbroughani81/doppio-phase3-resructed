@@ -14,6 +14,7 @@ public interface RequestHandler {
     Response newLikeTweet(NewLikeTweetRequest newLikeTweetRequest);
     Response newGroup(NewGroupRequest newGroupRequest);
     Response joinGroup(JoinGroupRequest joinGroupRequest);
+    Response leaveGroup(LeaveGroupRequest leaveGroupRequest);
     Response newBlock(NewBlockRequest newBlockRequest);
     Response newMute(NewMuteRequest newMuteRequest);
     Response newReportSpam(NewReportSpamRequest newReportSpamRequest);

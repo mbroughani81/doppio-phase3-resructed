@@ -67,7 +67,8 @@ public class MessageController extends AbstractController {
             if (user.getUserId() == newGroupRequest.getOwnerId()) {
                 continue;
             }
-            messageData = context.MessageDatas.get(messageDataId);
+            User u = context.Users.get(user.getUserId());
+            messageData = context.MessageDatas.get(u.getMessageDataId());
             chat = new Chat(user.getUserId(), ChatType.GROUP);
             chat.setChatName(newGroupRequest.getGroupname());
             chat.getMemberIds().add(newGroupRequest.getOwnerId());
@@ -110,6 +111,37 @@ public class MessageController extends AbstractController {
             if (chat1.getParentChatId() == requestChat.getParentChatId() &&
             chat1.getId() != chatId) {
                 chat1.getMemberIds().add(user.getId());
+                context.Chats.update(chat1);
+            }
+        }
+    }
+
+    public void leaveGroup(LeaveGroupRequest leaveGroupRequest) {
+        AuthController authController = new AuthController();
+        User user = authController.getUserWithAuthToken(leaveGroupRequest.getAuthToken());
+        Chat requestChat = context.Chats.get(leaveGroupRequest.getChatId());
+
+        int parentId = requestChat.getParentChatId();
+        MessageData messageData = context.MessageDatas.get(user.getMessageDataId());
+        messageData.getChatIds().remove((Object) requestChat.getId());
+        context.MessageDatas.update(messageData);
+        // we can delete the chat form data base now.
+        context.Chats.remove(requestChat.getId());
+        //
+        int newParentId = -1;
+        LinkedList<Chat> allChats = context.Chats.all();
+        for (int i = 0; i < allChats.size(); i++) {
+            Chat chat1 = allChats.get(i);
+            if (chat1.getParentChatId() == parentId && chat1.getId() != requestChat.getId()) {
+                newParentId = chat1.getId();
+                chat1.getMemberIds().remove((Object) user.getId());
+                context.Chats.update(chat1);
+            }
+        }
+        for (int i = 0; i < allChats.size(); i++) {
+            Chat chat1 = allChats.get(i);
+            if (chat1.getParentChatId() == parentId && chat1.getId() != requestChat.getId()) {
+                chat1.setParentChatId(newParentId);
                 context.Chats.update(chat1);
             }
         }
@@ -274,10 +306,11 @@ public class MessageController extends AbstractController {
     }
 
     public LinkedList<Chat> getChats(int userId) {
+        User user = context.Users.get(userId);
         LinkedList<Chat> chats = new LinkedList<>();
-        for (Chat chat : context.Chats.all()) {
-            if (chat.getOwnerId() == userId)
-                chats.add(chat);
+        for (int chatId : context.MessageDatas.get(user.getMessageDataId()).getChatIds()) {
+            Chat chat = context.Chats.get(chatId);
+            chats.add(chat);
         }
         return chats;
     }

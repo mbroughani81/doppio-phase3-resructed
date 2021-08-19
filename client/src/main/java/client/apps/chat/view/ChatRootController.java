@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
+import shared.datatype.ChatType;
 import shared.gson.LocalDateTimeSerializer;
 import shared.model.ChatModel;
 import shared.model.SinglePm;
@@ -40,6 +41,9 @@ public class ChatRootController extends BasicController implements Initializable
     File selectedFile;
 
     @FXML
+    private Button leavegroupButton;
+
+    @FXML
     private ScrollPane scrollPane;
 
     @FXML
@@ -65,6 +69,12 @@ public class ChatRootController extends BasicController implements Initializable
 
     @FXML
     private Button selectImageButton;
+
+    @FXML
+    void leavegroupButtonClicked(ActionEvent event) {
+
+    }
+
 
     @FXML
     void selectImageButtonClicked(ActionEvent event) {
@@ -106,6 +116,12 @@ public class ChatRootController extends BasicController implements Initializable
     public Runnable getUpdateAction() {
         return () -> {
             ChatModel newChatModel = DoppioApp.getChatModelController().getChatModel(chatId);
+            //
+            if (newChatModel.getChatType() == ChatType.GROUP && !leavegroupButton.isVisible()) {
+                leavegroupButton.setVisible(true);
+            }
+
+            //
             if (ChatModelUtility.isChatModelChanged(curChatModel, newChatModel)) {
                 curChatModel = newChatModel;
                 System.out.println("chat model changed!");

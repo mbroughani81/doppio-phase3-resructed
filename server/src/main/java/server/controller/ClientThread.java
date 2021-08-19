@@ -490,7 +490,11 @@ public class ClientThread extends Thread implements RequestHandler {
                 messageController.getReadCount(getChatModelRequest.getChatId()),
                 messageController.getIgnoredCount(getChatModelRequest.getChatId())
         );
-        ChatModel chatModel = new ChatModel(getChatModelRequest.getChatId(), pms);
+        ChatModel chatModel = new ChatModel(
+                getChatModelRequest.getChatId(),
+                messageController.getChatType(getChatModelRequest.getChatId()),
+                pms
+        );
         return new GetChatModelResponse(chatModel);
     }
 

@@ -9,16 +9,23 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.apps.chat.view.ChatRootController">
    <children>
-      <Label maxHeight="-Infinity" minHeight="-Infinity" text="Chat Root" VBox.vgrow="ALWAYS">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Label>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Label maxHeight="-Infinity" minHeight="-Infinity" text="Chat Root">
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="leavegroupButton" mnemonicParsing="false" onAction="#leavegroupButtonClicked" text="Leave Group" visible="false" />
+         </children>
+      </HBox>
       <ScrollPane fx:id="scrollPane" vvalue="1.0" VBox.vgrow="ALWAYS">
          <content>
             <VBox fx:id="pmHolder" fillWidth="false" spacing="10.0">

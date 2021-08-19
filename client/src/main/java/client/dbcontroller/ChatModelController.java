@@ -1,6 +1,7 @@
 package client.dbcontroller;
 
 import client.core.DoppioApp;
+import shared.datatype.ChatType;
 import shared.datatype.PmVerdict;
 import shared.model.ChatModel;
 import shared.model.SinglePm;
@@ -39,6 +40,6 @@ public class ChatModelController extends AbstractModelController {
             if (chatModel.getChatId() == chatId)
                 return chatModel;
         }
-        return new ChatModel(chatId, new LinkedList<>());
+        return new ChatModel(chatId, ChatType.PRIVATE, new LinkedList<>());
     }
 }

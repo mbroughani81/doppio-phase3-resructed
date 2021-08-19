@@ -1,16 +1,20 @@
 package shared.model;
 
+import shared.datatype.ChatType;
+
 import java.util.LinkedList;
 
 public class ChatModel {
     private int id;
 
-    int chatId;
+    private int chatId;
+    private ChatType chatType;
     private LinkedList<SinglePm> pms;
 
-    public ChatModel(int chatId, LinkedList<SinglePm> pms) {
+    public ChatModel(int chatId, ChatType chatType, LinkedList<SinglePm> pms) {
         this.id = -1;
         this.chatId = chatId;
+        this.chatType = chatType;
         this.pms = pms;
     }
 
@@ -28,6 +32,14 @@ public class ChatModel {
 
     public void setChatId(int chatId) {
         this.chatId = chatId;
+    }
+
+    public ChatType getChatType() {
+        return chatType;
+    }
+
+    public void setChatType(ChatType chatType) {
+        this.chatType = chatType;
     }
 
     public LinkedList<SinglePm> getPms() {

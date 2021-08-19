@@ -270,7 +270,7 @@ public class MessageController extends AbstractController {
     public static ChatModel getErrorChatModel(int chatId) {
         LinkedList<SinglePm> pms = new LinkedList<>();
         pms.add(new SinglePm(-1, -1, PmVerdict.SEEN, "You don't have access to this chat"));
-        return new ChatModel(chatId, pms);
+        return new ChatModel(chatId, ChatType.PRIVATE, pms);
     }
 
     public LinkedList<Chat> getChats(int userId) {
@@ -305,6 +305,10 @@ public class MessageController extends AbstractController {
 
     public int getIgnoredCount(int chatId) {
         return context.Chats.get(chatId).getIgnoredPmCount();
+    }
+
+    public ChatType getChatType(int chatId) {
+        return context.Chats.get(chatId).getChatType();
     }
 
     public static LinkedList<SinglePm> convertToSinglePm(LinkedList<Pm> pms) {

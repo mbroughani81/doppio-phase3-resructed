@@ -480,7 +480,8 @@ public class ClientThread extends Thread implements RequestHandler {
         }
         messageController.updateReadCount(getChatModelRequest.getChatId());
         LinkedList<SinglePm> pms = MessageController.convertToSinglePm(
-                messageController.getPms(getChatModelRequest.getChatId())
+                messageController.getPms(getChatModelRequest.getChatId()),
+                messageController.getReadCount(getChatModelRequest.getChatId())
         );
         ChatModel chatModel = new ChatModel(getChatModelRequest.getChatId(), pms);
         return new GetChatModelResponse(chatModel);

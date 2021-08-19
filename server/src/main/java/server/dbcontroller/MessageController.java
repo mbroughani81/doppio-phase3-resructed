@@ -194,6 +194,7 @@ public class MessageController extends AbstractController {
             }
         }
         Chat pairChat1 = context.Chats.get(pairChatId);
+        System.out.println("i have found pair " + pairChatId);
         pairChat1.setReadPmCount(pairChat1.getPmIds().size());
         context.Chats.update(pairChat1);
     }
@@ -235,10 +236,29 @@ public class MessageController extends AbstractController {
         return chats;
     }
 
+    public int getReadCount(int chatId) {
+        return context.Chats.get(chatId).getReadPmCount();
+    }
+
     public static LinkedList<SinglePm> convertToSinglePm(LinkedList<Pm> pms) {
         LinkedList<SinglePm> singlePms = new LinkedList<>();
         for (Pm pm : pms) {
             singlePms.add(convertToSinglePm(pm));
+        }
+        return singlePms;
+    }
+
+    public static LinkedList<SinglePm> convertToSinglePm(LinkedList<Pm> pms, int readCount) {
+        LinkedList<SinglePm> singlePms = new LinkedList<>();
+//        for (Pm pm : pms) {
+//            singlePms.add(convertToSinglePm(pm));
+//        }
+        for (int i = 0; i < pms.size(); i++) {
+            if (i < readCount) {
+                singlePms.add(convertToSinglePm(pms.get(i), PmVerdict.SEEN));
+            } else {
+                singlePms.add(convertToSinglePm(pms.get(i), PmVerdict.SENT));
+            }
         }
         return singlePms;
     }
@@ -248,6 +268,15 @@ public class MessageController extends AbstractController {
                 pm.getId(),
                 pm.getUserId(),
                 PmVerdict.SENT,
+                pm.getText()
+        );
+    }
+
+    public static SinglePm convertToSinglePm(Pm pm, PmVerdict pmVerdict) {
+        return new SinglePm(
+                pm.getId(),
+                pm.getUserId(),
+                pmVerdict,
                 pm.getText()
         );
     }

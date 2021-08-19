@@ -5,10 +5,9 @@ import shared.model.SessionModel;
 
 public class SessionModelController extends AbstractModelController {
 
-    public void setNewSession(String username, AuthToken authToken) {
-        SessionModel sessionModel = new SessionModel(username, authToken);
+    public void setNewSession(SessionModel session) {
         context.SessionModels.clear(usernameDir);
-        context.SessionModels.add(usernameDir, sessionModel);
+        context.SessionModels.add(usernameDir, session);
     }
     public SessionModel getSession() {
         if (usernameDir == null)

@@ -76,13 +76,15 @@ public class ClientThread extends Thread implements RequestHandler {
         if (errors.size() == 0) {
             sessionController.setUserSession(loginRequest.getUsername());
             return new LoginResponse(
-                    loginRequest.getUsername(),
-                    sessionController.getUserSession(loginRequest.getUsername()).getAuthToken(),
+                    new SessionModel(
+                            authController.getUser(loginRequest.getUsername()).getId(),
+                            loginRequest.getUsername(),
+                            sessionController.getUserSession(loginRequest.getUsername()).getAuthToken()
+                    ),
                     errors
             );
         } else {
             return new LoginResponse(
-                    loginRequest.getUsername(),
                     null,
                     errors
             );

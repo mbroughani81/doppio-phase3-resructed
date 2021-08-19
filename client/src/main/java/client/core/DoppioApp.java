@@ -126,14 +126,16 @@ public class DoppioApp extends Application implements ResponseHandler {
     @Override
     public void checkLoginResponse(LoginResponse loginResponse) {
         if (loginResponse.getErrors().size() == 0) {
-            username = loginResponse.getUsername();
+            username = loginResponse.getSessionModel().getUsername();
             PathCreator.createClientResource(username);
             sessionModelController.setUsernameDir(username);
             messageDataModelController.setUsernameDir(username);
             chatModelController.setUsernameDir(username);
             fileModelController.setUsernameDir(username);
 
-            sessionModelController.setNewSession(loginResponse.getUsername(), loginResponse.getAuthToken());
+            sessionModelController.setNewSession(
+                    loginResponse.getSessionModel()
+            );
 
             ViewSwitcher.getInstance().loginOkAction();
         } else {

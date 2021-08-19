@@ -15,7 +15,7 @@ public class ChatModelController extends AbstractModelController {
 //        newPmRequest.setUserId(DoppioApp.getSessionModelController().getSession().getId());
         chatModel.getPms().add(new SinglePm(
                 -1,
-                -1,
+                DoppioApp.getSessionModelController().getSession().getUserId(),
                 PmVerdict.OFFLINE,
                 newPmRequest.getText()
         ));

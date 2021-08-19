@@ -3,11 +3,13 @@ package shared.model;
 public class SessionModel {
     private int id;
 
+    private int userId;
     private String username;
     private AuthToken authToken;
 
-    public SessionModel(String username, AuthToken authToken) {
+    public SessionModel(int userId, String username, AuthToken authToken) {
         this.id = -1;
+        this.userId = userId;
         this.username = username;
         this.authToken = authToken;
     }
@@ -18,6 +20,14 @@ public class SessionModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {

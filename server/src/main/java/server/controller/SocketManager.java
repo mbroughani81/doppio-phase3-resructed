@@ -134,6 +134,7 @@ public class SocketManager extends Thread {
             ));
         }
         public static void testNewPrivateChat() {
+            /*
             MessageController messageController = new MessageController();
             AuthController authController = new AuthController();
             int id1 = messageController.newPrivateChat(new NewPrivateChatRequest(
@@ -146,6 +147,7 @@ public class SocketManager extends Thread {
                     null,
                     authController.getUser("a1").getId()
             ));
+            */
         }
     }
 }

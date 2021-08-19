@@ -83,7 +83,9 @@ public class MessageController extends AbstractController {
     }
 
     public int sendNewPm(NewPmRequest newPmRequest) {
-        Pm pm = new Pm(newPmRequest.getUserId(), PmVerdict.SENT, newPmRequest.getText());
+        AuthController authController = new AuthController();
+        User user = authController.getUserWithAuthToken(newPmRequest.getAuthToken());
+        Pm pm = new Pm(user.getId(), PmVerdict.SENT, newPmRequest.getText());
         int id = context.Pms.add(pm);
 
         Chat eventChat = context.Chats.get(newPmRequest.getChatId());
@@ -170,8 +172,7 @@ public class MessageController extends AbstractController {
         sendNewPm(new NewPmRequest(
                 savedMessageChatId,
                 "Forwarded from tweet : \n" + tweet.getText(),
-                fileController.getTweetString(tweet.getId()),
-                userId
+                fileController.getTweetString(tweet.getId())
         ));
     }
 

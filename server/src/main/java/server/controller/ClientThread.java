@@ -121,11 +121,8 @@ public class ClientThread extends Thread implements RequestHandler {
     public Response newPm(NewPmRequest newPmRequest) {
         LogManager.getLogger(ClientThread.class).info("NewPmRequest is getting handled");
 
-        if (newPmRequest.getUserId() == -1) {
-            newPmRequest.setUserId(authController.getUserWithAuthToken(newPmRequest.getAuthToken()).getId());
-        }
         // fixme : in final make only possible to send pm with authtoken
-        User user = authController.getUser(newPmRequest.getUserId());
+        User user = authController.getUserWithAuthToken(newPmRequest.getAuthToken());
         if (!messageController.isMemberOfChat(user.getId(), newPmRequest.getChatId())) {
             return new NullResponse("pm not affected!");
         }

@@ -478,6 +478,7 @@ public class ClientThread extends Thread implements RequestHandler {
         if (!messageController.isMemberOfChat(user.getId(), getChatModelRequest.getChatId())) {
             return sendErrorChatModel(getChatModelRequest.getChatId());
         }
+        messageController.updateReadCount(getChatModelRequest.getChatId());
         LinkedList<SinglePm> pms = MessageController.convertToSinglePm(
                 messageController.getPms(getChatModelRequest.getChatId())
         );

@@ -4,14 +4,12 @@ import shared.datatype.PmVerdict;
 
 public class Pm {
     private int id;
-    private int userId;
 
-    private PmVerdict pmVerdict;
+    private int userId;
     private String text;
 
-    public Pm(int userId, PmVerdict pmVerdict, String text) {
+    public Pm(int userId, String text) {
         this.id = -1;
-        this.pmVerdict = pmVerdict;
         this.userId = userId;
         this.text = text;
     }
@@ -30,14 +28,6 @@ public class Pm {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public PmVerdict getPmVerdict() {
-        return pmVerdict;
-    }
-
-    public void setPmVerdict(PmVerdict pmVerdict) {
-        this.pmVerdict = pmVerdict;
     }
 
     public String getText() {

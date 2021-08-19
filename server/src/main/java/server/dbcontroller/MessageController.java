@@ -85,7 +85,7 @@ public class MessageController extends AbstractController {
     public int sendNewPm(NewPmRequest newPmRequest) {
         AuthController authController = new AuthController();
         User user = authController.getUserWithAuthToken(newPmRequest.getAuthToken());
-        Pm pm = new Pm(user.getId(), PmVerdict.SENT, newPmRequest.getText());
+        Pm pm = new Pm(user.getId(), newPmRequest.getText());
         int id = context.Pms.add(pm);
 
         Chat eventChat = context.Chats.get(newPmRequest.getChatId());
@@ -176,6 +176,28 @@ public class MessageController extends AbstractController {
         ));
     }
 
+    public void updateReadCount(int chatId) {
+        Chat chat1 = context.Chats.get(chatId);
+        if (chat1.getChatType() == ChatType.GROUP ||
+        chat1.getMemberIds().size() == 1)
+            return;
+        int otherMemberId;
+        if (chat1.getOwnerId() != chat1.getMemberIds().get(0))
+            otherMemberId = chat1.getMemberIds().get(0);
+        else
+            otherMemberId = chat1.getMemberIds().get(1);
+        int pairChatId = -1;
+        for (Chat chat : getPrivateChats(otherMemberId)) {
+            if (chat.getParentChatId() == chat1.getParentChatId()) {
+                pairChatId = chat.getId();
+                break;
+            }
+        }
+        Chat pairChat1 = context.Chats.get(pairChatId);
+        pairChat1.setReadPmCount(pairChat1.getPmIds().size());
+        context.Chats.update(pairChat1);
+    }
+
     public boolean isMemberOfChat(int userId, int chatId) {
         Chat chat = context.Chats.get(chatId);
         return chat.getMemberIds().contains(userId);
@@ -225,7 +247,7 @@ public class MessageController extends AbstractController {
         return new SinglePm(
                 pm.getId(),
                 pm.getUserId(),
-                pm.getPmVerdict(),
+                PmVerdict.SENT,
                 pm.getText()
         );
     }

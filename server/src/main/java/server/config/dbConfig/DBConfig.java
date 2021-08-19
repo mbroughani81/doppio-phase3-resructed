@@ -27,6 +27,7 @@ public class DBConfig {
     private String tweetroot;
     private String userroot;
     private String usertyperoot;
+    private String retweetedtweetlistroot;
 
     public DBConfig() {
         try {
@@ -61,6 +62,7 @@ public class DBConfig {
         tweetroot = properties.getProperty("tweetroot");
         userroot = properties.getProperty("userroot");
         usertyperoot = properties.getProperty("usertyperoot");
+        retweetedtweetlistroot = properties.getProperty("retweetedtweetlistroot");
     }
 
     public String getDbroot() {
@@ -137,5 +139,9 @@ public class DBConfig {
 
     public String getUsertyperoot() {
         return usertyperoot;
+    }
+
+    public String getRetweetedtweetlistroot() {
+        return retweetedtweetlistroot;
     }
 }

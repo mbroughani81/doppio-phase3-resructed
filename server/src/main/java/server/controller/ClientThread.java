@@ -268,12 +268,12 @@ public class ClientThread extends Thread implements RequestHandler {
     @Override
     public Response getTimeline(GetTimelineRequest getTimelineRequest) {
         LogManager.getLogger(ClientThread.class).info("GetTimelineRequest is getting handled");
-
-        LinkedList<Tweet> tweets = tweetController.getTimeline(
-                authController.getUserWithAuthToken(getTimelineRequest.getAuthToken()).getId()
+        User u = authController.getUserWithAuthToken(getTimelineRequest.getAuthToken());
+        LinkedList<SingleTweet> tweets = tweetController.getTimeline(
+                u.getId()
         );
-        LinkedList<SingleTweet> resTweets = TweetController.convertToSingleTweet(tweets);
-        return new GetTimelineResponse(resTweets);
+//        LinkedList<SingleTweet> resTweets = TweetController.convertToSingleTweet(tweets);
+        return new GetTimelineResponse(tweets);
     }
 
     @Override
@@ -311,13 +311,17 @@ public class ClientThread extends Thread implements RequestHandler {
 
         LinkedList<SingleTweet> tweets = new LinkedList<>();
         User curUser = authController.getUserWithAuthToken(getShowUserTweetsRequest.getAuthToken());
-        for (Tweet tweet : tweetController.getUserTweets(curUser.getId())) {
-            tweets.add(new SingleTweet(
-                    tweet.getId(),
-                    tweet.getCreatorId(),
-                    tweet.getText()
-            ));
-        }
+//        for (Tweet tweet : tweetController.getUserTweets(curUser.getId())) {
+//            tweets.add(new SingleTweet(
+//                    tweet.getId(),
+//                    tweet.getCreatorId(),
+//                    tweet.getText()
+//            ));
+//        }
+        LinkedList<Tweet> allTweets1 = tweetController.getUserPostedTweets(curUser.getId());
+        LinkedList<Tweet> allTweets2 = tweetController.getUserRetweetedTweets(curUser.getId());
+        tweets = TweetController.convertToSingleTweet(allTweets1);
+        tweets.addAll(TweetController.convertToSingleTweet(allTweets2, curUser.getUsername()));
         return new GetShowUserTweetsResponse(tweets);
     }
 

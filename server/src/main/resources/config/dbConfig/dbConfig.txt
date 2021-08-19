@@ -17,4 +17,4 @@ systemnotificationroot=systemnotifications/
 tweetroot=tweets/
 userroot=users/
 usertyperoot=usertypes/
-
+retweetedtweetlistroot=retweetedtweetlists/

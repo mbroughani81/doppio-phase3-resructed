@@ -26,13 +26,16 @@ public class TweetController extends AbstractController {
 
     public void newRetweet(NewRetweetRequest newRetweetRequest) {
         AuthController authController = new AuthController();
-        User user = authController.getUserWithAuthToken(newRetweetRequest.getAuthToken());
-        Tweet tweet = new Tweet(
-                -1,
-                "this is retweeted",
-                user.getId(),
-                newRetweetRequest.getTweetId());
-        context.Tweets.add(tweet);
+//        Tweet tweet = new Tweet(
+//                -1,
+//                "this is retweeted",
+//                user.getId(),
+//                newRetweetRequest.getTweetId());
+//        context.Tweets.add(tweet);
+        User u = authController.getUserWithAuthToken(newRetweetRequest.getAuthToken());
+        RetweetedTweetList retweetedTweetList = context.RetweetedTweetLists.get(u.getLikedTweetListId());
+        retweetedTweetList.getTweetIds().add(newRetweetRequest.getTweetId());
+        context.RetweetedTweetLists.update(retweetedTweetList);
     }
 
     public void newLike(NewLikeTweetRequest newLikeTweetRequest) {
@@ -45,11 +48,21 @@ public class TweetController extends AbstractController {
         context.LikedTweetLists.update(likedTweetList);
     }
 
-    public LinkedList<Tweet> getUserTweets(int userId) {
+    public LinkedList<Tweet> getUserPostedTweets(int userId) {
         LinkedList<Tweet> tweets = new LinkedList<>();
+        User u = context.Users.get(userId);
         for (Tweet tweet : context.Tweets.all()) {
             if (userId == tweet.getCreatorId())
                 tweets.add(tweet);
+        }
+        return tweets;
+    }
+
+    public LinkedList<Tweet> getUserRetweetedTweets(int userId) {
+        LinkedList<Tweet> tweets = new LinkedList<>();
+        User u = context.Users.get(userId);
+        for (int tweetId : context.RetweetedTweetLists.get(u.getRetweetedTweetListId()).getTweetIds()) {
+            tweets.add(context.Tweets.get(tweetId));
         }
         return tweets;
     }
@@ -71,11 +84,29 @@ public class TweetController extends AbstractController {
         return singleTweets;
     }
 
+    public static LinkedList<SingleTweet> convertToSingleTweet(LinkedList<Tweet> tweets, String retweeterUsername) {
+        LinkedList<SingleTweet> singleTweets = new LinkedList<>();
+        for (Tweet tweet : tweets) {
+            singleTweets.add(convertToSingleTweet(tweet, retweeterUsername));
+        }
+        return singleTweets;
+    }
+
     public static SingleTweet convertToSingleTweet(Tweet tweet) {
         return new SingleTweet(
                 tweet.getId(),
                 tweet.getCreatorId(),
-                tweet.getText()
+                tweet.getText(),
+                null
+        );
+    }
+
+    public static SingleTweet convertToSingleTweet(Tweet tweet, String retweeterUsername) {
+        return new SingleTweet(
+                tweet.getId(),
+                tweet.getCreatorId(),
+                tweet.getText(),
+                retweeterUsername
         );
     }
 
@@ -83,31 +114,46 @@ public class TweetController extends AbstractController {
         return context.Tweets.get(tweetId);
     }
 
-    public LinkedList<Tweet> getTimeline(int userrId) {
+    public LinkedList<SingleTweet> getTimeline(int userrId) {
         AuthController authController = new AuthController();
         User userr = authController.getUser(userrId);
         MutedUserList mutedUserList = context.MutedUserLists.get(userr.getMutedUserListId());
         BlockList blockList = context.BlockLists.get(userr.getBlockListId());
+
         LinkedList<Integer> goodTweets = new LinkedList<>();
         for (int userId : context.FollowingLists.get(userr.getFollowingListId()).getList()) {
-            User u = context.Users.get(userId);
-            goodTweets.addAll(context.LikedTweetLists.get(u.getLikedTweetListId()).getTweetIds());
-            for (Tweet t : getAllTweet(u.getId()))
+            User user = context.Users.get(userId);
+            goodTweets.addAll(context.LikedTweetLists.get(user.getLikedTweetListId()).getTweetIds());
+            for (Tweet t : getAllTweet(user.getId()))
                 goodTweets.add(t.getId());
         }
 
-        LinkedList<Tweet> tweets = new LinkedList<>();
+        LinkedList<SingleTweet> tweets = new LinkedList<>();
         for (Tweet tweet : context.Tweets.all()) {
             User user = context.Users.get(tweet.getCreatorId());
             if (user.getUsername().equals("ghostuser"))
                 continue;
-            if (
-                    !mutedUserList.getUserIds().contains(user.getId()) &&
+            if (!mutedUserList.getUserIds().contains(user.getId()) &&
                     !blockList.getList().contains(user.getMutedUserListId()) &&
                     tweet.getSpamCounter() < 3 &&
                     goodTweets.contains(tweet.getId())
             ) {
-                tweets.add(tweet);
+                tweets.add(convertToSingleTweet(tweet));
+            }
+        }
+
+        // add retweeted
+        for (int userId : context.FollowingLists.get(userr.getFollowingListId()).getList()) {
+            User u = context.Users.get(userId);
+            for (int tweetId : context.RetweetedTweetLists.get(u.getRetweetedTweetListId()).getTweetIds()) {
+                Tweet tweet = context.Tweets.get(tweetId);
+                User user = context.Users.get(tweet.getCreatorId());
+                if (!mutedUserList.getUserIds().contains(user.getId()) &&
+                        !blockList.getList().contains(user.getMutedUserListId()) &&
+                        tweet.getSpamCounter() < 3
+                ) {
+                    tweets.add(convertToSingleTweet(tweet, u.getUsername()));
+                }
             }
         }
 

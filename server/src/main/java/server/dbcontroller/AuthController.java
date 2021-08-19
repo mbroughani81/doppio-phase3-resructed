@@ -21,6 +21,7 @@ public class AuthController extends AbstractController {
         MessageData messageData = new MessageData();
         NotificationBox notificationBox = new NotificationBox();
         LikedTweetList likedTweetList = new LikedTweetList();
+        RetweetedTweetList retweetedTweetList = new RetweetedTweetList();
         ReportedTweetList reportedTweetList = new ReportedTweetList();
         MutedUserList mutedUserList = new MutedUserList();
         int id0 = context.Profiles.add(profile);
@@ -30,12 +31,13 @@ public class AuthController extends AbstractController {
         int id4 = context.MessageDatas.add(messageData);
         int id5 = context.NotificationBoxes.add(notificationBox);
         int id6 = context.LikedTweetLists.add(likedTweetList);
-        int id7 = context.ReportedTweetLists.add(reportedTweetList);
-        int id8 = context.MutedUserLists.add(mutedUserList);
+        int id7 = context.RetweetedTweetLists.add(retweetedTweetList);
+        int id8 = context.ReportedTweetLists.add(reportedTweetList);
+        int id9 = context.MutedUserLists.add(mutedUserList);
         User user = new User(
                 signupRequest.getUsername(),
                 signupRequest.getPassword(),
-                id0, id1, id2, id3, id4, id5, id6, id7, id8
+                id0, id1, id2, id3, id4, id5, id6, id7, id8, id9
         );
         context.Users.add(user);
         Chat savedMessageChat = new Chat(user.getId(), ChatType.PRIVATE);

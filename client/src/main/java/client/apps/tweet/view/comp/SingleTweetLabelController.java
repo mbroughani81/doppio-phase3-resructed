@@ -83,7 +83,12 @@ public class SingleTweetLabelController extends BasicController implements Initi
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        tweetTextLabel.setText(singleTweet.getText());
+        if (singleTweet.getRetweeterUsername() != null) {
+            tweetTextLabel.setText("Retweeted by " + singleTweet.getRetweeterUsername() + "\n"
+                    + singleTweet.getText());
+        } else {
+            tweetTextLabel.setText(singleTweet.getText());
+        }
         profileLabel.setText("");
         // load the tweet pics
         if (DoppioApp.getFileModelController().profileExists(singleTweet.getUserId())) {

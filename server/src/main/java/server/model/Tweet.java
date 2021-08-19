@@ -6,7 +6,7 @@ public class Tweet {
     private int parentTweetId;
     private String text;
     private int creatorId;
-    private int sourceId;
+    private int sourceTweetId;
     private int spamCounter;
 
     public Tweet(int parentTweetId, String text, int creatorId) {
@@ -14,7 +14,7 @@ public class Tweet {
         this.parentTweetId = parentTweetId;
         this.text = text;
         this.creatorId = creatorId;
-        this.sourceId = -1;
+        this.sourceTweetId = -1;
     }
 
     public Tweet(int parentTweetId, String text, int creatorId, int sourceId) {
@@ -22,7 +22,7 @@ public class Tweet {
         this.parentTweetId = parentTweetId;
         this.text = text;
         this.creatorId = creatorId;
-        this.sourceId = sourceId;
+        this.sourceTweetId = sourceId;
     }
 
     public int getId() {
@@ -57,12 +57,12 @@ public class Tweet {
         this.creatorId = creatorId;
     }
 
-    public int getSourceId() {
-        return sourceId;
+    public int getSourceTweetId() {
+        return sourceTweetId;
     }
 
-    public void setSourceId(int sourceId) {
-        this.sourceId = sourceId;
+    public void setSourceTweetId(int sourceTweetId) {
+        this.sourceTweetId = sourceTweetId;
     }
 
     public int getSpamCounter() {

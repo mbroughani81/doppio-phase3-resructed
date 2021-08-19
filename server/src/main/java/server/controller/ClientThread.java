@@ -125,7 +125,7 @@ public class ClientThread extends Thread implements RequestHandler {
 
         // fixme : in final make only possible to send pm with authtoken
         User user = authController.getUserWithAuthToken(newPmRequest.getAuthToken());
-        if (!messageController.isMemberOfChat(user.getId(), newPmRequest.getChatId())) {
+        if (!messageController.isOwnerOfChat(user.getId(), newPmRequest.getChatId())) {
             return new NullResponse("pm not affected!");
         }
         messageController.sendNewPm(newPmRequest);
@@ -160,6 +160,12 @@ public class ClientThread extends Thread implements RequestHandler {
         }
         messageController.newGroupChat(newGroupRequest);
         return new NullResponse("group is created");
+    }
+
+    @Override
+    public Response joinGroup(JoinGroupRequest joinGroupRequest) {
+        messageController.joinGroup(joinGroupRequest);
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -475,7 +481,7 @@ public class ClientThread extends Thread implements RequestHandler {
     public Response fetchChatModel(GetChatModelRequest getChatModelRequest) {
         LogManager.getLogger(ClientThread.class).info("GetChatModelRequest is getting handled");
         User user = authController.getUserWithAuthToken(getChatModelRequest.getAuthToken());
-        if (!messageController.isMemberOfChat(user.getId(), getChatModelRequest.getChatId())) {
+        if (!messageController.isOwnerOfChat(user.getId(), getChatModelRequest.getChatId())) {
             return sendErrorChatModel(getChatModelRequest.getChatId());
         }
         messageController.updateReadCount(getChatModelRequest.getChatId());

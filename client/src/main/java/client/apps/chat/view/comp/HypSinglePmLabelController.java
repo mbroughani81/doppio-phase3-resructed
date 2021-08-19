@@ -51,7 +51,7 @@ public class HypSinglePmLabelController extends BasicController implements Initi
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         textFlow.getChildren().clear();
-        textFlow.getChildren().addAll(HyperTextUtility.getHypText(singlePm.getText()));
+        textFlow.getChildren().addAll(HyperTextUtility.getHypText(singlePm.getText(), getListener()));
         HypSinglePmLabelConfig hypSinglePmLabelConfig = new HypSinglePmLabelConfig();
 
         ContextMenu contextMenu = new ContextMenu();

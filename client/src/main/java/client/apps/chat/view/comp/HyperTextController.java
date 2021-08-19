@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import shared.request.JoinGroupRequest;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -40,6 +41,11 @@ public class HyperTextController extends BasicController implements Initializabl
                 ViewSwitcher.getInstance().switchTo(new Page(View.TWEETPAGE, id));
             }
             case CHAT -> {
+                ViewSwitcher.getInstance().switchTo(new Page(View.CHAT, id));
+            }
+            case JOINGROUP -> {
+                System.out.println("hooray?");
+                getListener().listen(new JoinGroupRequest(id));
                 ViewSwitcher.getInstance().switchTo(new Page(View.CHAT, id));
             }
         }

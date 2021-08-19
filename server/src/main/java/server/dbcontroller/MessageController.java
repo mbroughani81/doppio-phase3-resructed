@@ -82,6 +82,39 @@ public class MessageController extends AbstractController {
         LogManager.getLogger(MessageController.class).info("new group chat created with parent id : " + parentId);
     }
 
+    public void joinGroup(JoinGroupRequest joinGroupRequest) {
+        AuthController authController = new AuthController();
+        User user = authController.getUserWithAuthToken(joinGroupRequest.getAuthToken());
+        Chat requestChat = context.Chats.get(joinGroupRequest.getChatId());
+        if (requestChat.getParentChatId() != requestChat.getId())
+            return;
+
+        int messageDataId = context.Users.get(user.getId()).getMessageDataId();
+        MessageData messageData = context.MessageDatas.get(messageDataId);
+        Chat chat = new Chat(user.getId(), ChatType.GROUP);
+        chat.setChatName(requestChat.getChatName());
+        chat.getMemberIds().add(user.getId());
+        for (int userId : requestChat.getMemberIds()) {
+            chat.getMemberIds().add(userId);
+        }
+        int chatId = context.Chats.add(chat);
+        chat.setParentChatId(requestChat.getParentChatId());
+        chat.setId(chatId);
+        context.Chats.update(chat);
+        messageData.getChatIds().add(chatId);
+        context.MessageDatas.update(messageData);
+
+        LinkedList<Chat> allChats = context.Chats.all();
+        for (int i = 0; i < allChats.size(); i++) {
+            Chat chat1 = allChats.get(i);
+            if (chat1.getParentChatId() == requestChat.getParentChatId() &&
+            chat1.getId() != chatId) {
+                chat1.getMemberIds().add(user.getId());
+                context.Chats.update(chat1);
+            }
+        }
+    }
+
     public int sendNewPm(NewPmRequest newPmRequest) {
         AuthController authController = new AuthController();
         User user = authController.getUserWithAuthToken(newPmRequest.getAuthToken());
@@ -227,9 +260,11 @@ public class MessageController extends AbstractController {
         context.Chats.update(pairChat1);
     }
 
-    public boolean isMemberOfChat(int userId, int chatId) {
+    public boolean isOwnerOfChat(int userId, int chatId) {
         Chat chat = context.Chats.get(chatId);
-        return chat.getMemberIds().contains(userId);
+        if (chat == null)
+            return false;
+        return chat.getOwnerId() == userId;
     }
 
     public static ChatModel getErrorChatModel(int chatId) {

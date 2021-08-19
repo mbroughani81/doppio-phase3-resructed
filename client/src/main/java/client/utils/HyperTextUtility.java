@@ -3,16 +3,18 @@ package client.utils;
 import client.apps.chat.view.comp.HypSinglePmLabelController;
 import client.apps.chat.view.comp.HyperTextController;
 import client.apps.chat.view.comp.SimpleTextController;
+import client.datatype.BasicController;
 import client.datatype.HyperType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.text.Text;
+import shared.request.RequestListener;
 
 import java.io.IOException;
 import java.util.LinkedList;
 
 public class HyperTextUtility {
 
-    public static LinkedList<Text> getHypText(String text) {
+    public static LinkedList<Text> getHypText(String text, RequestListener listener) {
         LinkedList<Text> texts = new LinkedList<>();
         boolean isWordStarted = false;
         boolean isHyperStarted = false;
@@ -31,7 +33,7 @@ public class HyperTextUtility {
             }
             if (c == ' ') {
                 if (isHyperStarted) {
-                    texts.add(getHypeText(cur, getHypeType(cur), getHypeVal(cur)));
+                    texts.add(getHypeText(cur, getHypeType(cur), getHypeVal(cur), listener));
                     cur = "";
                 }
                 isHyperStarted = false;
@@ -43,7 +45,7 @@ public class HyperTextUtility {
             cur += c;
         }
         if (isHyperStarted) {
-            texts.add(getHypeText(cur, getHypeType(cur), getHypeVal(cur)));
+            texts.add(getHypeText(cur, getHypeType(cur), getHypeVal(cur), listener));
         } else {
             texts.add(getSimpleText(cur));
         }
@@ -93,10 +95,12 @@ public class HyperTextUtility {
         return src;
     }
 
-    public static Text getHypeText(String text, HyperType hyperType, String val) {
+    public static Text getHypeText(String text, HyperType hyperType, String val, RequestListener listener) {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(HypSinglePmLabelController.class.getResource("hypertext.fxml"));
-        fxmlLoader.setController(new HyperTextController(text, hyperType, val));
+        HyperTextController basicController = new HyperTextController(text, hyperType, val);
+        basicController.setListener(listener);
+        fxmlLoader.setController(basicController);
         try {
             return fxmlLoader.load();
         } catch (IOException e) {

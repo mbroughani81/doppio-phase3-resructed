@@ -115,10 +115,10 @@ public class ChatRootController extends BasicController implements Initializable
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(SinglePmLabelController.class.getResource("hypsinglepmlabel.fxml"));
                     HypSinglePmLabelController singlePmLabelController = new HypSinglePmLabelController(pm);
+                    this.addToChildControllers(singlePmLabelController);
                     fxmlLoader.setController(singlePmLabelController);
                     try {
-                        pmHolder.getChildren().add(fxmlLoader.load());
-                        this.addToChildControllers(singlePmLabelController);
+                        pmHolder.getChildren().add(fxmlLoader.load());;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

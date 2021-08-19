@@ -90,7 +90,7 @@ public class SingleTweetLabelController extends BasicController implements Initi
             tweetTextLabel.setText(singleTweet.getText());
         }
         profileLabel.setText("");
-        // load the tweet pics
+        // load the profile pics
         if (DoppioApp.getFileModelController().profileExists(singleTweet.getUserId())) {
             ImageView view;
             File img = new File(DoppioApp.getFileModelController().getProfilePicPath(
@@ -113,7 +113,7 @@ public class SingleTweetLabelController extends BasicController implements Initi
             view.setFitHeight(40);
             profileLabel.setGraphic(view);
         }
-        // load the tweet image
+        // load the tweet pics
         if (DoppioApp.getFileModelController().tweetExists(singleTweet.getTweetId())) {
             ImageView view;
             File img = new File(DoppioApp.getFileModelController().getTweetPicPath(

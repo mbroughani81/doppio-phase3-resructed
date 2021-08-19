@@ -127,8 +127,8 @@ public class HypSinglePmLabelController extends BasicController implements Initi
                     e.printStackTrace();
                 }
                 view = new ImageView(new Image(isImage));
+                view.setPreserveRatio(true);
                 view.setFitWidth(400);
-                view.setFitHeight(400);
                 pmPicLabel.setGraphic(view);
 
                 lastPmImageUpdate = LocalDateTime.now();

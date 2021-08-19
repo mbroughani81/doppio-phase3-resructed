@@ -121,8 +121,8 @@ public class SingleTweetLabelController extends BasicController implements Initi
                 e.printStackTrace();
             }
             view = new ImageView(new Image(isImage));
+            view.setPreserveRatio(true);
             view.setFitWidth(400);
-            view.setFitHeight(400);
             tweetimagelabel.setGraphic(view);
         } else {
 //            ImageView view;

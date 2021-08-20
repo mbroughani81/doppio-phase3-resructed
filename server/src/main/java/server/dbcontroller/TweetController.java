@@ -131,7 +131,7 @@ public class TweetController extends AbstractController {
         LinkedList<SingleTweet> tweets = new LinkedList<>();
         for (Tweet tweet : context.Tweets.all()) {
             User user = context.Users.get(tweet.getCreatorId());
-            if (user.getUsername().equals("ghostuser"))
+            if (!user.isAlive())
                 continue;
             if (!mutedUserList.getUserIds().contains(user.getId()) &&
                     !blockList.getList().contains(user.getMutedUserListId()) &&
@@ -145,6 +145,8 @@ public class TweetController extends AbstractController {
         // add retweeted
         for (int userId : context.FollowingLists.get(userr.getFollowingListId()).getList()) {
             User u = context.Users.get(userId);
+//            if (!u.isAlive())
+//                continue;
             for (int tweetId : context.RetweetedTweetLists.get(u.getRetweetedTweetListId()).getTweetIds()) {
                 Tweet tweet = context.Tweets.get(tweetId);
                 User user = context.Users.get(tweet.getCreatorId());
@@ -169,14 +171,13 @@ public class TweetController extends AbstractController {
         LinkedList<Tweet> tweets = new LinkedList<>();
         for (Tweet tweet : context.Tweets.all()) {
             User user = context.Users.get(tweet.getCreatorId());
-            if (user.getUsername().equals("ghostuser"))
+            if (!user.isActive() || !user.isAlive())
                 continue;
             Profile profile = context.Profiles.get(user.getProfileId());
-            if (
-                    profile.getPrivacy() == Privacy.PUBLIC &&
-                            !mutedUserList.getUserIds().contains(user.getId()) &&
-                            !blockList.getList().contains(user.getMutedUserListId()) &&
-                            tweet.getSpamCounter() < 3
+            if (profile.getPrivacy() == Privacy.PUBLIC &&
+                    !mutedUserList.getUserIds().contains(user.getId()) &&
+                    !blockList.getList().contains(user.getMutedUserListId()) &&
+                    tweet.getSpamCounter() < 3
             ) {
                 tweets.add(tweet);
             }

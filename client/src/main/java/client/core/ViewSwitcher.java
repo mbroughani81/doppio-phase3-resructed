@@ -22,9 +22,9 @@ import shared.request.RequestListener;
 import shared.response.*;
 
 import java.io.IOException;
-import java.util.LinkedList;
 
 public class ViewSwitcher {
+
     private Scene scene;
     private Stage stage;
     private RequestListener requestListener;
@@ -309,6 +309,7 @@ public class ViewSwitcher {
         this.requestListener = requestListener;
     }
 
+    // update actions
     public void updateSignupPage(SignupResponse signupResponse) {
         if (lastController instanceof SignupController) {
             Platform.runLater(() ->
@@ -358,7 +359,6 @@ public class ViewSwitcher {
     }
 
     public void updateNotificationPage(GetNotificationPageResponse getNotificationPageResponse) {
-//        System.out.println("I shoult update notification page");
         if (lastController instanceof  NotificationPageController) {
             ((NotificationPageController)lastController).updatePage(getNotificationPageResponse);
         }
@@ -383,7 +383,7 @@ public class ViewSwitcher {
     }
 
     public void loginOkAction() {
-        Platform.runLater(() -> {getInstance().switchTo(new Page(View.MAINPAGE, -1));});
+        Platform.runLater(() -> getInstance().switchTo(new Page(View.MAINPAGE, -1)));
     }
 
     public void showDisconnectionMessage(){

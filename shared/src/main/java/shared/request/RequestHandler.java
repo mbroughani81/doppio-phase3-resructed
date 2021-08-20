@@ -25,6 +25,10 @@ public interface RequestHandler {
     Response changePhonenumber(ChangePhonenumberRequest changePhonenumberRequest);
     Response changeBirthday(ChangeBirthdayRequest changeBirthdayRequest);
     Response changeProfile(ChangeProfileRequest changeProfileRequest);
+    Response changeActivity(ChangeActivityRequest changeActivityRequest);
+    Response changePassword(ChangePasswordRequest changePasswordRequest);
+    Response changePrivacy(ChangePrivacyRequest changePrivacyRequest);
+    Response changeLastseen(ChangeLastseenprivacyRequest changeLastseenprivacyRequest);
     Response editPm(EditPmRequest editPmRequest);
     Response deletePm(DeletePmRequest deletePmRequest);
     Response getTimeline(GetTimelineRequest getTimelineRequest);

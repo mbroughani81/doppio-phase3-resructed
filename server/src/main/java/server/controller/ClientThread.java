@@ -282,6 +282,38 @@ public class ClientThread extends Thread implements RequestHandler {
     }
 
     @Override
+    public Response changeActivity(ChangeActivityRequest changeActivityRequest) {
+        LogManager.getLogger(ClientThread.class).info("ChangeActivityRequest is getting handled");
+
+        authController.changeActivity(changeActivityRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
+    public Response changePassword(ChangePasswordRequest changePasswordRequest) {
+        LogManager.getLogger(ClientThread.class).info("ChangePasswordRequest is getting handled");
+
+        authController.changePassword(changePasswordRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
+    public Response changePrivacy(ChangePrivacyRequest changePrivacyRequest) {
+        LogManager.getLogger(ClientThread.class).info("ChangePrivacyRequest is getting handled");
+
+        authController.changePrivacy(changePrivacyRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
+    public Response changeLastseen(ChangeLastseenprivacyRequest changeLastseenprivacyRequest) {
+        LogManager.getLogger(ClientThread.class).info("ChangeLastseenprivacyRequest is getting handled");
+
+        authController.changeLastseen(changeLastseenprivacyRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
     public Response getTimeline(GetTimelineRequest getTimelineRequest) {
         LogManager.getLogger(ClientThread.class).info("GetTimelineRequest is getting handled");
         User u = authController.getUserWithAuthToken(getTimelineRequest.getAuthToken());

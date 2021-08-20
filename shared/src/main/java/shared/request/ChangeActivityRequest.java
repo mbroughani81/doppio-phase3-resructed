@@ -8,7 +8,7 @@ public class ChangeActivityRequest extends Request {
 
     @Override
     public Response handle(RequestHandler requestHandler) {
-        return null;
+        return requestHandler.changeActivity(this);
     }
 
     public ChangeActivityRequest(boolean activity) {

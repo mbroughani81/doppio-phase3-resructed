@@ -9,7 +9,7 @@ public class ChangePrivacyRequest extends Request {
 
     @Override
     public Response handle(RequestHandler requestHandler) {
-        return null;
+        return requestHandler.changePrivacy(this);
     }
 
     public ChangePrivacyRequest(Privacy privacy) {

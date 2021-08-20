@@ -97,6 +97,40 @@ public class AuthController extends AbstractController {
         LogManager.getLogger(AuthController.class).info("bio is changed " + user.toString());
     }
 
+    public void changeActivity(ChangeActivityRequest changeActivityRequest) {
+        User user = getUserWithAuthToken(changeActivityRequest.getAuthToken());
+        user.setActive(changeActivityRequest.isActivity());
+        context.Users.update(user);
+
+        LogManager.getLogger(AuthController.class).info("activity is changed " + user.toString());
+    }
+
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
+        User user = getUserWithAuthToken(changePasswordRequest.getAuthToken());
+        user.setPassword(changePasswordRequest.getPassword());
+        context.Users.update(user);
+
+        LogManager.getLogger(AuthController.class).info("password is changed " + user.toString());
+    }
+
+    public void changePrivacy(ChangePrivacyRequest changePrivacyRequest) {
+        User user = getUserWithAuthToken(changePrivacyRequest.getAuthToken());
+        Profile profile = context.Profiles.get(user.getProfileId());
+        profile.setPrivacy(changePrivacyRequest.getPrivacy());
+        context.Profiles.update(profile);
+
+        LogManager.getLogger(AuthController.class).info("privacy is changed " + user.toString());
+    }
+
+    public void changeLastseen(ChangeLastseenprivacyRequest changeLastseenprivacyRequest) {
+        User user = getUserWithAuthToken(changeLastseenprivacyRequest.getAuthToken());
+        Profile profile = context.Profiles.get(user.getProfileId());
+        profile.setLastSeenPrivacy(changeLastseenprivacyRequest.getLastSeenPrivacy());
+        context.Profiles.update(profile);
+
+        LogManager.getLogger(AuthController.class).info("lastseen is changed " + user.toString());
+    }
+
     public void newBlock(NewBlockRequest newBlockRequest) {
         User blocker = getUserWithAuthToken(newBlockRequest.getAuthToken());
         BlockList blockList = context.BlockLists.get(blocker.getBlockListId());

@@ -8,7 +8,7 @@ public class ChangePasswordRequest extends Request {
 
     @Override
     public Response handle(RequestHandler requestHandler) {
-        return null;
+        return requestHandler.changePassword(this);
     }
 
     public ChangePasswordRequest(String password) {

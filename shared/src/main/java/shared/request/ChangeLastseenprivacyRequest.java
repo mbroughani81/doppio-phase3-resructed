@@ -9,7 +9,7 @@ public class ChangeLastseenprivacyRequest extends Request {
 
     @Override
     public Response handle(RequestHandler requestHandler) {
-        return null;
+        return requestHandler.changeLastseen(this);
     }
 
     public ChangeLastseenprivacyRequest(LastSeenPrivacy lastSeenPrivacy) {

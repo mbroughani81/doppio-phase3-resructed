@@ -17,6 +17,7 @@ public class SettingController extends MainPageController {
     public void setSettingRoot(Parent root, SettingRootController settingRootController) {
         setCenter(root);
         this.settingRootController = settingRootController;
+        this.addToChildControllers(settingRootController);
     }
 
     @Override

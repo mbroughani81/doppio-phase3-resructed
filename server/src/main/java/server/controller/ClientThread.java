@@ -399,9 +399,14 @@ public class ClientThread extends Thread implements RequestHandler {
     @Override
     public Response getNotificationPage(GetNotificationPageRequest getNotificationPageRequest) {
         LogManager.getLogger(ClientThread.class).info("GetNotificationPageRequest is getting handled");
+        User user = authController.getUserWithAuthToken(getNotificationPageRequest.getAuthToken());
 
-        LinkedList<SingleFollowNotification> singleFollowNotifications = new LinkedList<>();
-        LinkedList<SingleSystemNotification> singleSystemNotifications = new LinkedList<>();
+        LinkedList<SingleFollowNotification> singleFollowNotifications = socialController.getFollowNotification(
+                user.getId()
+        );
+        LinkedList<SingleSystemNotification> singleSystemNotifications = socialController.getSystemNotification(
+                user.getId()
+        );
         GetNotificationPageResponse response = new GetNotificationPageResponse(
                 singleFollowNotifications,
                 singleSystemNotifications

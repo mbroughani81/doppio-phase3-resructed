@@ -360,7 +360,10 @@ public class ViewSwitcher {
     }
 
     public void updateNotificationPage(GetNotificationPageResponse getNotificationPageResponse) {
-        System.out.println("I shoult update notification page");
+//        System.out.println("I shoult update notification page");
+        if (lastController instanceof  NotificationPageController) {
+            ((NotificationPageController)lastController).updatePage(getNotificationPageResponse);
+        }
     }
 
     public void updateProfile(GetProfileResponse getProfileResponse) {

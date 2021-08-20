@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+
+
+<HBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="notificationText" text="Label" />
+      <Region HBox.hgrow="ALWAYS" />
+      <HBox fx:id="buttonHolder">
+         <children>
+            <Button fx:id="yesButton" mnemonicParsing="false" onAction="#yesButtonClicked" text="YES" />
+            <Button fx:id="noButton" mnemonicParsing="false" onAction="#noButtonClicked" text="NO" />
+            <Button fx:id="noSilentButton" mnemonicParsing="false" onAction="#noSilentButtonClicked" text="no" />
+         </children>
+      </HBox>
+   </children>
+</HBox>

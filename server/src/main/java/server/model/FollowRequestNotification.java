@@ -2,14 +2,14 @@ package server.model;
 
 public class FollowRequestNotification {
     private int id;
-    private int followerId;
-    private int followingId;
+    private String followerUsername;
+    private String followedUsername;
 
-    public FollowRequestNotification(int followerId, int followingId) {
+    public FollowRequestNotification(String followerUsername, String followedUsername) {
         this.id = -1;
 
-        this.followerId = followerId;
-        this.followingId = followingId;
+        this.followerUsername = followerUsername;
+        this.followedUsername = followedUsername;
     }
 
     public int getId() {
@@ -20,19 +20,19 @@ public class FollowRequestNotification {
         this.id = id;
     }
 
-    public int getFollowerId() {
-        return followerId;
+    public String getFollowerUsername() {
+        return followerUsername;
     }
 
-    public void setFollowerId(int followerId) {
-        this.followerId = followerId;
+    public void setFollowerUsername(String followerUsername) {
+        this.followerUsername = followerUsername;
     }
 
-    public int getFollowingId() {
-        return followingId;
+    public String getFollowedUsername() {
+        return followedUsername;
     }
 
-    public void setFollowingId(int followingId) {
-        this.followingId = followingId;
+    public void setFollowedUsername(String followedUsername) {
+        this.followedUsername = followedUsername;
     }
 }

@@ -5,6 +5,7 @@ import shared.response.Response;
 public interface RequestHandler {
     Response signupUser(SignupRequest signupRequest);
     Response loginUser(LoginRequest loginRequest);
+    Response deleteUser(DeleteAccountRequest deleteAccountRequest);
     Response newPrivateChat(NewPrivateChatRequest newPrivateChatRequest);
     Response newTweet(NewTweetRequest newTweetRequest);
     Response newPm(NewPmRequest newPmRequest);

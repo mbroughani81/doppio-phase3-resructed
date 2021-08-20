@@ -97,6 +97,11 @@ public class ClientThread extends Thread implements RequestHandler {
     }
 
     @Override
+    public Response deleteUser(DeleteAccountRequest deleteAccountRequest) {
+        return new CheckConnectionResponse();
+    }
+
+    @Override
     public Response newPrivateChat(NewPrivateChatRequest newPrivateChatRequest) {
         LogManager.getLogger(ClientThread.class).info("NewPrivateChatRequest is getting handled");
 

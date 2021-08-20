@@ -49,7 +49,7 @@ public class SettingRootController extends BasicController implements Initializa
 
     @FXML
     void deleteaccountButtonClicked(ActionEvent event) {
-
+        getListener().listen(new DeleteAccountRequest());
     }
 
     @FXML

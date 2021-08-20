@@ -5,6 +5,6 @@ import shared.response.Response;
 public class DeleteAccountRequest extends Request {
     @Override
     public Response handle(RequestHandler requestHandler) {
-        return null;
+        return requestHandler.deleteUser(this);
     }
 }

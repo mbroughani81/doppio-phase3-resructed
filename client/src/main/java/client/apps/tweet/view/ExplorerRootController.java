@@ -1,6 +1,7 @@
 package client.apps.tweet.view;
 
 import client.apps.tweet.view.comp.SingleTweetLabelController;
+import client.config.apps.tweet.ExplorerRootConfig;
 import client.datatype.BasicController;
 import client.utils.SingleTweetUtility;
 import shared.model.SingleTweet;
@@ -48,11 +49,12 @@ public class ExplorerRootController extends BasicController {
             return;
         curTweets = tweets;
 
+        ExplorerRootConfig explorerRootConfig = new ExplorerRootConfig();
         tweetHolder.getChildren().clear();
         this.clearChildControllers();
         for (SingleTweet tweet : tweets) {
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(SingleTweetLabelController.class.getResource("singletweetlabel.fxml"));
+            fxmlLoader.setLocation(SingleTweetLabelController.class.getResource(explorerRootConfig.getSingleTweetLabelFxmlFilename()));
             SingleTweetLabelController singleTweetLabelController = new SingleTweetLabelController(
                     tweet
             );

@@ -1,0 +1,1 @@
+singleTweetLabelFxmlFilename=singletweetlabel.fxml

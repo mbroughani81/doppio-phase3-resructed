@@ -24,11 +24,6 @@ public class TweetPageController extends MainPageController {
     }
 
     @Override
-    public Runnable getUpdateAction() {
-        return super.getUpdateAction();
-    }
-
-    @Override
     public Runnable getRequestAction() {
         return () -> {
             getListener().listen(new GetTweetPageRequest(tweetId));

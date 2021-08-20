@@ -8,6 +8,8 @@ import java.util.Properties;
 
 public class ExplorerRootConfig {
 
+    private String singleTweetLabelFxmlFilename;
+
     public ExplorerRootConfig() {
         try {
             setProperties();
@@ -22,7 +24,10 @@ public class ExplorerRootConfig {
         FileReader fileReader = new FileReader(mainConfig.getExplorerrootConfigPath());
         properties.load(fileReader);
 
-
+        singleTweetLabelFxmlFilename = properties.getProperty("singleTweetLabelFxmlFilename");
     }
 
+    public String getSingleTweetLabelFxmlFilename() {
+        return singleTweetLabelFxmlFilename;
+    }
 }

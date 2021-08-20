@@ -8,6 +8,8 @@ import java.util.Properties;
 
 public class TweetPageRootConfig {
 
+    private String singleTweetLabelFxmlFilename;
+
     public TweetPageRootConfig() {
         try {
             setProperties();
@@ -22,6 +24,10 @@ public class TweetPageRootConfig {
         FileReader fileReader = new FileReader(mainConfig.getTweetpagerootConfigPath());
         properties.load(fileReader);
 
+        singleTweetLabelFxmlFilename = properties.getProperty("singleTweetLabelFxmlFilename");
     }
 
+    public String getSingleTweetLabelFxmlFilename() {
+        return singleTweetLabelFxmlFilename;
+    }
 }

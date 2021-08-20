@@ -5,13 +5,14 @@ import client.core.ViewSwitcher;
 import client.datatype.BasicController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import shared.request.ExplorerSearchIdRequest;
-import shared.request.ExplorerSearchRequest;
-import shared.request.GetProfilePicRequest;
+import shared.request.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,17 +24,21 @@ import java.util.ResourceBundle;
 public class SingleUserLabelController extends BasicController implements Initializable {
 
     private int userId;
+    private String type;
 
     @FXML
     private Label profileLabel;
 
     @FXML
     void profileLabelClicked(MouseEvent event) {
-        getListener().listen(new ExplorerSearchIdRequest(userId));
+        if (event.getButton() == MouseButton.PRIMARY) {
+            getListener().listen(new ExplorerSearchIdRequest(userId));
+        }
     }
 
-    public SingleUserLabelController(int userId) {
+    public SingleUserLabelController(int userId, String type) {
         this.userId = userId;
+        this.type = type;
     }
 
     @Override
@@ -63,5 +68,16 @@ public class SingleUserLabelController extends BasicController implements Initia
         }
         // ask for image to load in furthur openings
         getListener().listen(new GetProfilePicRequest(userId));
+
+        //
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem unblockItem = new MenuItem("unblock");
+        unblockItem.setOnAction((event) -> {
+            getListener().listen(new NewUnblockRequest(userId));
+        });
+        if (type.equals("blacklist")) {
+            contextMenu.getItems().add(unblockItem);
+        }
+        profileLabel.setContextMenu(contextMenu);
     }
 }

@@ -33,7 +33,8 @@ public class ShowlistRootController extends BasicController {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(SingleUserLabelController.class.getResource("singleuserlabel.fxml"));
             SingleUserLabelController singleUserLabelController = new SingleUserLabelController(
-                    user.getUserId()
+                    user.getUserId(),
+                    "following"
             );
             singleUserLabelController.setListener(getListener());
             fxmlLoader.setController(singleUserLabelController);
@@ -47,7 +48,8 @@ public class ShowlistRootController extends BasicController {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(SingleUserLabelController.class.getResource("singleuserlabel.fxml"));
             SingleUserLabelController singleUserLabelController = new SingleUserLabelController(
-                    user.getUserId()
+                    user.getUserId(),
+                    "follower"
             );
             singleUserLabelController.setListener(getListener());
             fxmlLoader.setController(singleUserLabelController);
@@ -61,7 +63,8 @@ public class ShowlistRootController extends BasicController {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(SingleUserLabelController.class.getResource("singleuserlabel.fxml"));
             SingleUserLabelController singleUserLabelController = new SingleUserLabelController(
-                    user.getUserId()
+                    user.getUserId(),
+                    "blacklist"
             );
             singleUserLabelController.setListener(getListener());
             fxmlLoader.setController(singleUserLabelController);

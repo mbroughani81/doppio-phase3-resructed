@@ -206,6 +206,12 @@ public class ClientThread extends Thread implements RequestHandler {
     }
 
     @Override
+    public Response newUnblock(NewUnblockRequest newUnblockRequest) {
+        authController.newUnblock(newUnblockRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
     public Response newMute(NewMuteRequest newMuteRequest) {
         authController.newMute(newMuteRequest);
         return new CheckConnectionResponse();

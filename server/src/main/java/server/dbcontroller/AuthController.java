@@ -140,6 +140,13 @@ public class AuthController extends AbstractController {
         context.BlockLists.update(blockList);
     }
 
+    public void newUnblock(NewUnblockRequest newUnblockRequest) {
+        User blocker = getUserWithAuthToken(newUnblockRequest.getAuthToken());
+        BlockList blockList = context.BlockLists.get(blocker.getBlockListId());
+        blockList.getList().remove((Object) newUnblockRequest.getUserId());
+        context.BlockLists.update(blockList);
+    }
+
     public void newMute(NewMuteRequest newMuteRequest) {
         User muter = getUserWithAuthToken(newMuteRequest.getAuthToken());
         MutedUserList mutedUserList = context.MutedUserLists.get(muter.getMutedUserListId());

@@ -27,6 +27,7 @@ public class MainConfig {
     private String newtweetrootConfigPath;
     private String tweetpagerootConfigPath;
     private String tweetrootConfigPath;
+    private String singletweetlabelConfigPath;
 
     public MainConfig() {
         try {
@@ -60,7 +61,7 @@ public class MainConfig {
         newtweetrootConfigPath = properties.getProperty("newtweetrootConfigPath");
         tweetpagerootConfigPath = properties.getProperty("tweetpagerootConfigPath");
         tweetrootConfigPath = properties.getProperty("tweetrootConfigPath");
-
+        singletweetlabelConfigPath = properties.getProperty("singletweetlabelConfigPath");
     }
 
     public String getSocketConfigPath() {
@@ -137,5 +138,9 @@ public class MainConfig {
 
     public String getTweetrootConfigPath() {
         return tweetrootConfigPath;
+    }
+
+    public String getSingletweetlabelConfigPath() {
+        return singletweetlabelConfigPath;
     }
 }

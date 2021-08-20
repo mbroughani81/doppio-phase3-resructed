@@ -1,9 +1,11 @@
 package client.apps.tweet.view.comp;
 
+import client.config.apps.tweet.SingleTweetLabelConfig;
 import client.core.DoppioApp;
 import client.core.ViewSwitcher;
 import client.datatype.BasicController;
 import client.datatype.Page;
+import client.datatype.PicType;
 import client.datatype.View;
 import client.dbcontroller.FileModelController;
 import javafx.event.ActionEvent;
@@ -17,6 +19,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import shared.model.SingleTweet;
 import shared.request.*;
 
@@ -83,8 +87,10 @@ public class SingleTweetLabelController extends BasicController implements Initi
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        SingleTweetLabelConfig config = new SingleTweetLabelConfig();
         if (singleTweet.getRetweeterUsername() != null) {
-            tweetTextLabel.setText("Retweeted by " + singleTweet.getRetweeterUsername() + "\n"
+            tweetTextLabel.setText(config.getRetweetText() + singleTweet.getRetweeterUsername() + "\n"
                     + singleTweet.getText());
         } else {
             tweetTextLabel.setText(singleTweet.getText());
@@ -103,15 +109,13 @@ public class SingleTweetLabelController extends BasicController implements Initi
                 e.printStackTrace();
             }
             view = new ImageView(new Image(isImage));
-            view.setFitWidth(40);
-            view.setFitHeight(40);
+            view.setFitWidth(config.getProfileSize());
+            view.setFitHeight(config.getProfileSize());
             profileLabel.setGraphic(view);
         } else {
-            ImageView view;
-            view = new ImageView(new Image("iliya1.png"));
-            view.setFitWidth(40);
-            view.setFitHeight(40);
-            profileLabel.setGraphic(view);
+            Rectangle rectangle = new Rectangle(config.getProfileSize(), config.getProfileSize());
+            rectangle.setFill(Paint.valueOf(config.getDefaultProfileColor()));
+            profileLabel.setGraphic(rectangle);
         }
         // load the tweet pics
         if (DoppioApp.getFileModelController().tweetExists(singleTweet.getTweetId())) {
@@ -127,44 +131,37 @@ public class SingleTweetLabelController extends BasicController implements Initi
             }
             view = new ImageView(new Image(isImage));
             view.setPreserveRatio(true);
-            view.setFitWidth(400);
+            view.setFitWidth(config.getTweetPicFitWidth());
             tweetimagelabel.setGraphic(view);
-        } else {
-//            ImageView view;
-//            view = new ImageView(new Image("iliya1.png"));
-//            view.setFitWidth(100);
-//            view.setFitHeight(400);
-//            profileLabel.setGraphic(view);
         }
-
         // setting context meni
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem saveToSavedMessagesItem = new MenuItem("save to saved messages");
+        MenuItem saveToSavedMessagesItem = new MenuItem(config.getSavetosavedmessagedItemText());
         saveToSavedMessagesItem.setOnAction((event) -> {
-            System.out.println("save to saved clickec" + singleTweet.getText());
+//            System.out.println("save to saved clickec" + singleTweet.getText());
             getListener().listen(new SaveTweetInSavedMessageRequest(singleTweet.getTweetId()));
         });
-        MenuItem forwardItem = new MenuItem("forward");
+        MenuItem forwardItem = new MenuItem(config.getForwardItemText());
         forwardItem.setOnAction((event) -> {
-            System.out.println("forward clicked" + singleTweet.getText());
+//            System.out.println("forward clicked" + singleTweet.getText());
 //            openDeleteDialog();
         });
 
 
-        MenuItem blockItem = new MenuItem("block");
+        MenuItem blockItem = new MenuItem(config.getBlockItemText());
         blockItem.setOnAction((event) -> {
-            System.out.println("block clicked" + singleTweet.getText());
+//            System.out.println("block clicked" + singleTweet.getText());
             getListener().listen(new NewBlockRequest(singleTweet.getUserId()));
         });
-        MenuItem muteItem = new MenuItem("mute");
+        MenuItem muteItem = new MenuItem(config.getMuteItemText());
         muteItem.setOnAction((event) -> {
-            System.out.println("mute clicked" + singleTweet.getText());
+//            System.out.println("mute clicked" + singleTweet.getText());
             getListener().listen(new NewMuteRequest(singleTweet.getUserId()));
         });
 
-        MenuItem reportSpamItem = new MenuItem("report spam");
+        MenuItem reportSpamItem = new MenuItem(config.getReportItemText());
         reportSpamItem.setOnAction((event) -> {
-            System.out.println("report clicked" + singleTweet.getText());
+//            System.out.println("report clicked" + singleTweet.getText());
             getListener().listen(new NewReportSpamRequest(singleTweet.getTweetId()));
         });
 
@@ -181,10 +178,10 @@ public class SingleTweetLabelController extends BasicController implements Initi
     @Override
     public Runnable getRequestAction() {
         return () -> {
-            if (FileModelController.canUpdate("profilepics/" + singleTweet.getUserId() + ".jpg")) {
+            if (FileModelController.canUpdate(PicType.PROFILE.getFolderName() + singleTweet.getUserId())) {
                 getListener().listen(new GetProfilePicRequest(singleTweet.getUserId()));
             }
-            if (FileModelController.canUpdate("tweetpics/" + singleTweet.getTweetId() + ".jpg")) {
+            if (FileModelController.canUpdate(PicType.TWEET.getFolderName() + singleTweet.getTweetId())) {
                 getListener().listen(new GetTweetPicRequest(singleTweet.getTweetId()));
             }
         };

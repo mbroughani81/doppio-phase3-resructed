@@ -17,3 +17,4 @@ explorerrootConfigPath=src/main/resources/config/apps/tweet/explorerrootConfig.t
 newtweetrootConfigPath=src/main/resources/config/apps/tweet/newtweetrootConfigPath.txt
 tweetpagerootConfigPath=src/main/resources/config/apps/tweet/tweetpagerootConfig.txt
 tweetrootConfigPath=src/main/resources/config/apps/tweet/tweetrootConfig.txt
+singletweetlabelConfigPath=src/main/resources/config/apps/tweet/singletweetlabelConfig.txt

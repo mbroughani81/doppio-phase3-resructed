@@ -1,0 +1,9 @@
+retweetText=Retweeted by\u0020
+profileSize=40
+defaultProfileColor=#fa7e5c
+tweetPicFitWidth=400
+savetosavedmessagedItemText=save to saved messages
+forwardItemText=forward
+blockItemText=block
+muteItemText=mute
+reportItemText=report spam

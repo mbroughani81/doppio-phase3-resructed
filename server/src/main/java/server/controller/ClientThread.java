@@ -38,6 +38,11 @@ public class ClientThread extends Thread implements RequestHandler {
         LogManager.getLogger(ClientThread.class).debug("ClientThread run is started");
         while (running) {
             Request request = sender.getRequest();
+            if (request == null) {
+                LogManager.getLogger(ClientThread.class).info("client got disconnected");
+                System.out.println("Client is gone...");
+                break;
+            }
             sender.sendResponse(request.handle(this));
         }
     }

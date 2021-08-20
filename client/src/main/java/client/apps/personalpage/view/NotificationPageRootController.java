@@ -1,6 +1,7 @@
 package client.apps.personalpage.view;
 
 import client.apps.personalpage.view.comp.FollowNotificationLabelController;
+import client.apps.personalpage.view.comp.SystemNotificationLabelController;
 import client.datatype.BasicController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +24,8 @@ public class NotificationPageRootController extends BasicController {
                            LinkedList<SingleSystemNotification> systemNotifications) {
 
         follownotificationHolder.getChildren().clear();
-        System.out.println(followNotifications.size() + " is size");
+        systemnotificationHolder.getChildren().clear();
+//        System.out.println(followNotifications.size() + " is size");
         for(SingleFollowNotification followNotification : followNotifications) {
             FollowNotificationLabelController controller = new FollowNotificationLabelController(followNotification);
             this.addToChildControllers(controller);
@@ -32,6 +34,19 @@ public class NotificationPageRootController extends BasicController {
             fxmlLoader.setController(controller);
             try {
                 follownotificationHolder.getChildren().add(fxmlLoader.load());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for(SingleSystemNotification systemNotification : systemNotifications) {
+            SystemNotificationLabelController controller = new SystemNotificationLabelController(systemNotification);
+            this.addToChildControllers(controller);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(FollowNotificationLabelController.class.getResource("systemnotificationlabel.fxml"));
+            fxmlLoader.setController(controller);
+            try {
+                systemnotificationHolder.getChildren().add(fxmlLoader.load());
             } catch (IOException e) {
                 e.printStackTrace();
             }

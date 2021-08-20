@@ -17,8 +17,11 @@ public class SocialController extends AbstractController {
         FollowerList followerList = context.FollowerLists.get(followed.getFollowersListId());
         if (followerList.getList().contains(follower.getId()) || followed.getId() == follower.getId())
             return;
+
+
         Profile followedProfile = context.Profiles.get(followed.getProfileId());
         if (followedProfile.getPrivacy() == Privacy.PUBLIC) {
+            addSystemNotification(followed.getId(), follower.getUsername() + " started following");
             followerList.getList().add(follower.getId());
             FollowingList followingList = context.FollowingLists.get(follower.getFollowingListId());
             followingList.getList().add(followed.getId());
@@ -45,6 +48,12 @@ public class SocialController extends AbstractController {
                 followed.getUsername()
         );
         context.FollowRequests.add(followRequestNotification);
+    }
+
+    public void addSystemNotification(int userId, String text) {
+        User user = context.Users.get(userId);
+        SystemNotification systemNotification = new SystemNotification(userId, text);
+        context.SystemNotifications.add(systemNotification);
     }
 
     public LinkedList<SingleFollowNotification> getFollowNotification(int userId) {

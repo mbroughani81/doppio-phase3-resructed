@@ -1,5 +1,6 @@
 package client.apps.tweet.view;
 
+import client.config.apps.tweet.NewTweetRootConfig;
 import client.core.ViewSwitcher;
 import client.datatype.BasicController;
 import client.datatype.Page;
@@ -41,10 +42,12 @@ public class NewTweetRootController extends BasicController {
 
     @FXML
     void imageButtonClicked(ActionEvent event) {
+        NewTweetRootConfig newTweetRootConfig = new NewTweetRootConfig();
+
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose tweet pic");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("image", "*.png")
+                new FileChooser.ExtensionFilter(newTweetRootConfig.getFileChooserDescription(),
+                        newTweetRootConfig.getFormats())
         );
         selectedFile = fileChooser.showOpenDialog(imageButton.getScene().getWindow());
     }

@@ -1,0 +1,2 @@
+fileChooserDescription=image
+formats=*.png

@@ -8,6 +8,9 @@ import java.util.Properties;
 
 public class NewTweetRootConfig {
 
+    private String fileChooserDescription;
+    private String formats;
+
     public NewTweetRootConfig() {
         try {
             setProperties();
@@ -22,7 +25,15 @@ public class NewTweetRootConfig {
         FileReader fileReader = new FileReader(mainConfig.getNewtweetrootConfigPath());
         properties.load(fileReader);
 
+        fileChooserDescription = properties.getProperty("fileChooserDescription");
+        formats = properties.getProperty("formats");
     }
 
+    public String getFileChooserDescription() {
+        return fileChooserDescription;
+    }
 
+    public String getFormats() {
+        return formats;
+    }
 }

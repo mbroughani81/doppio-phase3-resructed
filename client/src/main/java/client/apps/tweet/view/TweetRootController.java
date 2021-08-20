@@ -14,8 +14,7 @@ import java.util.LinkedList;
 
 public class TweetRootController extends BasicController {
 
-    LinkedList<SingleTweet> curTweets;
-
+    private LinkedList<SingleTweet> curTweets;
 
     @FXML
     private ScrollPane scrollPane;
@@ -24,23 +23,20 @@ public class TweetRootController extends BasicController {
     private VBox tweetHolder;
 
     public void updateTweetList(LinkedList<SingleTweet> tweets) {
-        if (!SingleTweetUtility.isSingleTweetListChanged(
-                curTweets,
-                tweets
-
-        ))
+        // if nothing changed, move on
+        if (!SingleTweetUtility.isSingleTweetListChanged(curTweets, tweets))
             return;
         curTweets = tweets;
 
-        tweetHolder.getChildren().clear();
         this.clearChildControllers();
+        tweetHolder.getChildren().clear();
         for (SingleTweet tweet : tweets) {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(SingleTweetLabelController.class.getResource("singletweetlabel.fxml"));
             SingleTweetLabelController singleTweetLabelController = new SingleTweetLabelController(
                     tweet
             );
-            singleTweetLabelController.setListener(getListener());
+//            singleTweetLabelController.setListener(getListener());
             fxmlLoader.setController(singleTweetLabelController);
             try {
                 tweetHolder.getChildren().add(fxmlLoader.load());

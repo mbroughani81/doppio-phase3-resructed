@@ -23,25 +23,37 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DoppioApp extends Application implements ResponseHandler {
-    private static RequestSender sender;
-    private final List<Request> requests;
-    private final Loop loop;
-    private final Loop checkConnection;
-    private volatile boolean isConnected = true;
-    private static String username;
 
-    private static SessionModelController sessionModelController = new SessionModelController();
-    private static MessageDataModelController messageDataModelController = new MessageDataModelController();
-    private static ChatModelController chatModelController = new ChatModelController();
-    private static FileModelController fileModelController = new FileModelController();
+    private static RequestSender sender;
+    private static SessionModelController sessionModelController;
+    private static MessageDataModelController messageDataModelController;
+    private static ChatModelController chatModelController;
+    private static FileModelController fileModelController;
+
+    private final List<Request> requests;
+    private final Loop sendRequestLoop;
+    private final Loop checkConnectionLoop;
+    private volatile boolean isConnected = true;
 
     public DoppioApp() throws InterruptedException {
         askNewSocket();
         requests = new LinkedList<>();
-        loop = new Loop(10, this::sendRequests);
-        checkConnection = new Loop(1, () -> {
-            addRequest(new CheckConnection());
-        });
+        sendRequestLoop = new Loop(10, this::sendRequests);
+        checkConnectionLoop = new Loop(1, () -> addRequest(new CheckConnection()));
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        sendRequestLoop.start();
+        checkConnectionLoop.start();
+        ViewSwitcher.getInstance().setListener(this::addRequest);
+        ViewSwitcher.getInstance().setStage(stage);
+
+        resetUser();
+        ViewSwitcher.getInstance().switchTo(new Page(View.LOGIN, -1));
+
+        stage.setOnCloseRequest(e -> System.exit(0));
+        stage.show();
     }
 
     public static void askNewSocket() {
@@ -56,14 +68,11 @@ public class DoppioApp extends Application implements ResponseHandler {
         }
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        loop.start();
-        checkConnection.start();
-        ViewSwitcher.getInstance().setListener(this::addRequest);
-        ViewSwitcher.getInstance().setStage(stage);
-        ViewSwitcher.getInstance().switchTo(new Page(View.LOGIN, -1));
-        stage.show();
+    public static void resetUser() {
+        sessionModelController = new SessionModelController();
+        messageDataModelController = new MessageDataModelController();
+        chatModelController = new ChatModelController();
+        fileModelController = new FileModelController();
     }
 
     private void sendRequests() {
@@ -94,26 +103,6 @@ public class DoppioApp extends Application implements ResponseHandler {
         }
     }
 
-    public static String getUsername() {
-        return username;
-    }
-
-    public static SessionModelController getSessionModelController() {
-        return sessionModelController;
-    }
-
-    public static MessageDataModelController getMessageDataModelController() {
-        return messageDataModelController;
-    }
-
-    public static ChatModelController getChatModelController() {
-        return chatModelController;
-    }
-
-    public static FileModelController getFileModelController() {
-        return fileModelController;
-    }
-
     @Override
     public void checkSignupResponse(SignupResponse signupResponse) {
         if (signupResponse.getErrors().size() == 0) {
@@ -126,7 +115,7 @@ public class DoppioApp extends Application implements ResponseHandler {
     @Override
     public void checkLoginResponse(LoginResponse loginResponse) {
         if (loginResponse.getErrors().size() == 0) {
-            username = loginResponse.getSessionModel().getUsername();
+            String username = loginResponse.getSessionModel().getUsername();
             PathCreator.createClientResource(username);
             sessionModelController.setUsernameDir(username);
             messageDataModelController.setUsernameDir(username);
@@ -205,7 +194,6 @@ public class DoppioApp extends Application implements ResponseHandler {
 
     @Override
     public void updateProfilePic(GetProfilePicResponse getProfilePicResponse) {
-//        System.out.println("new has come : " + (getProfilePicResponse.getImageString() == null));
         fileModelController.updateProfilePic(getProfilePicResponse);
     }
 
@@ -229,5 +217,21 @@ public class DoppioApp extends Application implements ResponseHandler {
     public void socketConnectionInUp(CheckConnectionResponse checkConnectionResponse) {
         isConnected = true;
         ViewSwitcher.getInstance().showConnectionMessage();
+    }
+
+    public static SessionModelController getSessionModelController() {
+        return sessionModelController;
+    }
+
+    public static MessageDataModelController getMessageDataModelController() {
+        return messageDataModelController;
+    }
+
+    public static ChatModelController getChatModelController() {
+        return chatModelController;
+    }
+
+    public static FileModelController getFileModelController() {
+        return fileModelController;
     }
 }

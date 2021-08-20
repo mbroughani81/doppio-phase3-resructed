@@ -270,13 +270,11 @@ public class ViewSwitcher {
                 getInstance().stage.setWidth(500);
                 getInstance().stage.setHeight(500);
             }
-            case MAINPAGE, SETTING, PERSONALPAGE, MESSENGER, CHAT, TIMELINE -> {
+            default -> {
                 getInstance().stage.setWidth(800);
                 getInstance().stage.setHeight(600);
             }
         }
-        getInstance().stage.setX(0);
-        getInstance().stage.setY(0);
     }
 
     private void changeUpdateLoop(View view, BasicController basicController) {

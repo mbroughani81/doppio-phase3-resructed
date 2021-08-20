@@ -32,7 +32,7 @@ public class ProfilePageController extends MainPageController {
 
     public void updateProfile(GetProfileResponse getProfileResponse) {
         if (userId != getProfileResponse.getUserId() &&
-        !DoppioApp.getUsername().equals(getProfileResponse.getUsername()))
+        !DoppioApp.getSessionModelController().getSession().getUsername().equals(getProfileResponse.getUsername()))
             return;
         Platform.runLater(() -> profilePageRootController.updateProfile(getProfileResponse));
     }

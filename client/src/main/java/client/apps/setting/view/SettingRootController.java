@@ -1,7 +1,11 @@
 package client.apps.setting.view;
 
 import client.config.apps.setting.SettingRootConfig;
+import client.core.DoppioApp;
+import client.core.ViewSwitcher;
 import client.datatype.BasicController;
+import client.datatype.Page;
+import client.datatype.View;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -80,7 +84,8 @@ public class SettingRootController extends BasicController implements Initializa
 
     @FXML
     void logoutButtonClicked(ActionEvent event) {
-
+        DoppioApp.resetUser();
+        ViewSwitcher.getInstance().switchTo(new Page(View.LOGIN, -1));
     }
 
     @FXML

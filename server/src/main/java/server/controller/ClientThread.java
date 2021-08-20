@@ -98,6 +98,9 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response deleteUser(DeleteAccountRequest deleteAccountRequest) {
+        LogManager.getLogger(ClientThread.class).info("DeleteAccountRequest is getting handled");
+
+        authController.deleteUser(deleteAccountRequest);
         return new CheckConnectionResponse();
     }
 

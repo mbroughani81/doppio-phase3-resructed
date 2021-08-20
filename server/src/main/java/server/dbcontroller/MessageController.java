@@ -125,7 +125,7 @@ public class MessageController extends AbstractController {
         MessageData messageData = context.MessageDatas.get(user.getMessageDataId());
         messageData.getChatIds().remove((Object) requestChat.getId());
         context.MessageDatas.update(messageData);
-        // we can delete the chat form data base now.
+        // we can delete the chat form database now.
         context.Chats.remove(requestChat.getId());
         //
         int newParentId = -1;

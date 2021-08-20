@@ -53,9 +53,9 @@ public class SettingRootController extends BasicController implements Initializa
 
     @FXML
     void deleteaccountButtonClicked(ActionEvent event) {
+        getListener().listen(new DeleteAccountRequest(DoppioApp.getSessionModelController().getSession().getUserId()));
         DoppioApp.resetUser();
         ViewSwitcher.getInstance().switchTo(new Page(View.LOGIN, -1));
-        getListener().listen(new DeleteAccountRequest());
     }
 
     @FXML

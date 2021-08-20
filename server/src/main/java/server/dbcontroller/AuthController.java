@@ -149,6 +149,33 @@ public class AuthController extends AbstractController {
         context.MutedUserLists.update(mutedUserList);
     }
 
+    public void deleteUser(DeleteAccountRequest deleteAccountRequest) {
+        // delete from blocklist, followerlists, followinglists
+        // warning : authtoken may not be valid
+        AuthController authController = new AuthController();
+        User user = authController.getUser(deleteAccountRequest.getUserId());
+        Profile profile = context.Profiles.get(user.getProfileId());
+        for (BlockList blockList : context.BlockLists.all()) {
+            blockList.getList().remove((Object)user.getId());
+            context.BlockLists.update(blockList);
+        }
+        for (FollowerList followerList : context.FollowerLists.all()) {
+            followerList.getList().remove((Object)user.getId());
+            context.FollowerLists.update(followerList);
+        }
+        for (FollowingList followingList : context.FollowingLists.all()) {
+            followingList.getList().remove((Object)user.getId());
+            context.FollowingLists.update(followingList);
+        }
+        // change username and profile
+        user.setUsername("ghostuser" + user.getId());
+        user.setActive(false);
+        profile.setEmail(user.getUsername());
+        profile.setPhoneNumber(user.getUsername());
+        context.Users.update(user);
+        context.Profiles.update(profile);
+    }
+
     public User getUser(String username) {
         for (User user : context.Users.all()) {
             if (user.getUsername().equals(username))

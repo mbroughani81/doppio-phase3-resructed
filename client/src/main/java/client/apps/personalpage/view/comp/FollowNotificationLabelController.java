@@ -8,6 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import shared.model.SingleFollowNotification;
+import shared.request.NewAcceptRequest;
+import shared.request.NewDeclineRequest;
+import shared.request.NewSilentDeclineRequest;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,17 +36,17 @@ public class FollowNotificationLabelController extends BasicController implement
 
     @FXML
     void noButtonClicked(ActionEvent event) {
-
+        getListener().listen(new NewDeclineRequest(singleFollowNotification));
     }
 
     @FXML
     void noSilentButtonClicked(ActionEvent event) {
-
+        getListener().listen(new NewSilentDeclineRequest(singleFollowNotification));
     }
 
     @FXML
     void yesButtonClicked(ActionEvent event) {
-
+        getListener().listen(new NewAcceptRequest(singleFollowNotification));
     }
 
     @Override

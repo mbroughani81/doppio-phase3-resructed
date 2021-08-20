@@ -393,8 +393,10 @@ public class ViewSwitcher {
     }
 
     public void showConnectionMessage() {
-        if (lastController instanceof MainPageController) {
-            Platform.runLater(() -> ((MainPageController)lastController).showConnectionMessage());
-        }
+        Platform.runLater(() -> {
+            if (lastController instanceof MainPageController) {
+                ((MainPageController)lastController).showConnectionMessage();
+            }
+        });
     }
 }

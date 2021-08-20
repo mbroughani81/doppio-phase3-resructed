@@ -224,6 +224,24 @@ public class ClientThread extends Thread implements RequestHandler {
     }
 
     @Override
+    public Response newDeclineRequest(NewDeclineRequest newDeclineRequest) {
+        socialController.declineRequest(newDeclineRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
+    public Response newSilentDeclineRequest(NewSilentDeclineRequest newSilentDeclineRequest) {
+        socialController.silentDeclineRequest(newSilentDeclineRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
+    public Response newAccpetRequest(NewAcceptRequest newAcceptRequest) {
+        socialController.acceptRequest(newAcceptRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
     public Response saveTweetInSaveMessage(SaveTweetInSavedMessageRequest saveTweetInSavedMessageRequest) {
         messageController.saveTweetInSavedMessage(saveTweetInSavedMessageRequest);
         return new CheckConnectionResponse();

@@ -20,6 +20,9 @@ public interface RequestHandler {
     Response newUnblock(NewUnblockRequest newUnblockRequest);
     Response newMute(NewMuteRequest newMuteRequest);
     Response newReportSpam(NewReportSpamRequest newReportSpamRequest);
+    Response newDeclineRequest(NewDeclineRequest newDeclineRequest);
+    Response newSilentDeclineRequest(NewSilentDeclineRequest newSilentDeclineRequest);
+    Response newAccpetRequest(NewAcceptRequest newAcceptRequest);
     Response saveTweetInSaveMessage(SaveTweetInSavedMessageRequest saveTweetInSavedMessageRequest);
     Response changeBio(ChangeBioRequest changeBioRequest);
     Response changeName(ChangeNameRequest changeNameRequest);

@@ -39,10 +39,10 @@ public class SettingRootController extends BasicController implements Initializa
 
     @FXML
     void changepasswordButtonClicked(ActionEvent event) {
+        SettingRootConfig config = new SettingRootConfig();
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("New password");
         dialog.setHeaderText(null);
-        dialog.setContentText("Enter new password :");
+        dialog.setContentText(config.getChangepassworddialogContentText());
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(s -> getListener().listen(new ChangePasswordRequest(result.get())));
     }
@@ -54,28 +54,26 @@ public class SettingRootController extends BasicController implements Initializa
 
     @FXML
     void lastseenprivacyButtonClicked(ActionEvent event) {
+        SettingRootConfig config = new SettingRootConfig();
         LinkedList<String> choices = new LinkedList<>();
-        choices.add("Nobody");
-        choices.add("Everybody");
-        choices.add("Following");
+        choices.add(config.getLastseenchoicesNobodyText());
+        choices.add(config.getLastseenchoicesEverybodyText());
+        choices.add(config.getLastseenchoicesFollowingText());
 
-        ChoiceDialog<String> dialog = new ChoiceDialog<>("Following", choices);
-        dialog.setTitle("Change lastseenprivacy");
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(config.getLastseenchoicesFollowingText(), choices);
         dialog.setHeaderText(null);
-        dialog.setContentText("Choose lastseenprivacy : ");
+        dialog.setContentText(config.getChangelastseendialogContentText());
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(letter -> {
-            switch (letter) {
-                case "Nobody" -> {
-                    getListener().listen(new ChangeLastseenprivacyRequest(LastSeenPrivacy.NOBODY));
-                }
-                case "Everybody" -> {
-                    getListener().listen(new ChangeLastseenprivacyRequest(LastSeenPrivacy.EVERYBODY));
-                }
-                case "Following" -> {
-                    getListener().listen(new ChangeLastseenprivacyRequest(LastSeenPrivacy.FOLLOWING));
-                }
+            if (letter.equals(config.getLastseenchoicesNobodyText())) {
+                getListener().listen(new ChangeLastseenprivacyRequest(LastSeenPrivacy.NOBODY));
+            }
+            if (letter.equals(config.getLastseenchoicesEverybodyText())) {
+                getListener().listen(new ChangeLastseenprivacyRequest(LastSeenPrivacy.EVERYBODY));
+            }
+            if (letter.equals(config.getLastseenchoicesFollowingText())) {
+                getListener().listen(new ChangeLastseenprivacyRequest(LastSeenPrivacy.FOLLOWING));
             }
         });
     }
@@ -87,48 +85,44 @@ public class SettingRootController extends BasicController implements Initializa
 
     @FXML
     void privacyButtonClicked(ActionEvent event) {
+        SettingRootConfig config = new SettingRootConfig();
         LinkedList<String> choices = new LinkedList<>();
-        choices.add("Private");
-        choices.add("Public");
+        choices.add(config.getPrivacychoicesPrivateText());
+        choices.add(config.getPrivacychoicesPublicText());
 
-        ChoiceDialog<String> dialog = new ChoiceDialog<>("Private", choices);
-        dialog.setTitle("Change privacy");
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(config.getPrivacychoicesPrivateText(), choices);
         dialog.setHeaderText(null);
-        dialog.setContentText("Choose privacy : ");
+        dialog.setContentText(config.getChangeprivacydialogContentText());
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(letter -> {
-            switch (letter) {
-                case "Private" -> {
-                    getListener().listen(new ChangePrivacyRequest(Privacy.PRIVATE));
-                }
-                case "Public" -> {
-                    getListener().listen(new ChangePrivacyRequest(Privacy.PUBLIC));
-                }
+            if (letter.equals(config.getPrivacychoicesPrivateText())) {
+                getListener().listen(new ChangePrivacyRequest(Privacy.PRIVATE));
+            }
+            if (letter.equals(config.getPrivacychoicesPublicText())) {
+                getListener().listen(new ChangePrivacyRequest(Privacy.PUBLIC));
             }
         });
     }
 
     @FXML
     void setactivityButtonClicked(ActionEvent event) {
+        SettingRootConfig config = new SettingRootConfig();
         LinkedList<String> choices = new LinkedList<>();
-        choices.add("Active");
-        choices.add("Deactive");
+        choices.add(config.getActivityActiveText());
+        choices.add(config.getActivityDeactiveText());
 
-        ChoiceDialog<String> dialog = new ChoiceDialog<>("Active", choices);
-        dialog.setTitle("Change activity");
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(config.getActivityActiveText(), choices);
         dialog.setHeaderText(null);
-        dialog.setContentText("Choose activity : ");
+        dialog.setContentText(config.getChangeactivitydialogContentText());
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(letter -> {
-            switch (letter) {
-                case "Active" -> {
-                    getListener().listen(new ChangeActivityRequest(true));
-                }
-                case "Deactive" -> {
-                    getListener().listen(new ChangeActivityRequest(false));
-                }
+            if (letter.equals(config.getActivityActiveText())) {
+                getListener().listen(new ChangeActivityRequest(true));
+            }
+            if (letter.equals(config.getActivityDeactiveText())) {
+                getListener().listen(new ChangeActivityRequest(false));
             }
         });
     }

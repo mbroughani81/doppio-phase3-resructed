@@ -4,4 +4,14 @@ setactivityButtonText=Set activity
 changepasswordButtonText=Change password
 deleteaccountButtonText=Delete account
 logoutButtonText=Logout
-
+changepassworddialogContentText=Enter new password :
+lastseenchoicesNobodyText=Nobody
+lastseenchoicesEverybodyText=Everybody
+lastseenchoicesFollowingText=Following
+changelastseendialogContentText=Choose lastseenprivacy :
+privacychoicesPrivateText=Private
+privacychoicesPublicText=Public
+changeprivacydialogContentText=Choose privacy :
+activityActiveText=Active
+activityDeactiveText=Deactive
+changeactivitydialogContentText=Choose activity :

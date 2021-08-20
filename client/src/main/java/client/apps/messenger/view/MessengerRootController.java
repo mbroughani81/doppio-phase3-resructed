@@ -40,27 +40,11 @@ public class MessengerRootController extends BasicController implements Initiali
     private ListView<MessageLabel> listView;
 
     @FXML
-    private Button multipmButton;
-
-    @FXML
     private Button newgroupButton;
-
-    @FXML
-    private Button newtypeButton;
-
-    @FXML
-    void multipmButtonClicked(ActionEvent event) {
-        getListener().listen(new GetMultipmAlertData());
-    }
 
     @FXML
     void newgroupButtonClicked(ActionEvent event) {
         getListener().listen(new GetNewGroupAlertData());
-    }
-
-    @FXML
-    void newtypeButtonClicked(ActionEvent event) {
-        getListener().listen(new GetNewTypeAlertData());
     }
 
 
@@ -75,9 +59,7 @@ public class MessengerRootController extends BasicController implements Initiali
         listView.getSelectionModel().selectedItemProperty().addListener(this);
 
         MessengerRootConfig messengerRootConfig = new MessengerRootConfig();
-        multipmButton.setText(messengerRootConfig.getMultipmButtonText());
         newgroupButton.setText(messengerRootConfig.getNewgroupButtonText());
-        newtypeButton.setText(messengerRootConfig.getNewtypeButtonText());
     }
 
     @Override

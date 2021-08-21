@@ -1,12 +1,10 @@
 package client.apps.personalpage.view;
 
-import client.apps.chat.view.comp.SinglePmLabelController;
 import client.apps.personalpage.view.comp.SingleUserLabelController;
 import client.datatype.BasicController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
-import shared.model.SinglePm;
 import shared.model.SingleUser;
 
 import java.io.IOException;

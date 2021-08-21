@@ -1,3 +1,5 @@
-multipmButtonText=Multipm
 newgroupButtonText=New group
-newtypeButtonText=New type
+newgroupgetgroupnameheadertext=Enter groupname :\u0020
+getgroupnameFxmlFilename=getgroupname.fxml
+newgroupselectmembersheadertext=Select members to add group :\u0020
+getgroupmembersFxmlFilename=getgroupmembers.fxml

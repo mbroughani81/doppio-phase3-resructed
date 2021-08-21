@@ -81,14 +81,11 @@ public class MessengerRootController extends BasicController implements Initiali
     }
 
     public void openNewGroupAlert(LinkedList<SingleUser> availableUsers) {
-//        System.out.println(" all users are : " );
-//        for (SingleUser user : availableUsers)
-//            System.out.println(user.getUserId());
+        MessengerRootConfig config = new MessengerRootConfig();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Input groupname");
-        alert.setHeaderText("Enter groupname : ");
+        alert.setHeaderText(config.getNewgroupgetgroupnameheadertext());
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(GetGroupnameController.class.getResource("getgroupname.fxml"));
+        fxmlLoader.setLocation(GetGroupnameController.class.getResource(config.getGetgroupnameFxmlFilename()));
         GetGroupnameController getGroupnameController = new GetGroupnameController();
         fxmlLoader.setController(getGroupnameController);
         try {
@@ -97,18 +94,15 @@ public class MessengerRootController extends BasicController implements Initiali
             e.printStackTrace();
         }
         Optional<ButtonType> result = alert.showAndWait();
-        System.out.println("finished 1 !");
         if (result.get() == ButtonType.CANCEL) {
             return;
         }
-        System.out.println(getGroupnameController.getGroupname() + " is result");
 
         // input group members
         alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Selecting members");
-        alert.setHeaderText("Select members to add group : ");
+        alert.setHeaderText(config.getNewgroupselectmembersheadertext());
         fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(GetGroupMembersController.class.getResource("getgroupmembers.fxml"));
+        fxmlLoader.setLocation(GetGroupMembersController.class.getResource(config.getGetgroupmembersFxmlFilename()));
         GetGroupMembersController getGroupMembersController = new GetGroupMembersController();
         fxmlLoader.setController(getGroupMembersController);
         try {
@@ -118,11 +112,9 @@ public class MessengerRootController extends BasicController implements Initiali
             e.printStackTrace();
         }
         result = alert.showAndWait();
-        System.out.println("finished 2!");
         if (result.get() == ButtonType.CANCEL) {
             return;
         }
-        System.out.println(getGroupnameController.getGroupname() + " is result");
         LinkedList<SingleUser> selectedUsers = getGroupMembersController.getSelectedUsers();
         getListener().listen(new NewGroupRequest(getGroupnameController.getGroupname(), selectedUsers));
     }

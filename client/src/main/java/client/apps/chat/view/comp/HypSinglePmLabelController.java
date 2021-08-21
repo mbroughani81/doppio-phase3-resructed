@@ -11,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextFlow;
 import shared.model.SinglePm;
 import shared.request.*;
@@ -52,17 +54,15 @@ public class HypSinglePmLabelController extends BasicController implements Initi
     public void initialize(URL location, ResourceBundle resources) {
         textFlow.getChildren().clear();
         textFlow.getChildren().addAll(HyperTextUtility.getHypText(singlePm.getText(), getListener()));
-        HypSinglePmLabelConfig hypSinglePmLabelConfig = new HypSinglePmLabelConfig();
+        HypSinglePmLabelConfig config = new HypSinglePmLabelConfig();
 
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem editItem = new MenuItem("Edit pm");
+        MenuItem editItem = new MenuItem(config.getEditItemText());
         editItem.setOnAction((event) -> {
-            System.out.println("edit clickec" + singlePm.getText());
             openEditDialog();
         });
-        MenuItem deleteItem = new MenuItem("Delete pm");
+        MenuItem deleteItem = new MenuItem(config.getDeleteItemText());
         deleteItem.setOnAction((event) -> {
-            System.out.println("delete clicked" + singlePm.getText());
             openDeleteDialog();
         });
         contextMenu.getItems().addAll(editItem, deleteItem);
@@ -70,29 +70,28 @@ public class HypSinglePmLabelController extends BasicController implements Initi
 
         switch (singlePm.getPmVerdict()) {
             case OFFLINE -> pmTextLabel.setStyle(
-                    pmTextLabel.getStyle() + "-fx-background-color: " + hypSinglePmLabelConfig.getOfflineColor() + ";");
+                    pmTextLabel.getStyle() + "-fx-background-color: " + config.getOfflineColor() + ";");
             case SENT -> pmTextLabel.setStyle(
-                    pmTextLabel.getStyle() + "-fx-background-color: " + hypSinglePmLabelConfig.getSentColor() + ";");
+                    pmTextLabel.getStyle() + "-fx-background-color: " + config.getSentColor() + ";");
             case NOTSEEN -> pmTextLabel.setStyle(
-                    pmTextLabel.getStyle() + "-fx-background-color: " + hypSinglePmLabelConfig.getNotseenColor() + ";");
+                    pmTextLabel.getStyle() + "-fx-background-color: " + config.getNotseenColor() + ";");
             case SEEN -> pmTextLabel.setStyle(
-                    pmTextLabel.getStyle() + "-fx-background-color: " + hypSinglePmLabelConfig.getSeenColor() + ";");
+                    pmTextLabel.getStyle() + "-fx-background-color: " + config.getSeenColor() + ";");
         }
         profileLabel.setText("");
-        ImageView view;
-        view = new ImageView(new Image("iliya1.png"));
-        view.setFitWidth(hypSinglePmLabelConfig.getProfileSize());
-        view.setFitHeight(hypSinglePmLabelConfig.getProfileSize());
-        profileLabel.setGraphic(view);
+        Rectangle rectangle = new Rectangle(config.getProfileSize(), config.getProfileSize());
+        rectangle.setFill(Paint.valueOf(config.getDefaultProfileColor()));
+        profileLabel.setGraphic(rectangle);
     }
 
     @Override
     public Runnable getUpdateAction() {
         return () -> {
+            HypSinglePmLabelConfig config = new HypSinglePmLabelConfig();
             if (FileModelController.isBefore(
                     lastProfileImageUpdate,
                     DoppioApp.getFileModelController().getUsernameDir(),
-                    "profilepics/" + singlePm.getUserId() + ".jpg")) {
+                    config.getProfilepicsPath() + singlePm.getUserId() + ".jpg")) {
                 HypSinglePmLabelConfig hypSinglePmLabelConfig = new HypSinglePmLabelConfig();
                 ImageView view;
                 File img = new File(DoppioApp.getFileModelController().getProfilePicPath(
@@ -114,8 +113,7 @@ public class HypSinglePmLabelController extends BasicController implements Initi
             if (FileModelController.isBefore(
                     lastPmImageUpdate,
                     DoppioApp.getFileModelController().getUsernameDir(),
-                    "pmpics/" + singlePm.getPmId() + ".jpg")) {
-                System.out.println("this pm is ok : " + singlePm.getPmId());
+                    config.getPmpicsPath() + singlePm.getPmId() + ".jpg")) {
                 ImageView view;
                 File img = new File(DoppioApp.getFileModelController().getPmPicPath(
                         singlePm.getPmId()
@@ -128,7 +126,7 @@ public class HypSinglePmLabelController extends BasicController implements Initi
                 }
                 view = new ImageView(new Image(isImage));
                 view.setPreserveRatio(true);
-                view.setFitWidth(400);
+                view.setFitWidth(config.getPmpicfitwidth());
                 pmPicLabel.setGraphic(view);
 
                 lastPmImageUpdate = LocalDateTime.now();
@@ -139,39 +137,35 @@ public class HypSinglePmLabelController extends BasicController implements Initi
     @Override
     public Runnable getRequestAction() {
         return () -> {
-            if (FileModelController.canUpdate("profilepics/" + singlePm.getUserId() + ".jpg")) {
+            HypSinglePmLabelConfig config = new HypSinglePmLabelConfig();
+            if (FileModelController.canUpdate(config.getProfilepicsPath() + singlePm.getUserId())) {
                 getListener().listen(new GetProfilePicRequest(singlePm.getUserId()));
             }
-            if (FileModelController.canUpdate("pmpics/" + singlePm.getPmId() + ".jpg")) {
+            if (FileModelController.canUpdate(config.getPmpicsPath() + singlePm.getPmId())) {
                 getListener().listen(new GetPmPicRequest(singlePm.getPmId()));
             }
         };
     }
 
     public void openEditDialog() {
+        HypSinglePmLabelConfig config = new HypSinglePmLabelConfig();
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Editing pm");
         dialog.setHeaderText(null);
-        dialog.setContentText("Enter new pm : ");
+        dialog.setContentText(config.getEditdialogecontenttext());
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
-            System.out.println("edit completed");
             getListener().listen(new EditPmRequest(singlePm.getPmId(), name));
         });
     }
 
     public void openDeleteDialog() {
+        HypSinglePmLabelConfig config = new HypSinglePmLabelConfig();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Deleting pm");
         alert.setHeaderText(null);
-        alert.setContentText("Are you sure to delete pm?");
+        alert.setContentText(config.getDeletedialogecontenttext());
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            System.out.println("delete completed");
             getListener().listen(new DeletePmRequest(singlePm.getPmId()));
         }
     }
-
-
-
 }

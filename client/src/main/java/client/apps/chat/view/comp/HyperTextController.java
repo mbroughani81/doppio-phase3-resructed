@@ -29,7 +29,6 @@ public class HyperTextController extends BasicController implements Initializabl
 
     @FXML
     void textClicked(MouseEvent event) {
-//        System.out.println(type.getVal() + ":type " + val + ":val" + " is clicked!");
         int id;
         try {
             id = Integer.parseInt(val);
@@ -44,7 +43,6 @@ public class HyperTextController extends BasicController implements Initializabl
                 ViewSwitcher.getInstance().switchTo(new Page(View.CHAT, id));
             }
             case JOINGROUP -> {
-                System.out.println("hooray?");
                 getListener().listen(new JoinGroupRequest(id));
                 ViewSwitcher.getInstance().switchTo(new Page(View.CHAT, id));
             }
@@ -66,5 +64,4 @@ public class HyperTextController extends BasicController implements Initializabl
         text.setFill(Paint.valueOf(hyperTextConfig.getColor()));
 
     }
-    //    private HyperType
 }

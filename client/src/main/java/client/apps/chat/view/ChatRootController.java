@@ -1,7 +1,6 @@
 package client.apps.chat.view;
 
 import client.apps.chat.view.comp.HypSinglePmLabelController;
-import client.apps.chat.view.comp.SinglePmLabelController;
 import client.config.apps.chat.ChatRootConfig;
 import client.core.DoppioApp;
 import client.core.ViewSwitcher;
@@ -10,14 +9,11 @@ import client.datatype.Page;
 import client.datatype.View;
 import client.dbcontroller.ChatModelController;
 import client.utils.ChatModelUtility;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import shared.datatype.ChatType;
-import shared.gson.LocalDateTimeSerializer;
 import shared.model.ChatModel;
 import shared.model.SinglePm;
 import javafx.event.ActionEvent;
@@ -83,10 +79,13 @@ public class ChatRootController extends BasicController implements Initializable
 
     @FXML
     void selectImageButtonClicked(ActionEvent event) {
+        ChatRootConfig config = new ChatRootConfig();
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose pm pic");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("image", "*.png")
+                new FileChooser.ExtensionFilter(
+                        config.getFilechooserDescription(),
+                        config.getFilechooserFormat()
+                )
         );
         selectedFile = fileChooser.showOpenDialog(selectImageButton.getScene().getWindow());
     }
@@ -120,6 +119,7 @@ public class ChatRootController extends BasicController implements Initializable
     @Override
     public Runnable getUpdateAction() {
         return () -> {
+            ChatRootConfig config = new ChatRootConfig();
             ChatModel newChatModel = DoppioApp.getChatModelController().getChatModel(chatId);
             //
             if (newChatModel.getChatType() == ChatType.GROUP && !leavegroupButton.isVisible()) {
@@ -129,12 +129,11 @@ public class ChatRootController extends BasicController implements Initializable
             //
             if (ChatModelUtility.isChatModelChanged(curChatModel, newChatModel)) {
                 curChatModel = newChatModel;
-                System.out.println("chat model changed!");
                 pmHolder.getChildren().clear();
                 this.clearChildControllers();
                 for (SinglePm pm : curChatModel.getPms()) {
                     FXMLLoader fxmlLoader = new FXMLLoader();
-                    fxmlLoader.setLocation(SinglePmLabelController.class.getResource("hypsinglepmlabel.fxml"));
+                    fxmlLoader.setLocation(HypSinglePmLabelController.class.getResource(config.getHypersinglelabelFxmlFilename()));
                     HypSinglePmLabelController singlePmLabelController = new HypSinglePmLabelController(pm);
                     this.addToChildControllers(singlePmLabelController);
                     fxmlLoader.setController(singlePmLabelController);

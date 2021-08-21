@@ -1,1 +1,4 @@
 sendButtonText=Send
+filechooserDescription=image
+filechooserFormat=*.png
+hypersinglelabelFxmlFilename=hypsinglepmlabel.fxml

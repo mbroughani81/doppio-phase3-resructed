@@ -53,7 +53,7 @@ public class MainPageController extends BasicController implements Initializable
 
     @FXML
     void backButtonClicked(ActionEvent event) {
-
+        ViewSwitcher.getInstance().goBack();
     }
 
     @FXML

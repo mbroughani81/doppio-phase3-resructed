@@ -22,6 +22,7 @@ import shared.request.RequestListener;
 import shared.response.*;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class ViewSwitcher {
 
@@ -31,6 +32,7 @@ public class ViewSwitcher {
     private BasicController lastController;
     Loop updateLoop;
     Loop requestLoop;
+    LinkedList <Page> pageHistory;
 
     private static ViewSwitcher instance = null;
 
@@ -40,16 +42,48 @@ public class ViewSwitcher {
         return instance;
     }
 
+    public ViewSwitcher() {
+        pageHistory = new LinkedList<>();
+    }
+
     public void switchTo(Page page) {
         System.out.println("Switching to " + page.getView().getFileName());;
         FXMLLoader fxmlLoader = new FXMLLoader();
+        // set main controller
+        setMainController(fxmlLoader, page);
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // set listener for main controller
+        BasicController basicController = fxmlLoader.getController();
+        basicController.setListener(requestListener);
+        lastController = basicController;
+        // initializing root controllers
+        setRootController(fxmlLoader, page);
+        setSize(page.getView());
+        Thread t = new Thread(() -> {
+            changeUpdateLoop(page.getView(), basicController);
+            changeRequestLoop(page.getView(), basicController);
+        });
+        t.start();
+        getInstance().scene.setRoot(root);
+        getInstance().stage.setScene(scene);
+        getInstance().stage.setTitle(page.getView().getFileName());
+    }
+
+    private void setMainController(FXMLLoader fxmlLoader, Page page) {
         switch (page.getView()) {
             case LOGIN, SIGNUP -> {
                 fxmlLoader.setLocation(LoginController.class.getResource(page.getView().getFileName()));
+                pageHistory.clear();
             }
             case MAINPAGE, SETTING, PERSONALPAGE, MESSENGER, CHAT, TIMELINE, NEWTWEET, PROFILEPAGE, SHOWLIST,
                     EDITPROFILEPAGE, NOTIFICATIONPAGE, TWEETPAGE, SHOWTWEETS, EXPLORER -> {
                 fxmlLoader.setLocation(MainPageController.class.getResource(View.MAINPAGE.getFileName()));
+                pageHistory.add(page);
             }
         }
         switch (page.getView()) {
@@ -96,17 +130,9 @@ public class ViewSwitcher {
                 fxmlLoader.setController(new ExplorerController());
             }
         }
-        Parent root = null;
-        try {
-            root = fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // set listener for main controller
-        BasicController basicController = fxmlLoader.getController();
-        basicController.setListener(requestListener);
-        lastController = basicController;
-        // initializing controllers
+    }
+
+    public void setRootController(FXMLLoader fxmlLoader, Page page) {
         switch (page.getView()) {
             case SETTING -> {
                 SettingController settingController = fxmlLoader.getController();
@@ -252,15 +278,6 @@ public class ViewSwitcher {
                 }
             }
         }
-        setSize(page.getView());
-        Thread t = new Thread(() -> {
-            changeUpdateLoop(page.getView(), basicController);
-            changeRequestLoop(page.getView(), basicController);
-        });
-        t.start();
-        getInstance().scene.setRoot(root);
-        getInstance().stage.setScene(scene);
-        getInstance().stage.setTitle(page.getView().getFileName());
     }
 
     private void setSize(View view) {
@@ -275,6 +292,15 @@ public class ViewSwitcher {
                 getInstance().stage.setHeight(600);
             }
         }
+    }
+
+    public void goBack() {
+        if (pageHistory.size() == 1)
+            return;
+        pageHistory.removeLast();
+        Page lastPage = pageHistory.getLast();
+        pageHistory.removeLast();
+        switchTo(lastPage);
     }
 
     private void changeUpdateLoop(View view, BasicController basicController) {

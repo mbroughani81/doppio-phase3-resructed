@@ -26,11 +26,11 @@ public class SocketManager extends Thread {
     public void run() {
         SocketConfig socketConfig = new SocketConfig();
         PathCreator.createServerResource();
-//        Context context = new Context();
-//        context.clearDB();
-//        TestData.testNewUser();
-//        TestData.testNewTweet();
-//        TestData.testNewPrivateChat();
+        Context context = new Context();
+        context.clearDB();
+        TestData.testNewUser();
+        TestData.testNewTweet();
+        TestData.testNewPrivateChat();
 
         serverJobsLoop = new Loop(1, this::serverJob);
         serverJobsLoop.start();

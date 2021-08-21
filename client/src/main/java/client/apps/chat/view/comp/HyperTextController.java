@@ -44,7 +44,6 @@ public class HyperTextController extends BasicController implements Initializabl
             }
             case JOINGROUP -> {
                 getListener().listen(new JoinGroupRequest(id));
-                ViewSwitcher.getInstance().switchTo(new Page(View.CHAT, id));
             }
         }
     }

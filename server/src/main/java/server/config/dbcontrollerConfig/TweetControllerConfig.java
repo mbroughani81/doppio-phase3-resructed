@@ -9,6 +9,7 @@ import java.util.Properties;
 public class TweetControllerConfig {
 
     private int maxspamlimit;
+    private String noaccesserrorText;
 
     public TweetControllerConfig() {
         try {
@@ -25,9 +26,14 @@ public class TweetControllerConfig {
         properties.load(fileReader);
 
         maxspamlimit = Integer.parseInt(properties.getProperty("maxspamlimit"));
+        noaccesserrorText = properties.getProperty("noaccesserrorText");
     }
 
     public int getMaxspamlimit() {
         return maxspamlimit;
+    }
+
+    public String getNoaccesserrorText() {
+        return noaccesserrorText;
     }
 }

@@ -1,1 +1,2 @@
 maxspamlimit=3
+noaccesserrorText=You dont have access to this page

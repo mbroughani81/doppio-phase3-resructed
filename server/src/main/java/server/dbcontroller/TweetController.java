@@ -21,6 +21,7 @@ public class TweetController extends AbstractController {
         );
 
         int id = context.Tweets.add(tweet);
+
         LogManager.getLogger(TweetController.class).info("new tweet is created with id " + id);
         return id;
     }
@@ -31,6 +32,8 @@ public class TweetController extends AbstractController {
         RetweetedTweetList retweetedTweetList = context.RetweetedTweetLists.get(u.getLikedTweetListId());
         retweetedTweetList.getTweetIds().add(newRetweetRequest.getTweetId());
         context.RetweetedTweetLists.update(retweetedTweetList);
+
+        LogManager.getLogger(TweetController.class).info("new retweet is created for tweet " + newRetweetRequest.getTweetId());
     }
 
     public void newLike(NewLikeTweetRequest newLikeTweetRequest) {
@@ -41,6 +44,8 @@ public class TweetController extends AbstractController {
             return;
         likedTweetList.getTweetIds().add(newLikeTweetRequest.getTweetId());
         context.LikedTweetLists.update(likedTweetList);
+
+        LogManager.getLogger(TweetController.class).info("new like is added");
     }
 
     public LinkedList<Tweet> getUserPostedTweets(int userId) {
@@ -193,6 +198,7 @@ public class TweetController extends AbstractController {
     }
 
     public static SingleTweet getErrorTweet(int tweetId) {
-        return new SingleTweet(tweetId, -1, "You dont have access to this page", null);
+        TweetControllerConfig config = new TweetControllerConfig();
+        return new SingleTweet(tweetId, -1, config.getNoaccesserrorText(), null);
     }
 }

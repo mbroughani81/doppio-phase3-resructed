@@ -18,6 +18,7 @@ public interface RequestHandler {
     Response leaveGroup(LeaveGroupRequest leaveGroupRequest);
     Response newBlock(NewBlockRequest newBlockRequest);
     Response newUnblock(NewUnblockRequest newUnblockRequest);
+    Response newUnfollow(NewUnfollowRequest newUnfollowRequest);
     Response newMute(NewMuteRequest newMuteRequest);
     Response newReportSpam(NewReportSpamRequest newReportSpamRequest);
     Response newDeclineRequest(NewDeclineRequest newDeclineRequest);

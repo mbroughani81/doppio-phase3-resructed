@@ -6,10 +6,7 @@ import server.model.*;
 import shared.datatype.Privacy;
 import shared.model.SingleFollowNotification;
 import shared.model.SingleSystemNotification;
-import shared.request.NewAcceptRequest;
-import shared.request.NewDeclineRequest;
-import shared.request.NewFollowRequest;
-import shared.request.NewSilentDeclineRequest;
+import shared.request.*;
 
 import java.util.LinkedList;
 
@@ -55,6 +52,22 @@ public class SocialController extends AbstractController {
 
         LogManager.getLogger(SocialController.class).info("new follow is created, follower and followed " +
                 follower.toString() + " " + followed.toString());
+    }
+
+    public void newUnfollow(NewUnfollowRequest newUnfollowRequest) {
+        SocialControllerConfig config = new SocialControllerConfig();
+        AuthController authController = new AuthController();
+        User follower = authController.getUserWithAuthToken(newUnfollowRequest.getAuthToken());
+        User followed = context.Users.get(newUnfollowRequest.getUserId());
+        addSystemNotification(followed.getId(), follower.getUsername() + config.getUnfollowingstartText());
+        FollowerList followerList = context.FollowerLists.get(followed.getFollowersListId());
+        if (!followerList.getList().contains(follower.getId()) || followed.getId() == follower.getId())
+            return;
+        followerList.getList().remove((Object) follower.getId());
+        FollowingList followingList = context.FollowingLists.get(follower.getFollowingListId());
+        followingList.getList().remove((Object) followed.getId());
+        context.FollowingLists.update(followingList);
+        context.FollowerLists.update(followerList);
     }
 
     public void addFollowNotification(int followerId, int followedId) {

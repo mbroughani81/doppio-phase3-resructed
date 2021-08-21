@@ -186,72 +186,105 @@ public class ClientThread extends Thread implements RequestHandler {
 
     @Override
     public Response joinGroup(JoinGroupRequest joinGroupRequest) {
+        LogManager.getLogger(ClientThread.class).info("JoinGroupRequest is getting handled");
+
+
         messageController.joinGroup(joinGroupRequest);
         return new CheckConnectionResponse();
     }
 
     @Override
     public Response leaveGroup(LeaveGroupRequest leaveGroupRequest) {
+        LogManager.getLogger(ClientThread.class).info("LeaveGroupRequest is getting handled");
+
         messageController.leaveGroup(leaveGroupRequest);
         return new CheckConnectionResponse();
     }
 
     @Override
     public Response newRetweet(NewRetweetRequest newRetweetRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewRetweetRequest is getting handled");
+
         tweetController.newRetweet(newRetweetRequest);
         return new CheckConnectionResponse();
     }
 
     @Override
     public Response newLikeTweet(NewLikeTweetRequest newLikeTweetRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewLikeTweetRequest is getting handled");
+
         tweetController.newLike(newLikeTweetRequest);
         return new CheckConnectionResponse();
     }
 
     @Override
     public Response newBlock(NewBlockRequest newBlockRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewBlockRequest is getting handled");
+
         authController.newBlock(newBlockRequest);
         return new CheckConnectionResponse();
     }
 
     @Override
+    public Response newUnfollow(NewUnfollowRequest newUnfollowRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewUnfollowRequest is getting handled");
+
+        socialController.newUnfollow(newUnfollowRequest);
+        return new CheckConnectionResponse();
+    }
+
+    @Override
     public Response newUnblock(NewUnblockRequest newUnblockRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewUnblockRequest is getting handled");
+
         authController.newUnblock(newUnblockRequest);
         return new CheckConnectionResponse();
     }
 
     @Override
     public Response newMute(NewMuteRequest newMuteRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewMuteRequest is getting handled");
+
         authController.newMute(newMuteRequest);
         return new CheckConnectionResponse();
     }
 
     @Override
     public Response newReportSpam(NewReportSpamRequest newReportSpamRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewReportSpamRequest is getting handled");
+
         messageController.reportSpam(newReportSpamRequest);
         return new CheckConnectionResponse();
     }
 
     @Override
     public Response newDeclineRequest(NewDeclineRequest newDeclineRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewDeclineRequest is getting handled");
+
         socialController.declineRequest(newDeclineRequest);
         return new CheckConnectionResponse();
     }
 
     @Override
-    public Response newSilentDeclineRequest(NewSilentDeclineRequest newSilentDeclineRequest) {
+    public Response newSilentDeclineRequest(NewSilentDeclineRequest newSilentDeclineRequest) {        LogManager.getLogger(ClientThread.class).info("JoinGroupRequest is getting handled");
+        LogManager.getLogger(ClientThread.class).info("NewSilentDeclineRequest is getting handled");
+
         socialController.silentDeclineRequest(newSilentDeclineRequest);
         return new CheckConnectionResponse();
     }
 
     @Override
     public Response newAccpetRequest(NewAcceptRequest newAcceptRequest) {
+        LogManager.getLogger(ClientThread.class).info("NewAcceptRequest is getting handled");
+
         socialController.acceptRequest(newAcceptRequest);
         return new CheckConnectionResponse();
     }
 
     @Override
     public Response saveTweetInSaveMessage(SaveTweetInSavedMessageRequest saveTweetInSavedMessageRequest) {
+        LogManager.getLogger(ClientThread.class).info("SaveTweetInSavedMessageRequest is getting handled");
+
         messageController.saveTweetInSavedMessage(saveTweetInSavedMessageRequest);
         return new CheckConnectionResponse();
     }

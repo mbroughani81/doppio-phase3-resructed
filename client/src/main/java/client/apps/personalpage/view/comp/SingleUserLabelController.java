@@ -75,8 +75,15 @@ public class SingleUserLabelController extends BasicController implements Initia
         unblockItem.setOnAction((event) -> {
             getListener().listen(new NewUnblockRequest(userId));
         });
+        MenuItem unfollowItem = new MenuItem("unfollow");
+        unfollowItem.setOnAction((event -> {
+            getListener().listen(new NewUnfollowRequest(userId));
+        }));
         if (type.equals("blacklist")) {
             contextMenu.getItems().add(unblockItem);
+        }
+        if (type.equals("following")) {
+            contextMenu.getItems().add(unfollowItem);
         }
         profileLabel.setContextMenu(contextMenu);
     }

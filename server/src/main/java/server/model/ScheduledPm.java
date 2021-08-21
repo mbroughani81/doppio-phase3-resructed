@@ -9,14 +9,16 @@ public class ScheduledPm {
     private int chatId;
     private boolean isSent;
     private String text;
+    private String imageString;
     private LocalDateTime date;
 
-    public ScheduledPm(int userId, int chatId, String text, LocalDateTime date) {
+    public ScheduledPm(int userId, int chatId, String text, String imageString, LocalDateTime date) {
         this.id = -1;
         this.userId = userId;
         this.chatId = chatId;
         this.isSent = false;
         this.text = text;
+        this.imageString = imageString;
         this.date = date;
     }
 
@@ -58,6 +60,14 @@ public class ScheduledPm {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getImageString() {
+        return imageString;
+    }
+
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
     }
 
     public LocalDateTime getDate() {

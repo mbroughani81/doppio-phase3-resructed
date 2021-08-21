@@ -8,6 +8,7 @@ public class NewScheduledPmRequest extends Request {
 
     private int chatId;
     private String text;
+    private String imageString;
     private LocalDateTime date;
 
     @Override
@@ -15,9 +16,10 @@ public class NewScheduledPmRequest extends Request {
         return requestHandler.newScheduledPm(this);
     }
 
-    public NewScheduledPmRequest(int chatId, String text, LocalDateTime date) {
+    public NewScheduledPmRequest(int chatId, String text, String imageString, LocalDateTime date) {
         this.chatId = chatId;
         this.text = text;
+        this.imageString = imageString;
         this.date = date;
     }
 
@@ -35,6 +37,14 @@ public class NewScheduledPmRequest extends Request {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getImageString() {
+        return imageString;
+    }
+
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
     }
 
     public LocalDateTime getDate() {

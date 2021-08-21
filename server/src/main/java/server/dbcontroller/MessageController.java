@@ -91,9 +91,10 @@ public class MessageController extends AbstractController {
         AuthController authController = new AuthController();
         User user = authController.getUserWithAuthToken(joinGroupRequest.getAuthToken());
         Chat requestChat = context.Chats.get(joinGroupRequest.getChatId());
-        if (requestChat.getParentChatId() != requestChat.getId())
+        if (requestChat == null || requestChat.getParentChatId() != requestChat.getId())
             return;
-
+        if (requestChat.getMemberIds().contains(user.getId()))
+            return;
         int messageDataId = context.Users.get(user.getId()).getMessageDataId();
         MessageData messageData = context.MessageDatas.get(messageDataId);
         Chat chat = new Chat(user.getId(), ChatType.GROUP);
@@ -192,6 +193,7 @@ public class MessageController extends AbstractController {
                 user.getId(),
                 newScheduledPmRequest.getChatId(),
                 newScheduledPmRequest.getText(),
+                newScheduledPmRequest.getImageString(),
                 newScheduledPmRequest.getDate()
         );
         context.ScheduledPms.add(scheduledPm);
@@ -307,14 +309,13 @@ public class MessageController extends AbstractController {
     public void handleScheduledPms() {
         LinkedList<ScheduledPm> allScheduledPms = context.ScheduledPms.all();
         for (ScheduledPm scheduledPm : allScheduledPms) {
-            if (LocalDateTime.now().isAfter(scheduledPm.getDate())) {
+            if (!scheduledPm.isSent() && LocalDateTime.now().isAfter(scheduledPm.getDate())) {
                 sendNewPm(
-                        new NewPmRequest(scheduledPm.getChatId(), scheduledPm.getText(), null),
+                        new NewPmRequest(scheduledPm.getChatId(), scheduledPm.getText(), scheduledPm.getImageString()),
                         scheduledPm.getUserId()
                 );
                 scheduledPm.setSent(true);
                 context.ScheduledPms.update(scheduledPm);
-
             }
         }
     }

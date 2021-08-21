@@ -102,7 +102,12 @@ public class ChatRootController extends BasicController implements Initializable
                     Integer.parseInt(scheduledhourTextField.getText()),
                     Integer.parseInt(scheduledminuteTextField.getText())
             );
-            getListener().listen(new NewScheduledPmRequest(chatId, messageTextArea.getText(), date));
+            getListener().listen(new NewScheduledPmRequest(
+                    chatId,
+                    messageTextArea.getText(),
+                    (selectedFile != null) ? ImageSerializer.encodeFileToBase64Binary(selectedFile) : null,
+                    date
+            ));
         } else {
             NewPmRequest request = new NewPmRequest(
                     chatId,

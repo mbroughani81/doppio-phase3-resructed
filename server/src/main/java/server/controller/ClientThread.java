@@ -572,6 +572,7 @@ public class ClientThread extends Thread implements RequestHandler {
     @Override
     public Response fetchChatModel(GetChatModelRequest getChatModelRequest) {
         LogManager.getLogger(ClientThread.class).info("GetChatModelRequest is getting handled");
+
         User user = authController.getUserWithAuthToken(getChatModelRequest.getAuthToken());
         if (!messageController.isOwnerOfChat(user.getId(), getChatModelRequest.getChatId())) {
             return sendErrorChatModel(getChatModelRequest.getChatId());

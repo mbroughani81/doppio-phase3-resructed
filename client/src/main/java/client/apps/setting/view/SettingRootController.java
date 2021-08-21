@@ -86,8 +86,13 @@ public class SettingRootController extends BasicController implements Initializa
 
     @FXML
     void logoutButtonClicked(ActionEvent event) {
-        DoppioApp.resetUser();
         ViewSwitcher.getInstance().switchTo(new Page(View.LOGIN, -1));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        DoppioApp.resetUser();
     }
 
     @FXML

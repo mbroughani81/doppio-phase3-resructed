@@ -11,6 +11,7 @@ import client.datatype.Page;
 import shared.datatype.Pair;
 import client.datatype.View;
 import shared.model.MessageDataModel;
+import shared.model.SingleChat;
 import shared.model.SingleUser;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -50,7 +51,7 @@ public class MessengerRootController extends BasicController implements Initiali
 
     @Override
     public void changed(ObservableValue<? extends MessageLabel> observable, MessageLabel oldValue, MessageLabel newValue) {
-        int id = listView.getSelectionModel().getSelectedItem().getChatId();
+        int id = listView.getSelectionModel().getSelectedItem().getSingleChat().getChatId();
         ViewSwitcher.getInstance().switchTo(new Page(View.CHAT, id));
     }
 
@@ -67,16 +68,17 @@ public class MessengerRootController extends BasicController implements Initiali
         return () -> {
             MessageDataModel messageDataModel = DoppioApp.getMessageDataModelController().getMessageDataModel();
             LinkedList<MessageLabel> newItems = new LinkedList<>();
-            for (Pair<Integer, String> pair : messageDataModel.getChatModelIds()) {
-                newItems.add(new MessageLabel(pair.getFirst() + " " + pair.getSecond() + "\n", pair.getFirst()));
+            for (SingleChat singleChat : messageDataModel.getSingleChats()) {
+                newItems.add(new MessageLabel(
+                        singleChat.getChatId() + " " + singleChat.getChatName() + " -> " + singleChat.getUnreadCount(),
+                        singleChat
+                ));
             }
             if (!isChanged(listView.getItems(), newItems)) {
                 return;
             }
             listView.getItems().clear();
-            for (Pair<Integer, String> pair : messageDataModel.getChatModelIds()) {
-                listView.getItems().add(new MessageLabel(pair.getFirst() + " " + pair.getSecond() + "\n", pair.getFirst()));
-            }
+            listView.getItems().addAll(newItems);
         };
     }
 
@@ -124,7 +126,7 @@ public class MessengerRootController extends BasicController implements Initiali
             return true;
         for (int i = 0; i < a1.size(); i++) {
             if (!a1.get(i).getText().equals(a2.get(i).getText()) ||
-                a1.get(i).getChatId() != a2.get(i).getChatId())
+                a1.get(i).getSingleChat().getChatId() != a2.get(i).getSingleChat().getChatId())
                 return true;
         }
         return false;

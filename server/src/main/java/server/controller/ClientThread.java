@@ -548,14 +548,15 @@ public class ClientThread extends Thread implements RequestHandler {
     public Response fetchMessageDataModel(GetMessageDataModelRequest getMessageDataModelRequest) {
         LogManager.getLogger(ClientThread.class).info("GetMessageDataModelRequest is getting handled");
 
-        LinkedList<Pair<Integer, String>> list = new LinkedList<>();
+        LinkedList<SingleChat> list = new LinkedList<>();
         LinkedList<Chat> allChats = messageController.getChats(
                 authController.getUserWithAuthToken(getMessageDataModelRequest.getAuthToken()).getId()
         );
         for (Chat chat : allChats) {
-            list.add(new Pair<>(
+            list.add(new SingleChat(
                     chat.getId(),
-                    chat.getChatName()
+                    chat.getChatName(),
+                    chat.getUnreadCount()
             ));
         }
         MessageDataModel messageDataModel = new MessageDataModel(list);
@@ -570,6 +571,7 @@ public class ClientThread extends Thread implements RequestHandler {
             return sendErrorChatModel(getChatModelRequest.getChatId());
         }
         messageController.updateReadCount(getChatModelRequest.getChatId());
+        messageController.updateUnreadCount(getChatModelRequest.getChatId());
         LinkedList<SinglePm> pms = MessageController.convertToSinglePm(
                 messageController.getPms(getChatModelRequest.getChatId()),
                 messageController.getReadCount(getChatModelRequest.getChatId()),

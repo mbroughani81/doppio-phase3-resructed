@@ -264,7 +264,6 @@ public class MessageController extends AbstractController {
             }
         }
         Chat pairChat1 = context.Chats.get(pairChatId);
-//        System.out.println("i have found pair " + pairChatId);
         pairChat1.setReadPmCount(pairChat1.getPmIds().size());
         context.Chats.update(pairChat1);
     }
@@ -295,6 +294,12 @@ public class MessageController extends AbstractController {
 //        System.out.println("i have found pair " + pairChatId);
         pairChat1.setIgnoredPmCount(pairChat1.getPmIds().size());
         context.Chats.update(pairChat1);
+    }
+
+    public void updateUnreadCount(int chatId) {
+        Chat chat = context.Chats.get(chatId);
+        chat.setUnreadCount(0);
+        context.Chats.update(chat);
     }
 
     public boolean isOwnerOfChat(int userId, int chatId) {

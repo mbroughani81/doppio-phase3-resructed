@@ -1,17 +1,15 @@
 package shared.model;
 
-import shared.datatype.Pair;
-
 import java.util.LinkedList;
 
 public class MessageDataModel {
     private int id;
 
-    private LinkedList<Pair<Integer, String>> chatModelIds;
+    private LinkedList<SingleChat> singleChats;
 
-    public MessageDataModel(LinkedList<Pair<Integer, String>> chatModelIds) {
+    public MessageDataModel(LinkedList<SingleChat> singleChats) {
         this.id = -1;
-        this.chatModelIds = chatModelIds;
+        this.singleChats = singleChats;
     }
 
     public int getId() {
@@ -22,11 +20,11 @@ public class MessageDataModel {
         this.id = id;
     }
 
-    public LinkedList<Pair<Integer, String>> getChatModelIds() {
-        return chatModelIds;
+    public LinkedList<SingleChat> getSingleChats() {
+        return singleChats;
     }
 
-    public void setChatModelIds(LinkedList<Pair<Integer, String>> chatModelIds) {
-        this.chatModelIds = chatModelIds;
+    public void setSingleChats(LinkedList<SingleChat> singleChats) {
+        this.singleChats = singleChats;
     }
 }

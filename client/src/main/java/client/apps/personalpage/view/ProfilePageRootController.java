@@ -116,7 +116,6 @@ public class ProfilePageRootController extends BasicController implements Initia
     }
 
     public void setUserId(int userId) {
-        System.out.println(userId + "is id!");
         this.userId = userId;
     }
 }

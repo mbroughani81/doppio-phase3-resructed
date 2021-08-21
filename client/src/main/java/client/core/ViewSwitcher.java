@@ -17,6 +17,7 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
 import shared.loop.Loop;
 import shared.request.RequestListener;
 import shared.response.*;
@@ -48,6 +49,8 @@ public class ViewSwitcher {
 
     public void switchTo(Page page) {
         System.out.println("Switching to " + page.getView().getFileName());;
+        LogManager.getLogger(ViewSwitcher.class).info("Switching to " + page.getView().getFileName());
+
         FXMLLoader fxmlLoader = new FXMLLoader();
         // set main controller
         setMainController(fxmlLoader, page);

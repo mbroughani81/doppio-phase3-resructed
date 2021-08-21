@@ -417,13 +417,13 @@ public class ClientThread extends Thread implements RequestHandler {
         LinkedList<SingleUser> followers = new LinkedList<>();
         LinkedList<SingleUser> blacklist = new LinkedList<>();
         for (Integer id : f1) {
-            following.add(new SingleUser(id));
+            following.add(new SingleUser(id, ""));
         }
         for (Integer id : f2) {
-            followers.add(new SingleUser(id));
+            followers.add(new SingleUser(id, ""));
         }
         for (Integer id : f3) {
-            blacklist.add(new SingleUser(id));
+            blacklist.add(new SingleUser(id, ""));
         }
 
         return new GetShowlistResponse(following, followers, blacklist);
@@ -478,7 +478,8 @@ public class ClientThread extends Thread implements RequestHandler {
         for (Integer id : followingIds) {
             User user = authController.getUser(id);
             availableUsers.add(new SingleUser(
-                    id
+                    id,
+                    user.getUsername()
             ));
         }
         return new OpenNewGroupAlert(availableUsers);

@@ -3,9 +3,11 @@ package shared.model;
 public class SingleUser {
 
     private int userId;
+    private String username;
 
-    public SingleUser(int userId) {
+    public SingleUser(int userId, String username) {
         this.userId = userId;
+        this.username = username;
     }
 
     public int getUserId() {
@@ -14,5 +16,13 @@ public class SingleUser {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

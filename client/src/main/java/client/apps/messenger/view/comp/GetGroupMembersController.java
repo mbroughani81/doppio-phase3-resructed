@@ -23,7 +23,7 @@ public class GetGroupMembersController extends BasicController {
         this.availableUsers = availableUsers;
         groupMembersHolder.getChildren().clear();
         for (SingleUser singleUser : availableUsers) {
-            groupMembersHolder.getChildren().add(new CheckBox(String.valueOf(singleUser.getUserId())));
+            groupMembersHolder.getChildren().add(new CheckBox(String.valueOf(singleUser.getUsername())));
         }
     }
 

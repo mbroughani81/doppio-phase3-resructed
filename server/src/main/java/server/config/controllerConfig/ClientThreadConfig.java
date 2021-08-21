@@ -33,7 +33,7 @@ public class ClientThreadConfig {
         signupEmptyPasswordErrorText = properties.getProperty("signupEmptyPasswordErrorText");
         signupDuplicateEmailErrorText = properties.getProperty("signupDuplicateEmailErrorText");
         signupDuplicatePhoneErrorText = properties.getProperty("signupDuplicatePhoneErrorText");
-        loginUserNotFoundErrorText = properties.getProperty("loginUserNotFountErrorText");
+        loginUserNotFoundErrorText = properties.getProperty("loginUserNotFoundErrorText");
         loginWrongPasswordErrorText = properties.getProperty("loginWrongPasswordErrorText");
     }
 

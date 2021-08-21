@@ -116,8 +116,11 @@ public class ClientThread extends Thread implements RequestHandler {
                     authController.getUserWithAuthToken(newPrivateChatRequest.getAuthToken()).getId()
             );
         }
-
-        messageController.newPrivateChat(newPrivateChatRequest);
+        User requester = authController.getUser(newPrivateChatRequest.getUser1Id());
+        User requested = authController.getUser(newPrivateChatRequest.getUser2Id());
+        if (socialController.getFollowingsIds(requester.getId()).contains(requested.getId())) {
+            messageController.newPrivateChat(newPrivateChatRequest);
+        }
         return new CheckConnectionResponse();
     }
 
@@ -579,6 +582,7 @@ public class ClientThread extends Thread implements RequestHandler {
         if (checkConnection.getAuthToken() != null) {
             User user = authController.getUserWithAuthToken(checkConnection.getAuthToken());
             messageController.updateIgnoredCount(user.getId());
+            authController.updateLastSeen(user.getId());
         }
         return new CheckConnectionResponse();
     }

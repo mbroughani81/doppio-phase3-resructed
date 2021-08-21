@@ -7,6 +7,8 @@ import shared.datatype.ChatType;
 import shared.model.AuthToken;
 import shared.request.*;
 
+import java.time.LocalDateTime;
+
 public class AuthController extends AbstractController {
     public void signupUser(SignupRequest signupRequest) {
         AuthControllerConfig config = new AuthControllerConfig();
@@ -182,6 +184,13 @@ public class AuthController extends AbstractController {
         profile.setEmail(user.getUsername());
         profile.setPhoneNumber(user.getUsername());
         context.Users.update(user);
+        context.Profiles.update(profile);
+    }
+
+    public void updateLastSeen(int userId) {
+        User user = getUser(userId);
+        Profile profile = context.Profiles.get(user.getProfileId());
+        profile.setLastSeen(LocalDateTime.now());
         context.Profiles.update(profile);
     }
 

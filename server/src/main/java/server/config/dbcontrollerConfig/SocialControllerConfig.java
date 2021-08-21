@@ -8,6 +8,10 @@ import java.util.Properties;
 
 public class SocialControllerConfig {
 
+    private String requestdeclineText;
+    private String followingstartText;
+    private String unfollowingstartText;
+
     public SocialControllerConfig() {
         try {
             setProperties();
@@ -21,5 +25,21 @@ public class SocialControllerConfig {
         Properties properties = new Properties();
         FileReader fileReader = new FileReader(mainConfig.getSocialcontrollerConfigPath());
         properties.load(fileReader);
+
+        requestdeclineText = properties.getProperty("requestdeclineText");
+        followingstartText = properties.getProperty("followingstartText");
+        unfollowingstartText = properties.getProperty("unfollowingstartText");
+    }
+
+    public String getRequestdeclineText() {
+        return requestdeclineText;
+    }
+
+    public String getFollowingstartText() {
+        return followingstartText;
+    }
+
+    public String getUnfollowingstartText() {
+        return unfollowingstartText;
     }
 }

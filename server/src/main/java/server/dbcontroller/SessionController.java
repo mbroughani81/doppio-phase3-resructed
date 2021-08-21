@@ -24,6 +24,7 @@ public class SessionController extends AbstractController {
                 new AuthToken(rand.nextLong())
         );
         int id = context.Sessions.add(session);
+
         LogManager.getLogger(SessionController.class).info("new session is created with id : " + id);
         return context.Sessions.get(id);
     }

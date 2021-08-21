@@ -1,6 +1,7 @@
 package server.dbcontroller;
 
 import org.apache.logging.log4j.LogManager;
+import server.config.dbcontrollerConfig.SocialControllerConfig;
 import server.model.*;
 import shared.datatype.Privacy;
 import shared.model.SingleFollowNotification;
@@ -15,15 +16,15 @@ import java.util.LinkedList;
 public class SocialController extends AbstractController {
 
     public void newFollow(NewFollowRequest newFollowRequest) {
+        SocialControllerConfig config = new SocialControllerConfig();
         User follower = context.Users.get(newFollowRequest.getFollowerId());
         User followed = context.Users.get(newFollowRequest.getFollowedId());
         FollowerList followerList = context.FollowerLists.get(followed.getFollowersListId());
         if (followerList.getList().contains(follower.getId()) || followed.getId() == follower.getId())
             return;
-
         Profile followedProfile = context.Profiles.get(followed.getProfileId());
         if (followedProfile.getPrivacy() == Privacy.PUBLIC) {
-            addSystemNotification(followed.getId(), follower.getUsername() + " started following");
+            addSystemNotification(followed.getId(), follower.getUsername() + config.getFollowingstartText());
             followerList.getList().add(follower.getId());
             FollowingList followingList = context.FollowingLists.get(follower.getFollowingListId());
             followingList.getList().add(followed.getId());
@@ -38,13 +39,14 @@ public class SocialController extends AbstractController {
     }
 
     public void newFollowForced(NewFollowRequest newFollowRequest) {
+        SocialControllerConfig config = new SocialControllerConfig();
         User follower = context.Users.get(newFollowRequest.getFollowerId());
         User followed = context.Users.get(newFollowRequest.getFollowedId());
         FollowerList followerList = context.FollowerLists.get(followed.getFollowersListId());
         if (followerList.getList().contains(follower.getId()) || followed.getId() == follower.getId())
             return;
 
-        addSystemNotification(followed.getId(), follower.getUsername() + " started following");
+        addSystemNotification(followed.getId(), follower.getUsername() + config.getFollowingstartText());
         followerList.getList().add(follower.getId());
         FollowingList followingList = context.FollowingLists.get(follower.getFollowingListId());
         followingList.getList().add(followed.getId());
@@ -68,23 +70,31 @@ public class SocialController extends AbstractController {
                 followed.getUsername()
         );
         context.FollowRequests.add(followRequestNotification);
+
+        LogManager.getLogger(SocialController.class).info("new follow is created, follower and followed " +
+                follower.toString() + " " + followed.toString());
     }
 
     public void addSystemNotification(int userId, String text) {
         User user = context.Users.get(userId);
         SystemNotification systemNotification = new SystemNotification(userId, text);
         context.SystemNotifications.add(systemNotification);
+
+        LogManager.getLogger(SocialController.class).info("new system notification is added with id " + systemNotification.getId());
     }
 
     public void declineRequest(NewDeclineRequest newDeclineRequest) {
         AuthController authController = new AuthController();
+        SocialControllerConfig config = new SocialControllerConfig();
         FollowRequestNotification followRequestNotification = context.FollowRequests.get(
                 newDeclineRequest.getSingleFollowNotification().getFollowRequestId()
         );
         User follower = authController.getUser(followRequestNotification.getFollowerUsername());
         User followed = authController.getUser(followRequestNotification.getFollowedUsername());
         context.FollowRequests.remove(followRequestNotification.getId());
-        addSystemNotification(follower.getId(), "Your request is declined by " + followed.getUsername());
+        addSystemNotification(follower.getId(), config.getRequestdeclineText() + followed.getUsername());
+
+        LogManager.getLogger(SocialController.class).info("request declined with id " + followRequestNotification.getId());
     }
 
     public void silentDeclineRequest(NewSilentDeclineRequest newSilentDeclineRequest) {
@@ -92,6 +102,8 @@ public class SocialController extends AbstractController {
                 newSilentDeclineRequest.getSingleFollowNotification().getFollowRequestId()
         );
         context.FollowRequests.remove(followRequestNotification.getId());
+        LogManager.getLogger(SocialController.class).info("follow request silent declined with id " + followRequestNotification.getId());
+
     }
 
     public void acceptRequest(NewAcceptRequest newAcceptRequest) {
@@ -103,6 +115,7 @@ public class SocialController extends AbstractController {
         User followed = authController.getUser(followRequestNotification.getFollowedUsername());
         newFollowForced(new NewFollowRequest(follower.getId(), followed.getId()));
         context.FollowRequests.remove(followRequestNotification.getId());
+        LogManager.getLogger(SocialController.class).info("follow request accpeted with id " + followRequestNotification.getId());
     }
 
     public LinkedList<SingleFollowNotification> getFollowNotification(int userId) {

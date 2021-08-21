@@ -119,6 +119,8 @@ public class MessageController extends AbstractController {
                 context.Chats.update(chat1);
             }
         }
+
+        LogManager.getLogger(MessageController.class).info("new groud added with id " + chatId);
     }
 
     public void leaveGroup(LeaveGroupRequest leaveGroupRequest) {
@@ -150,6 +152,8 @@ public class MessageController extends AbstractController {
                 context.Chats.update(chat1);
             }
         }
+
+        LogManager.getLogger(MessageController.class).info("leave group happened from chat " + requestChat.getId());
     }
 
     public int sendNewPm(NewPmRequest newPmRequest, int userId) {
@@ -197,6 +201,8 @@ public class MessageController extends AbstractController {
                 newScheduledPmRequest.getDate()
         );
         context.ScheduledPms.add(scheduledPm);
+
+        LogManager.getLogger(MessageController.class).info("new scheduledpm " + scheduledPm.getText());
     }
 
     public void editPm(EditPmRequest editPmRequest) {
@@ -208,6 +214,8 @@ public class MessageController extends AbstractController {
         }
         pm.setText(editPmRequest.getText());
         context.Pms.update(pm);
+
+        LogManager.getLogger(MessageController.class).info("pm is edited with id " + pm.getId());
     }
 
     public void deletePm(DeletePmRequest deletePmRequest) {
@@ -220,6 +228,8 @@ public class MessageController extends AbstractController {
         }
         pm.setText(config.getDeletedPmText());
         context.Pms.update(pm);
+
+        LogManager.getLogger(MessageController.class).info("pm is deleted with id " + pm.getId());
     }
 
     public void reportSpam(NewReportSpamRequest newReportSpamRequest) {
@@ -233,6 +243,8 @@ public class MessageController extends AbstractController {
         context.Tweets.update(tweet);
         reportedTweetList.getTweetIds().add(newReportSpamRequest.getTweetId());
         context.ReportedTweetLists.update(reportedTweetList);
+
+        LogManager.getLogger(MessageController.class).info("new spam reported on " + tweet.getId());
     }
 
     public void saveTweetInSavedMessage(SaveTweetInSavedMessageRequest saveTweetInSavedMessageRequest) {
@@ -248,6 +260,8 @@ public class MessageController extends AbstractController {
                 config.getForwardedTweetText() + tweet.getText(),
                 fileController.getTweetString(tweet.getId())
         ), userId);
+
+        LogManager.getLogger(MessageController.class).info("new tweet is saved with tweet id " + tweet.getText());
     }
 
     public void updateReadCount(int chatId) {

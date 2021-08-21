@@ -7,6 +7,7 @@ import shared.datatype.LastSeenPrivacy;
 import shared.datatype.Pair;
 import server.controller.network.SocketResponseSender;
 import server.model.*;
+import shared.datatype.Privacy;
 import shared.model.*;
 import shared.request.*;
 import shared.response.*;
@@ -388,6 +389,11 @@ public class ClientThread extends Thread implements RequestHandler {
         Tweet tweet = tweetController.getTweet(getTweetPageRequest.getTweetId());
         SingleTweet mainTweet = TweetController.convertToSingleTweet(tweet);
 
+        User user = authController.getUser(tweet.getCreatorId());
+        Profile profile = authController.getProfile(tweet.getCreatorId());
+        if (profile.getPrivacy() == Privacy.PRIVATE || !user.isAlive() || !user.isActive()) {
+            return sendErrorTweetPage(getTweetPageRequest.getTweetId());
+        }
         return new GetTweetPageResponse(getTweetPageRequest.getTweetId(), mainTweet, resTweets);
     }
 
@@ -598,5 +604,12 @@ public class ClientThread extends Thread implements RequestHandler {
     private Response sendErrorChatModel(int chatId) {
         ChatModel errorChatModel = MessageController.getErrorChatModel(chatId);
         return new GetChatModelResponse(errorChatModel);
+    }
+
+    private Response sendErrorTweetPage(int tweetId) {
+       return new GetTweetPageResponse(
+                tweetId,
+                TweetController.getErrorTweet(tweetId),
+                new LinkedList<>());
     }
 }

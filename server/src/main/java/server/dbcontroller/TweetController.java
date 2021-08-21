@@ -191,4 +191,8 @@ public class TweetController extends AbstractController {
         }
         return tweets;
     }
+
+    public static SingleTweet getErrorTweet(int tweetId) {
+        return new SingleTweet(tweetId, -1, "You dont have access to this page", null);
+    }
 }

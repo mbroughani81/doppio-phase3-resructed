@@ -18,3 +18,4 @@ newtweetrootConfigPath=src/main/resources/config/apps/tweet/newtweetrootConfigPa
 tweetpagerootConfigPath=src/main/resources/config/apps/tweet/tweetpagerootConfig.txt
 tweetrootConfigPath=src/main/resources/config/apps/tweet/tweetrootConfig.txt
 singletweetlabelConfigPath=src/main/resources/config/apps/tweet/singletweetlabelConfig.txt
+filemodelcontrollerConfigPath=src/main/resources/config/dbcontrollerConfig/filemodelcontrollerConfig.txt

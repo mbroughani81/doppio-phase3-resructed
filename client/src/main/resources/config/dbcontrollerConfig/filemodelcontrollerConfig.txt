@@ -1,0 +1,5 @@
+dbroot=src/main/resources/clientdb/
+profilepicsroot=profilepics/
+tweetpicsroot=tweetpics/
+pmpicsroot=pmpics/
+canupdatesecondlimit=5

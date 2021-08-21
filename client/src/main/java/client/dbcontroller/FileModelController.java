@@ -1,5 +1,6 @@
 package client.dbcontroller;
 
+import client.config.dbcontrollerConfig.FileModelControllerConfig;
 import org.apache.commons.codec.binary.Base64;
 import shared.response.GetPmPicResponse;
 import shared.response.GetProfilePicResponse;
@@ -25,7 +26,8 @@ public class FileModelController extends AbstractModelController {
     public void updateProfilePic(GetProfilePicResponse getProfilePicResponse) {
         if (getProfilePicResponse.getImageString() == null)
             return;
-        String path = "src/main/resources/clientdb/" + usernameDir + "/profilepics/" +
+        FileModelControllerConfig config = new FileModelControllerConfig();
+        String path = config.getDbroot() + usernameDir + "/" + config.getProfilepicsroot() +
                 getProfilePicResponse.getUserId() + ".jpg";
         File file = new File(path);
         if (file.exists()) {
@@ -43,7 +45,8 @@ public class FileModelController extends AbstractModelController {
     public void updateTweetPic(GetTweetPicResponse getTweetPicResponse) {
         if (getTweetPicResponse.getImageString() == null)
             return;
-        String path = "src/main/resources/clientdb/" + usernameDir + "/tweetpics/" +
+        FileModelControllerConfig config = new FileModelControllerConfig();
+        String path = config.getDbroot() + usernameDir + "/" + config.getTweetpicsroot() +
                 getTweetPicResponse.getTweetId() + ".jpg";
         File file = new File(path);
         if (file.exists()) {
@@ -61,7 +64,8 @@ public class FileModelController extends AbstractModelController {
     public void updatePmPic(GetPmPicResponse getPmPicResponse) {
         if (getPmPicResponse.getImageString() == null)
             return;
-        String path = "src/main/resources/clientdb/" + usernameDir + "/pmpics/" +
+        FileModelControllerConfig config = new FileModelControllerConfig();
+        String path = config.getDbroot() + usernameDir + "/" + config.getPmpicsroot() +
                 getPmPicResponse.getPmId() + ".jpg";
         File file = new File(path);
         if (file.exists()) {
@@ -77,14 +81,16 @@ public class FileModelController extends AbstractModelController {
     }
 
     public boolean profileExists(int userId) {
-        String path = "src/main/resources/clientdb/" + usernameDir + "/profilepics/" +
+        FileModelControllerConfig config = new FileModelControllerConfig();
+        String path = config.getDbroot() + usernameDir + "/" + config.getProfilepicsroot() + +
                 userId + ".jpg";
         File file = new File(path);
         return file.exists();
     }
 
     public boolean tweetExists(int tweetId) {
-        String path = "src/main/resources/clientdb/" + usernameDir + "/tweetpics/" +
+        FileModelControllerConfig config = new FileModelControllerConfig();
+        String path = config.getDbroot() + usernameDir + "/" + config.getProfilepicsroot() + +
                 tweetId + ".jpg";
         File file = new File(path);
         return file.exists();
@@ -105,12 +111,13 @@ public class FileModelController extends AbstractModelController {
 
 
     public static boolean canUpdate(String filepath) {
+        FileModelControllerConfig config = new FileModelControllerConfig();
         if (!lastRequest.containsKey(filepath)) {
             updateLastRequest(filepath);
             return true;
         }
         Instant curRequest = lastRequest.get(filepath);
-        if (Math.abs(Duration.between(Instant.now(), curRequest).getSeconds()) > 5) {
+        if (Math.abs(Duration.between(Instant.now(), curRequest).getSeconds()) > config.getCanupdatesecondlimit()) {
             updateLastRequest(filepath);
             return true;
         }
@@ -118,19 +125,23 @@ public class FileModelController extends AbstractModelController {
     }
 
     public String getProfilePicPath(int userId) {
-        return "src/main/resources/clientdb/" + usernameDir + "/profilepics/" + userId + ".jpg";
+        FileModelControllerConfig config = new FileModelControllerConfig();
+        return config.getDbroot() + usernameDir + "/" + config.getProfilepicsroot() + userId + ".jpg";
     }
 
     public String getTweetPicPath(int tweetId) {
-        return "src/main/resources/clientdb/" + usernameDir + "/tweetpics/" + tweetId + ".jpg";
+        FileModelControllerConfig config = new FileModelControllerConfig();
+        return config.getDbroot() + usernameDir + "/" + config.getTweetpicsroot() + tweetId + ".jpg";
     }
 
     public String getPmPicPath(int pmId) {
-        return "src/main/resources/clientdb/" + usernameDir + "/pmpics/" + pmId + ".jpg";
+        FileModelControllerConfig config = new FileModelControllerConfig();
+        return config.getDbroot() + usernameDir + "/" + config.getPmpicsroot() + pmId + ".jpg";
     }
 
     public static boolean isBefore(LocalDateTime date, String usernameDir, String p ) {
-        String pp = "src/main/resources/clientdb/" + usernameDir + "/" + p;
+        FileModelControllerConfig config = new FileModelControllerConfig();
+        String pp = config.getDbroot() + usernameDir + "/" + p;
         File file = new File(pp);
         if (!file.exists())
             return false;
@@ -143,19 +154,4 @@ public class FileModelController extends AbstractModelController {
     private static void updateLastRequest(String filepath) {
         lastRequest.put(filepath, Instant.now());
     }
-/*
-    public static boolean recentlyUpdated(String usernameDir, String p) {
-        String pp = "src/main/resources/clientdb/" + usernameDir + "/" + p;
-        File file = new File(pp);
-        if (!file.exists())
-            return false;
-        LocalDateTime fileDate = Instant.ofEpochMilli(file.lastModified())
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-        Duration duration = Duration.between(fileDate, LocalDateTime.now()).abs();
-        System.out.println(duration.getSeconds());
-        return true;
-    }
-*/
-
 }

@@ -1,2 +1,6 @@
 savedmessageChatName=Saved Message
 ghostuserUsername=ghostuser
+lastseenrecentlyText=last seen recently
+onlineText=online
+lastseenpart1Text=last seen\u0020
+lastseenpart2Text=\u0020minutes ago

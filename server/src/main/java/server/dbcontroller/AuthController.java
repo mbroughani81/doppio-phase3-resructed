@@ -149,6 +149,8 @@ public class AuthController extends AbstractController {
             return;
         blockList.getList().add(newBlockRequest.getUserId());
         context.BlockLists.update(blockList);
+
+        LogManager.getLogger(AuthController.class).info("new block is added " + blocker.toString());
     }
 
     public void newUnblock(NewUnblockRequest newUnblockRequest) {
@@ -156,6 +158,8 @@ public class AuthController extends AbstractController {
         BlockList blockList = context.BlockLists.get(blocker.getBlockListId());
         blockList.getList().remove((Object) newUnblockRequest.getUserId());
         context.BlockLists.update(blockList);
+
+        LogManager.getLogger(AuthController.class).info("new unblock is added " + blocker.toString());
     }
 
     public void newMute(NewMuteRequest newMuteRequest) {
@@ -165,6 +169,8 @@ public class AuthController extends AbstractController {
             return;
         mutedUserList.getUserIds().add(newMuteRequest.getUserId());
         context.MutedUserLists.update(mutedUserList);
+
+        LogManager.getLogger(AuthController.class).info("new mute is added " + muter.toString());
     }
 
     public void deleteUser(DeleteAccountRequest deleteAccountRequest) {
@@ -192,6 +198,8 @@ public class AuthController extends AbstractController {
         profile.setPhoneNumber(user.getUsername());
         context.Users.update(user);
         context.Profiles.update(profile);
+
+        LogManager.getLogger(AuthController.class).info("user is deleted " + user.toString());
     }
 
     public void updateLastSeen(int userId) {
@@ -199,6 +207,7 @@ public class AuthController extends AbstractController {
         Profile profile = context.Profiles.get(user.getProfileId());
         profile.setLastSeen(LocalDateTime.now());
         context.Profiles.update(profile);
+
     }
 
     public User getUser(String username) {
@@ -242,16 +251,17 @@ public class AuthController extends AbstractController {
     }
 
     public String getLastseen(int userId, int requestedId) {
+        AuthControllerConfig config = new AuthControllerConfig();
         if (!hasAccessToLastseen(userId, requestedId))
-            return "last seen recently";
+            return config.getLastseenrecentlyText();
 
         Profile requestedProfile = getProfile(requestedId);
         LocalDateTime now = LocalDateTime.now();
         long min = Duration.between(now, requestedProfile.getLastSeen()).abs().toMinutes();
         if (min == 0)
-            return "online";
+            return config.getOnlineText();
         else
-            return "last seen " + min + " ago";
+            return config.getLastseenpart1Text() + min + config.getLastseenpart2Text();
     }
 
     public boolean hasAccessToLastseen(int userId, int requestedId) {

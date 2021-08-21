@@ -11,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import shared.request.*;
 import shared.response.GetProfileResponse;
 
@@ -96,11 +98,9 @@ public class ProfilePageRootController extends BasicController implements Initia
             view.setFitHeight(150);
             profilepicLabel.setGraphic(view);
         } else {
-            ImageView view;
-            view = new ImageView(new Image("iliya1.png"));
-            view.setFitWidth(150);
-            view.setFitHeight(150);
-            profilepicLabel.setGraphic(view);
+            Rectangle rectangle = new Rectangle(150, 150);
+            rectangle.setFill(Paint.valueOf("#fa7e5c"));
+            profilepicLabel.setGraphic(rectangle);
         }
     }
 

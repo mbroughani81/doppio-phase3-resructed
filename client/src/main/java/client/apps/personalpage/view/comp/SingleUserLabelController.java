@@ -12,6 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import shared.request.*;
 
 import java.io.File;
@@ -60,11 +62,9 @@ public class SingleUserLabelController extends BasicController implements Initia
             view.setFitHeight(40);
             profileLabel.setGraphic(view);
         } else {
-            ImageView view;
-            view = new ImageView(new Image("iliya1.png"));
-            view.setFitWidth(40);
-            view.setFitHeight(40);
-            profileLabel.setGraphic(view);
+            Rectangle rectangle = new Rectangle(40, 40);
+            rectangle.setFill(Paint.valueOf("#fa7e5c"));
+            profileLabel.setGraphic(rectangle);
         }
         // ask for image to load in furthur openings
         getListener().listen(new GetProfilePicRequest(userId));

@@ -389,11 +389,15 @@ public class ClientThread extends Thread implements RequestHandler {
         Tweet tweet = tweetController.getTweet(getTweetPageRequest.getTweetId());
         SingleTweet mainTweet = TweetController.convertToSingleTweet(tweet);
 
+        User requester = authController.getUserWithAuthToken(getTweetPageRequest.getAuthToken());
         User user = authController.getUser(tweet.getCreatorId());
         Profile profile = authController.getProfile(tweet.getCreatorId());
-        if (profile.getPrivacy() == Privacy.PRIVATE || !user.isAlive() || !user.isActive()) {
+        if (requester.getId() == user.getId())
+            return new GetTweetPageResponse(getTweetPageRequest.getTweetId(), mainTweet, resTweets);
+        if (profile.getPrivacy() == Privacy.PRIVATE && !socialController.getFollowersIds(user.getId()).contains(requester.getId()))
             return sendErrorTweetPage(getTweetPageRequest.getTweetId());
-        }
+        if (!user.isActive() || !user.isAlive())
+            return sendErrorChatModel(getTweetPageRequest.getTweetId());
         return new GetTweetPageResponse(getTweetPageRequest.getTweetId(), mainTweet, resTweets);
     }
 

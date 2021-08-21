@@ -1,12 +1,15 @@
 package server.dbcontroller;
 
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.util.PropertyFilePropertySource;
 import server.config.dbcontrollerConfig.AuthControllerConfig;
 import server.model.*;
 import shared.datatype.ChatType;
+import shared.datatype.LastSeenPrivacy;
 import shared.model.AuthToken;
 import shared.request.*;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class AuthController extends AbstractController {
@@ -232,5 +235,29 @@ public class AuthController extends AbstractController {
                 return true;
         }
         return false;
+    }
+
+    public String getLastseen(int userId, int requestedId) {
+        if (!hasAccessToLastseen(userId, requestedId))
+            return "last seen recently";
+
+        Profile requestedProfile = getProfile(requestedId);
+        LocalDateTime now = LocalDateTime.now();
+        long min = Duration.between(now, requestedProfile.getLastSeen()).abs().toMinutes();
+        return "last seen " + min + " ago";
+    }
+
+    public boolean hasAccessToLastseen(int userId, int requestedId) {
+        User user = getUser(userId);
+        User requested = getUser(requestedId);
+        Profile requestedProfile = context.Profiles.get(requested.getProfileId());
+        if (userId == requestedId)
+            return true;
+        if (requestedProfile.getLastSeenPrivacy() == LastSeenPrivacy.NOBODY)
+            return false;
+        if (requestedProfile.getLastSeenPrivacy() == LastSeenPrivacy.EVERYBODY)
+            return true;
+        SocialController socialController = new SocialController();
+        return socialController.getFollowingsIds(requestedId).contains(userId);
     }
 }

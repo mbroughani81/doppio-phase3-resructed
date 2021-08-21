@@ -11,10 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import shared.request.GetProfilePicRequest;
-import shared.request.GetProfileRequest;
-import shared.request.NewFollowRequest;
-import shared.request.NewPrivateChatRequest;
+import shared.request.*;
 import shared.response.GetProfileResponse;
 
 import java.io.File;
@@ -48,6 +45,14 @@ public class ProfilePageRootController extends BasicController implements Initia
 
     @FXML
     private Button chatButton;
+
+    @FXML
+    private Button blockButton;
+
+    @FXML
+    void blockButtonClicked(ActionEvent event) {
+        getListener().listen(new NewBlockRequest(userId));
+    }
 
     @FXML
     void chatButtonClicked(ActionEvent event) {
@@ -103,11 +108,12 @@ public class ProfilePageRootController extends BasicController implements Initia
         usernameLabel.setText(getProfileResponse.getUsername());
         nameLabel.setText(getProfileResponse.getName());
         bioLabel.setText(getProfileResponse.getBio());
-        switch (getProfileResponse.getLastSeenPrivacy()) {
-            case NOBODY -> lastseenLabel.setText("nobody");
-            case EVERYBODY -> lastseenLabel.setText("everybody");
-            case FOLLOWING -> lastseenLabel.setText("following");
-        }
+        lastseenLabel.setText(getProfileResponse.getLastseen());
+//        switch (getProfileResponse.getLastSeenPrivacy()) {
+//            case NOBODY -> lastseenLabel.setText("nobody");
+//            case EVERYBODY -> lastseenLabel.setText("everybody");
+//            case FOLLOWING -> lastseenLabel.setText("following");
+//        }
     }
 
     public int getUserId() {

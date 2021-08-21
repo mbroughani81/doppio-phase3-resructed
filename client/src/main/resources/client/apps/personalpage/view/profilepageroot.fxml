@@ -31,6 +31,7 @@
          <children>
             <Button fx:id="followButton" mnemonicParsing="false" onAction="#followButtonClicked" text="Follow" />
             <Button fx:id="chatButton" mnemonicParsing="false" onAction="#chatButtonClicked" text="Chat" />
+            <Button fx:id="blockButton" layoutX="101.0" layoutY="10.0" mnemonicParsing="false" onAction="#blockButtonClicked" text="Block" />
          </children>
       </HBox>
     </children>

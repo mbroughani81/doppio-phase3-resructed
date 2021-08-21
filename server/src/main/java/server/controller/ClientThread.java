@@ -3,6 +3,7 @@ package server.controller;
 import org.apache.logging.log4j.LogManager;
 import server.config.controllerConfig.ClientThreadConfig;
 import server.dbcontroller.*;
+import shared.datatype.LastSeenPrivacy;
 import shared.datatype.Pair;
 import server.controller.network.SocketResponseSender;
 import server.model.*;
@@ -10,6 +11,7 @@ import shared.model.*;
 import shared.request.*;
 import shared.response.*;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 public class ClientThread extends Thread implements RequestHandler {
@@ -452,13 +454,16 @@ public class ClientThread extends Thread implements RequestHandler {
         if (getProfileRequest.getUserId() == -1) {
             getProfileRequest.setUserId(authController.getUserWithAuthToken(getProfileRequest.getAuthToken()).getId());
         }
-        Profile p = authController.getProfile(getProfileRequest.getUserId());
+        User user = authController.getUserWithAuthToken(getProfileRequest.getAuthToken());
+        User requested = authController.getUser(getProfileRequest.getUserId());
+        Profile requestedProfile = authController.getProfile(requested.getId());
+
         return new GetProfileResponse(
                 getProfileRequest.getUserId(),
                 authController.getUser(getProfileRequest.getUserId()).getUsername(),
-                p.getName(),
-                p.getLastSeenPrivacy(),
-                p.getBio()
+                requestedProfile.getName(),
+                authController.getLastseen(user.getId(), requested.getId()),
+                requestedProfile.getBio()
         );
     }
 

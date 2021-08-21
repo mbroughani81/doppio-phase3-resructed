@@ -1,13 +1,11 @@
 package shared.response;
 
-import shared.datatype.LastSeenPrivacy;
-
 public class GetProfileResponse implements Response {
 
     private int userId;
     private String username;
     private String name;
-    private LastSeenPrivacy lastSeenPrivacy;
+    private String lastseen;
     private String bio;
 
     @Override
@@ -15,11 +13,11 @@ public class GetProfileResponse implements Response {
         responseHandler.updateProfile(this);
     }
 
-    public GetProfileResponse(int userId, String username, String name, LastSeenPrivacy lastSeenPrivacy, String bio) {
+    public GetProfileResponse(int userId, String username, String name, String lastseen, String bio) {
         this.userId = userId;
         this.username = username;
         this.name = name;
-        this.lastSeenPrivacy = lastSeenPrivacy;
+        this.lastseen = lastseen;
         this.bio = bio;
     }
 
@@ -47,12 +45,12 @@ public class GetProfileResponse implements Response {
         this.name = name;
     }
 
-    public LastSeenPrivacy getLastSeenPrivacy() {
-        return lastSeenPrivacy;
+    public String getLastseen() {
+        return lastseen;
     }
 
-    public void setLastSeenPrivacy(LastSeenPrivacy lastSeenPrivacy) {
-        this.lastSeenPrivacy = lastSeenPrivacy;
+    public void setLastseen(String lastseen) {
+        this.lastseen = lastseen;
     }
 
     public String getBio() {

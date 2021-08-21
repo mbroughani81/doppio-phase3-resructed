@@ -28,6 +28,9 @@ public class DBConfig {
     private String userroot;
     private String usertyperoot;
     private String retweetedtweetlistroot;
+    private String pmpicroot;
+    private String profilepicroot;
+    private String tweetpicroot;
 
     public DBConfig() {
         try {
@@ -63,6 +66,9 @@ public class DBConfig {
         userroot = properties.getProperty("userroot");
         usertyperoot = properties.getProperty("usertyperoot");
         retweetedtweetlistroot = properties.getProperty("retweetedtweetlistroot");
+        pmpicroot = properties.getProperty("pmpicroot");
+        profilepicroot = properties.getProperty("profilepicroot");
+        tweetpicroot = properties.getProperty("tweetpicroot");
     }
 
     public String getDbroot() {
@@ -143,5 +149,17 @@ public class DBConfig {
 
     public String getRetweetedtweetlistroot() {
         return retweetedtweetlistroot;
+    }
+
+    public String getPmpicroot() {
+        return pmpicroot;
+    }
+
+    public String getProfilepicroot() {
+        return profilepicroot;
+    }
+
+    public String getTweetpicroot() {
+        return tweetpicroot;
     }
 }

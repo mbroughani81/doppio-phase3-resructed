@@ -18,3 +18,6 @@ tweetroot=tweets/
 userroot=users/
 usertyperoot=usertypes/
 retweetedtweetlistroot=retweetedtweetlists/
+pmpicroot=pics/pm/
+profilepicroot=pics/profile/
+tweetpicroot=pics/tweet/

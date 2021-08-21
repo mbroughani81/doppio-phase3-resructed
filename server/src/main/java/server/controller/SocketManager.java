@@ -21,6 +21,7 @@ public class SocketManager extends Thread {
     @Override
     public void run() {
         SocketConfig socketConfig = new SocketConfig();
+        PathCreator.createServerResource();
 //        Context context = new Context();
 //        context.clearDB();
 //        TestData.testNewUser();

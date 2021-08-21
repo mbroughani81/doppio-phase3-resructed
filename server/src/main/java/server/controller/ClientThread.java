@@ -1,6 +1,7 @@
 package server.controller;
 
 import org.apache.logging.log4j.LogManager;
+import server.config.controllerConfig.ClientThreadConfig;
 import server.dbcontroller.*;
 import shared.datatype.Pair;
 import server.controller.network.SocketResponseSender;
@@ -51,15 +52,16 @@ public class ClientThread extends Thread implements RequestHandler {
     public Response signupUser(SignupRequest signupRequest) {
         LogManager.getLogger(ClientThread.class).info("SignupRequest is getting handled");
 
+        ClientThreadConfig config = new ClientThreadConfig();
         LinkedList<String> errors = new LinkedList<>();
         if (authController.getUser(signupRequest.getUsername()) != null)
-            errors.add("Username already used");
+            errors.add(config.getSignupDuplicateUserErrorText());
         if (signupRequest.getPassword().length() == 0)
-            errors.add("Password can not be empty");
+            errors.add(config.getSignupEmptyPasswordErrorText());
         if (authController.hasEmail(signupRequest.getEmail()))
-            errors.add("Email already used");
+            errors.add(config.getSignupDuplicateEmailErrorText());
         if (authController.hasPhone(signupRequest.getPhone()))
-            errors.add("Phone already used");
+            errors.add(config.getSignupDuplicatePhoneErrorText());
         if (errors.size() == 0)
             authController.signupUser(signupRequest);
 
@@ -70,12 +72,13 @@ public class ClientThread extends Thread implements RequestHandler {
     public Response loginUser(LoginRequest loginRequest) {
         LogManager.getLogger(ClientThread.class).info("LoginRequest is getting handled");
 
+        ClientThreadConfig config = new ClientThreadConfig();
         LinkedList<String> errors = new LinkedList<>();
         if (authController.getUser(loginRequest.getUsername()) == null) {
-            errors.add("User not found");
+            errors.add(config.getLoginUserNotFoundErrorText());
         } else {
             if (!authController.getUser(loginRequest.getUsername()).getPassword().equals(loginRequest.getPassword())) {
-                errors.add("Password is not correct");
+                errors.add(config.getLoginWrongPasswordErrorText());
             }
         }
         if (errors.size() == 0) {
@@ -115,7 +118,7 @@ public class ClientThread extends Thread implements RequestHandler {
         }
 
         messageController.newPrivateChat(newPrivateChatRequest);
-        return new NullResponse("salam");
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -129,7 +132,7 @@ public class ClientThread extends Thread implements RequestHandler {
         int tweetId = tweetController.newTweet(newTweetRequest);
         if (newTweetRequest.getImageString() != null)
             fileController.updateTweet(tweetId, newTweetRequest.getImageString());
-        return new NullResponse("salam");
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -139,10 +142,10 @@ public class ClientThread extends Thread implements RequestHandler {
         // fixme : in final make only possible to send pm with authtoken
         User user = authController.getUserWithAuthToken(newPmRequest.getAuthToken());
         if (!messageController.isOwnerOfChat(user.getId(), newPmRequest.getChatId())) {
-            return new NullResponse("pm not affected!");
+            return new CheckConnectionResponse();
         }
         messageController.sendNewPm(newPmRequest);
-        return new NullResponse("salam");
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -150,7 +153,7 @@ public class ClientThread extends Thread implements RequestHandler {
         LogManager.getLogger(ClientThread.class).info("NewScheduledPmRequest is getting handled");
 
         messageController.sendNewScheduledPm(newScheduledPmRequest);
-        return new NullResponse("scheduled is ok");
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -161,7 +164,7 @@ public class ClientThread extends Thread implements RequestHandler {
             newFollowRequest.setFollowerId(authController.getUserWithAuthToken(newFollowRequest.getAuthToken()).getId());
         }
         socialController.newFollow(newFollowRequest);
-        return new NullResponse("newFollow is ok");
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -172,7 +175,7 @@ public class ClientThread extends Thread implements RequestHandler {
             newGroupRequest.setOwnerId(authController.getUserWithAuthToken(newGroupRequest.getAuthToken()).getId());
         }
         messageController.newGroupChat(newGroupRequest);
-        return new NullResponse("group is created");
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -252,7 +255,7 @@ public class ClientThread extends Thread implements RequestHandler {
         LogManager.getLogger(ClientThread.class).info("ChangeBioRequest is getting handled");
 
         authController.changeBio(changeBioRequest);
-        return new NullResponse("bio changed");
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -260,7 +263,7 @@ public class ClientThread extends Thread implements RequestHandler {
         LogManager.getLogger(ClientThread.class).info("ChangeNameRequest is getting handled");
 
         authController.changeName(changeNameRequest);
-        return new NullResponse("name changed");
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -268,7 +271,7 @@ public class ClientThread extends Thread implements RequestHandler {
         LogManager.getLogger(ClientThread.class).info("ChangeEmailRequest is getting handled");
 
         authController.changeEmail(changeEmailRequest);
-        return new NullResponse("email changed");
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -276,7 +279,7 @@ public class ClientThread extends Thread implements RequestHandler {
         LogManager.getLogger(ClientThread.class).info("ChangePhonenumberRequest is getting handled");
 
         authController.changePhonenumber(changePhonenumberRequest);
-        return new NullResponse("phonenumber changed");
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -284,7 +287,7 @@ public class ClientThread extends Thread implements RequestHandler {
         LogManager.getLogger(ClientThread.class).info("ChangeBirthdayRequest is getting handled");
 
         authController.changeBirthday(changeBirthdayRequest);
-        return new NullResponse("birthday changed");
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -294,7 +297,7 @@ public class ClientThread extends Thread implements RequestHandler {
         User user = authController.getUserWithAuthToken(changeProfileRequest.getAuthToken());
         FileController fileController = new FileController();
         fileController.updateProfile(user.getId(), changeProfileRequest.getImageString());
-        return new NullResponse("profile changed");
+        return new CheckConnectionResponse();
     }
 
     @Override
@@ -348,11 +351,12 @@ public class ClientThread extends Thread implements RequestHandler {
     @Override
     public Response getTimeline(GetTimelineRequest getTimelineRequest) {
         LogManager.getLogger(ClientThread.class).info("GetTimelineRequest is getting handled");
+
         User u = authController.getUserWithAuthToken(getTimelineRequest.getAuthToken());
         LinkedList<SingleTweet> tweets = tweetController.getTimeline(
                 u.getId()
         );
-//        LinkedList<SingleTweet> resTweets = TweetController.convertToSingleTweet(tweets);
+
         return new GetTimelineResponse(tweets);
     }
 
@@ -360,9 +364,6 @@ public class ClientThread extends Thread implements RequestHandler {
     public Response getExplorer(GetExplorerRequest getExplorerRequest) {
         LogManager.getLogger(ClientThread.class).info("GetExplorerRequest is getting handled");
 
-//        LinkedList<Tweet> tweets = tweetController.getTimeline(
-//                authController.getUserWithAuthToken(getExplorerRequest.getAuthToken()).getUsername()
-//        );
         LinkedList<Tweet> tweets = tweetController.getExplorer(
                 authController.getUserWithAuthToken(getExplorerRequest.getAuthToken()).getId()
         );
@@ -391,17 +392,11 @@ public class ClientThread extends Thread implements RequestHandler {
 
         LinkedList<SingleTweet> tweets = new LinkedList<>();
         User curUser = authController.getUserWithAuthToken(getShowUserTweetsRequest.getAuthToken());
-//        for (Tweet tweet : tweetController.getUserTweets(curUser.getId())) {
-//            tweets.add(new SingleTweet(
-//                    tweet.getId(),
-//                    tweet.getCreatorId(),
-//                    tweet.getText()
-//            ));
-//        }
         LinkedList<Tweet> allTweets1 = tweetController.getUserPostedTweets(curUser.getId());
         LinkedList<Tweet> allTweets2 = tweetController.getUserRetweetedTweets(curUser.getId());
         tweets = TweetController.convertToSingleTweet(allTweets1);
         tweets.addAll(TweetController.convertToSingleTweet(allTweets2, curUser.getUsername()));
+
         return new GetShowUserTweetsResponse(tweets);
     }
 
@@ -425,6 +420,7 @@ public class ClientThread extends Thread implements RequestHandler {
         for (Integer id : f3) {
             blacklist.add(new SingleUser(id));
         }
+
         return new GetShowlistResponse(following, followers, blacklist);
     }
 

@@ -1,0 +1,6 @@
+signupDuplicateUserErrorText=Username already used
+signupEmptyPasswordErrorText=Password can not be empty
+signupDuplicateEmailErrorText=Email already used
+signupDuplicatePhoneErrorText=Phone already used
+loginUserNotFoundErrorText=User not found
+loginWrongPasswordErrorText=Password is not correct

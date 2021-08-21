@@ -17,6 +17,7 @@ public class MainConfig {
     private String sessioncontrollerConfigPath;
     private String socialcontrollerConfigPath;
     private String tweetcontrollerConfigPath;
+    private String clientthreadConfigPath;
 
     public MainConfig() {
         try {
@@ -39,6 +40,7 @@ public class MainConfig {
         sessioncontrollerConfigPath = properties.getProperty("sessioncontrollerConfigPath");
         socialcontrollerConfigPath = properties.getProperty("socialcontrollerConfigPath");
         tweetcontrollerConfigPath = properties.getProperty("tweetcontrollerConfigPath");
+        clientthreadConfigPath = properties.getProperty("clientthreadConfigPath");
     }
 
     public String getSocketConfigPath() {
@@ -71,5 +73,9 @@ public class MainConfig {
 
     public String getTweetcontrollerConfigPath() {
         return tweetcontrollerConfigPath;
+    }
+
+    public String getClientthreadConfigPath() {
+        return clientthreadConfigPath;
     }
 }

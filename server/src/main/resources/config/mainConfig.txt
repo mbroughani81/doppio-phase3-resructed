@@ -6,3 +6,4 @@ messagecontrollerConfigPath=src/main/resources/config/dbcontrollerConfig/message
 sessioncontrollerConfigPath=src/main/resources/config/dbcontrollerConfig/sessioncontrollerConfig.txt
 socialcontrollerConfigPath=src/main/resources/config/dbcontrollerConfig/socialcontrollerConfig.txt
 tweetcontrollerConfigPath=src/main/resources/config/dbcontrollerConfig/tweetcontrollerConfig.txt
+clientthreadConfigPath=src/main/resources/config/controllerConfig/clientthreadConfig.txt

@@ -12,6 +12,7 @@ import client.dbcontroller.SessionModelController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
 import shared.loop.Loop;
 import shared.request.CheckConnection;
 import shared.request.Request;
@@ -52,8 +53,13 @@ public class DoppioApp extends Application implements ResponseHandler {
         resetUser();
         ViewSwitcher.getInstance().switchTo(new Page(View.LOGIN, -1));
 
-        stage.setOnCloseRequest(e -> System.exit(0));
+        stage.setOnCloseRequest(e -> {
+            LogManager.getLogger(DoppioApp.class).info("client is closed");
+            System.exit(0);
+        });
         stage.show();
+
+        LogManager.getLogger(DoppioApp.class).info("stage is up");
     }
 
     public static void askNewSocket() {
@@ -62,9 +68,11 @@ public class DoppioApp extends Application implements ResponseHandler {
         try {
             newSender = new SocketRequestSender(new Socket(socketConfig.getLocalhost(), socketConfig.getPort()));
             System.out.println("successfully connected to server");
+            LogManager.getLogger(DoppioApp.class).info("successfully connected to server");
             sender = newSender;
         } catch (IOException e) {
-            System.out.println("problem connecting. please ea");
+            System.out.println("connecting problem");
+            LogManager.getLogger(DoppioApp.class).info("connecting problem");
         }
     }
 

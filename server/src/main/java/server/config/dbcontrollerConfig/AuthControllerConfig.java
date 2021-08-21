@@ -8,6 +8,9 @@ import java.util.Properties;
 
 public class AuthControllerConfig {
 
+    private String savedmessageChatName;
+    private String ghostuserUsername;
+
     public AuthControllerConfig() {
         try {
             setProperties();
@@ -21,5 +24,16 @@ public class AuthControllerConfig {
         Properties properties = new Properties();
         FileReader fileReader = new FileReader(mainConfig.getAuthcontrollerConfigPath());
         properties.load(fileReader);
+
+        savedmessageChatName = properties.getProperty("savedmessageChatName");
+        ghostuserUsername = properties.getProperty("ghostuserUsername");
+    }
+
+    public String getSavedmessageChatName() {
+        return savedmessageChatName;
+    }
+
+    public String getGhostuserUsername() {
+        return ghostuserUsername;
     }
 }

@@ -1,6 +1,7 @@
 package server.dbcontroller;
 
 import org.apache.logging.log4j.LogManager;
+import server.config.dbcontrollerConfig.AuthControllerConfig;
 import server.model.*;
 import shared.datatype.ChatType;
 import shared.model.AuthToken;
@@ -8,6 +9,7 @@ import shared.request.*;
 
 public class AuthController extends AbstractController {
     public void signupUser(SignupRequest signupRequest) {
+        AuthControllerConfig config = new AuthControllerConfig();
         Profile profile = new Profile(
                 signupRequest.getName(),
                 signupRequest.getBirthday(),
@@ -42,7 +44,7 @@ public class AuthController extends AbstractController {
         context.Users.add(user);
         Chat savedMessageChat = new Chat(user.getId(), ChatType.PRIVATE);
         savedMessageChat.getMemberIds().add(user.getId());
-        savedMessageChat.setChatName("Saved Message");
+        savedMessageChat.setChatName(config.getSavedmessageChatName());
         int savedMessageChatId = context.Chats.add(savedMessageChat);
         savedMessageChat.setParentChatId(savedMessageChatId);
         context.Chats.update(savedMessageChat);
@@ -159,8 +161,8 @@ public class AuthController extends AbstractController {
     public void deleteUser(DeleteAccountRequest deleteAccountRequest) {
         // delete from blocklist, followerlists, followinglists
         // warning : authtoken may not be valid
-        AuthController authController = new AuthController();
-        User user = authController.getUser(deleteAccountRequest.getUserId());
+        AuthControllerConfig config = new AuthControllerConfig();
+        User user = getUser(deleteAccountRequest.getUserId());
         Profile profile = context.Profiles.get(user.getProfileId());
         for (BlockList blockList : context.BlockLists.all()) {
             blockList.getList().remove((Object)user.getId());
@@ -175,7 +177,7 @@ public class AuthController extends AbstractController {
             context.FollowingLists.update(followingList);
         }
         // change username and profile
-        user.setUsername("ghostuser" + user.getId());
+        user.setUsername(config.getGhostuserUsername() + user.getId());
         user.setActive(false);
         profile.setEmail(user.getUsername());
         profile.setPhoneNumber(user.getUsername());

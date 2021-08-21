@@ -1,0 +1,4 @@
+pvChatnameText=PV with\u0020
+deletedPmText=(This is deleted)
+forwardedTweetText=Forwarded from tweet :\u0020
+errorChatModelText=You don't have access to this chat

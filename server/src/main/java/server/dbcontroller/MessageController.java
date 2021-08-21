@@ -1,6 +1,7 @@
 package server.dbcontroller;
 
 import org.apache.logging.log4j.LogManager;
+import server.config.dbcontrollerConfig.MessageControllerConfig;
 import server.model.*;
 import shared.datatype.PmVerdict;
 import shared.model.ChatModel;
@@ -14,6 +15,7 @@ import java.util.LinkedList;
 
 public class MessageController extends AbstractController {
     public int newPrivateChat(NewPrivateChatRequest request) {
+        MessageControllerConfig config = new MessageControllerConfig();
         int id1 = context.Users.get(request.getUser1Id()).getMessageDataId();
         int id2 = context.Users.get(request.getUser2Id()).getMessageDataId();
         if (hasPrivateChat(id1, id2) != -1) {
@@ -29,8 +31,8 @@ public class MessageController extends AbstractController {
         Chat chat2 = new Chat(request.getUser2Id(), ChatType.PRIVATE);
         chat2.getMemberIds().add(request.getUser1Id());
         chat2.getMemberIds().add(request.getUser2Id());
-        chat1.setChatName("PV with " + username2);
-        chat2.setChatName("PV with " + username1);
+        chat1.setChatName(config.getPvChatnameText() + username2);
+        chat2.setChatName(config.getPvChatnameText() + username1);
         int chat1Id = context.Chats.add(chat1);
         int chat2Id = context.Chats.add(chat2);
         chat1.setId(chat1Id);
@@ -80,6 +82,7 @@ public class MessageController extends AbstractController {
             messageData.getChatIds().add(chat.getId());
             context.MessageDatas.update(messageData);
         }
+
         LogManager.getLogger(MessageController.class).info("new group chat created with parent id : " + parentId);
     }
 
@@ -205,12 +208,13 @@ public class MessageController extends AbstractController {
 
     public void deletePm(DeletePmRequest deletePmRequest) {
         AuthController authController = new AuthController();
+        MessageControllerConfig config = new MessageControllerConfig();
         User user = authController.getUserWithAuthToken(deletePmRequest.getAuthToken());
         Pm pm = context.Pms.get(deletePmRequest.getPmId());
         if (user.getId() != pm.getUserId()) {
             return;
         }
-        pm.setText("(This is deleted)");
+        pm.setText(config.getDeletedPmText());
         context.Pms.update(pm);
     }
 
@@ -231,12 +235,13 @@ public class MessageController extends AbstractController {
         AuthController authController = new AuthController();
         FileController fileController = new FileController();
         TweetController tweetController = new TweetController();
+        MessageControllerConfig config = new MessageControllerConfig();
         int userId = authController.getUserWithAuthToken(saveTweetInSavedMessageRequest.getAuthToken()).getId();
         int savedMessageChatId = hasSavedMessage(userId);
         Tweet tweet = tweetController.getTweet(saveTweetInSavedMessageRequest.getTweetId());
         sendNewPm(new NewPmRequest(
                 savedMessageChatId,
-                "Forwarded from tweet : \n" + tweet.getText(),
+                config.getForwardedTweetText() + tweet.getText(),
                 fileController.getTweetString(tweet.getId())
         ));
     }
@@ -301,7 +306,8 @@ public class MessageController extends AbstractController {
 
     public static ChatModel getErrorChatModel(int chatId) {
         LinkedList<SinglePm> pms = new LinkedList<>();
-        pms.add(new SinglePm(-1, -1, PmVerdict.SEEN, "You don't have access to this chat"));
+        MessageControllerConfig config = new MessageControllerConfig();
+        pms.add(new SinglePm(-1, -1, PmVerdict.SEEN, config.getErrorChatModelText()));
         return new ChatModel(chatId, ChatType.PRIVATE, pms);
     }
 
@@ -354,9 +360,6 @@ public class MessageController extends AbstractController {
 
     public static LinkedList<SinglePm> convertToSinglePm(LinkedList<Pm> pms, int readCount, int ignoredCount) {
         LinkedList<SinglePm> singlePms = new LinkedList<>();
-//        for (Pm pm : pms) {
-//            singlePms.add(convertToSinglePm(pm));
-//        }
         for (int i = 0; i < pms.size(); i++) {
             if (i < readCount) {
                 singlePms.add(convertToSinglePm(pms.get(i), PmVerdict.SEEN));

@@ -2,6 +2,7 @@ package client.dbcontroller;
 
 import client.config.dbcontrollerConfig.FileModelControllerConfig;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.LogManager;
 import shared.response.GetPmPicResponse;
 import shared.response.GetProfilePicResponse;
 import shared.response.GetTweetPicResponse;
@@ -40,6 +41,8 @@ public class FileModelController extends AbstractModelController {
                 getProfilePicResponse.getImageString(),
                 path
         );
+
+        LogManager.getLogger(FileModelController.class).info("profile is updeted with id " + getProfilePicResponse.getUserId());
     }
 
     public void updateTweetPic(GetTweetPicResponse getTweetPicResponse) {
@@ -59,6 +62,8 @@ public class FileModelController extends AbstractModelController {
                 getTweetPicResponse.getImageString(),
                 path
         );
+
+        LogManager.getLogger(FileModelController.class).info("tweet pic is updeted with id " + getTweetPicResponse.getTweetId());
     }
 
     public void updatePmPic(GetPmPicResponse getPmPicResponse) {
@@ -78,6 +83,8 @@ public class FileModelController extends AbstractModelController {
                 getPmPicResponse.getImageString(),
                 path
         );
+
+        LogManager.getLogger(FileModelController.class).info("pm pic is updeted with id " + getPmPicResponse.getPmId());
     }
 
     public boolean profileExists(int userId) {

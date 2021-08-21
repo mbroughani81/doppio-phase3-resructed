@@ -1,6 +1,7 @@
 package server.dbcontroller;
 
 import org.apache.logging.log4j.LogManager;
+import server.config.dbcontrollerConfig.TweetControllerConfig;
 import server.model.*;
 import shared.datatype.Privacy;
 import shared.model.SingleTweet;
@@ -26,12 +27,6 @@ public class TweetController extends AbstractController {
 
     public void newRetweet(NewRetweetRequest newRetweetRequest) {
         AuthController authController = new AuthController();
-//        Tweet tweet = new Tweet(
-//                -1,
-//                "this is retweeted",
-//                user.getId(),
-//                newRetweetRequest.getTweetId());
-//        context.Tweets.add(tweet);
         User u = authController.getUserWithAuthToken(newRetweetRequest.getAuthToken());
         RetweetedTweetList retweetedTweetList = context.RetweetedTweetLists.get(u.getLikedTweetListId());
         retweetedTweetList.getTweetIds().add(newRetweetRequest.getTweetId());
@@ -119,6 +114,7 @@ public class TweetController extends AbstractController {
         User userr = authController.getUser(userrId);
         MutedUserList mutedUserList = context.MutedUserLists.get(userr.getMutedUserListId());
         BlockList blockList = context.BlockLists.get(userr.getBlockListId());
+        TweetControllerConfig config = new TweetControllerConfig();
 
         LinkedList<Integer> goodTweets = new LinkedList<>();
         for (int userId : context.FollowingLists.get(userr.getFollowingListId()).getList()) {
@@ -135,7 +131,7 @@ public class TweetController extends AbstractController {
                 continue;
             if (!mutedUserList.getUserIds().contains(user.getId()) &&
                     !blockList.getList().contains(user.getMutedUserListId()) &&
-                    tweet.getSpamCounter() < 3 &&
+                    tweet.getSpamCounter() < config.getMaxspamlimit() &&
                     goodTweets.contains(tweet.getId())
             ) {
                 tweets.add(convertToSingleTweet(tweet));
@@ -152,7 +148,7 @@ public class TweetController extends AbstractController {
                 User user = context.Users.get(tweet.getCreatorId());
                 if (!mutedUserList.getUserIds().contains(user.getId()) &&
                         !blockList.getList().contains(user.getMutedUserListId()) &&
-                        tweet.getSpamCounter() < 3
+                        tweet.getSpamCounter() < config.getMaxspamlimit()
                 ) {
                     tweets.add(convertToSingleTweet(tweet, u.getUsername()));
                 }
@@ -167,6 +163,7 @@ public class TweetController extends AbstractController {
         User userr = authController.getUser(userId);
         MutedUserList mutedUserList = context.MutedUserLists.get(userr.getMutedUserListId());
         BlockList blockList = context.BlockLists.get(userr.getBlockListId());
+        TweetControllerConfig config = new TweetControllerConfig();
 
         LinkedList<Tweet> tweets = new LinkedList<>();
         for (Tweet tweet : context.Tweets.all()) {
@@ -177,7 +174,7 @@ public class TweetController extends AbstractController {
             if (profile.getPrivacy() == Privacy.PUBLIC &&
                     !mutedUserList.getUserIds().contains(user.getId()) &&
                     !blockList.getList().contains(user.getMutedUserListId()) &&
-                    tweet.getSpamCounter() < 3
+                    tweet.getSpamCounter() < config.getMaxspamlimit()
             ) {
                 tweets.add(tweet);
             }

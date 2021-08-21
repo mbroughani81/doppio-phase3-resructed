@@ -8,6 +8,8 @@ import java.util.Properties;
 
 public class TweetControllerConfig {
 
+    private int maxspamlimit;
+
     public TweetControllerConfig() {
         try {
             setProperties();
@@ -21,5 +23,11 @@ public class TweetControllerConfig {
         Properties properties = new Properties();
         FileReader fileReader = new FileReader(mainConfig.getTweetcontrollerConfigPath());
         properties.load(fileReader);
+
+        maxspamlimit = Integer.parseInt(properties.getProperty("maxspamlimit"));
+    }
+
+    public int getMaxspamlimit() {
+        return maxspamlimit;
     }
 }

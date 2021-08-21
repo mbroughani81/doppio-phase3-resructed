@@ -109,11 +109,6 @@ public class ProfilePageRootController extends BasicController implements Initia
         nameLabel.setText(getProfileResponse.getName());
         bioLabel.setText(getProfileResponse.getBio());
         lastseenLabel.setText(getProfileResponse.getLastseen());
-//        switch (getProfileResponse.getLastSeenPrivacy()) {
-//            case NOBODY -> lastseenLabel.setText("nobody");
-//            case EVERYBODY -> lastseenLabel.setText("everybody");
-//            case FOLLOWING -> lastseenLabel.setText("following");
-//        }
     }
 
     public int getUserId() {

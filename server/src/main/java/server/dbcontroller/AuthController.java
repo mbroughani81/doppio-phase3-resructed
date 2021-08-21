@@ -248,7 +248,10 @@ public class AuthController extends AbstractController {
         Profile requestedProfile = getProfile(requestedId);
         LocalDateTime now = LocalDateTime.now();
         long min = Duration.between(now, requestedProfile.getLastSeen()).abs().toMinutes();
-        return "last seen " + min + " ago";
+        if (min == 0)
+            return "online";
+        else
+            return "last seen " + min + " ago";
     }
 
     public boolean hasAccessToLastseen(int userId, int requestedId) {

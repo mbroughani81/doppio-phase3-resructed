@@ -80,6 +80,8 @@ public class AuthController extends AbstractController {
     public void changeEmail(ChangeEmailRequest changeEmailRequest) {
         User user = getUserWithAuthToken(changeEmailRequest.getAuthToken());
         Profile profile = context.Profiles.get(user.getProfileId());
+        if (hasEmail(changeEmailRequest.getEmail()))
+            return;
         profile.setEmail(changeEmailRequest.getEmail());
         context.Profiles.update(profile);
 
@@ -89,6 +91,8 @@ public class AuthController extends AbstractController {
     public void changePhonenumber(ChangePhonenumberRequest changePhonenumberRequest) {
         User user = getUserWithAuthToken(changePhonenumberRequest.getAuthToken());
         Profile profile = context.Profiles.get(user.getProfileId());
+        if (hasPhone(changePhonenumberRequest.getPhonenumber()))
+            return;
         profile.setPhoneNumber(changePhonenumberRequest.getPhonenumber());
         context.Profiles.update(profile);
 

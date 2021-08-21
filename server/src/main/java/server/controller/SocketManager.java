@@ -7,6 +7,7 @@ import server.db.Context;
 import server.dbcontroller.AuthController;
 import server.dbcontroller.MessageController;
 import server.dbcontroller.TweetController;
+import shared.loop.Loop;
 import shared.request.NewPmRequest;
 import shared.request.NewPrivateChatRequest;
 import shared.request.NewTweetRequest;
@@ -18,15 +19,22 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class SocketManager extends Thread {
+
+    Loop serverJobsLoop;
+
     @Override
     public void run() {
         SocketConfig socketConfig = new SocketConfig();
         PathCreator.createServerResource();
-//        Context context = new Context();
-//        context.clearDB();
-//        TestData.testNewUser();
-//        TestData.testNewTweet();
-//        TestData.testNewPrivateChat();
+        Context context = new Context();
+        context.clearDB();
+        TestData.testNewUser();
+        TestData.testNewTweet();
+        TestData.testNewPrivateChat();
+
+        serverJobsLoop = new Loop(1, this::serverJob);
+        serverJobsLoop.start();
+
         try {
             ServerSocket serverSocket = new ServerSocket(socketConfig.getPort());
             LogManager.getLogger(SocketManager.class).info("serversocket is up");
@@ -44,6 +52,11 @@ public class SocketManager extends Thread {
             LogManager.getLogger(SocketManager.class).error("can not setup serversocket");
             e.printStackTrace();
         }
+    }
+
+    public void serverJob() {
+        MessageController messageController = new MessageController();
+        messageController.handleScheduledPms();
     }
 
     static class TestData {

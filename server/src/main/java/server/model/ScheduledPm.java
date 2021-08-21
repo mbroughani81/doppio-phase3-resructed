@@ -1,22 +1,21 @@
 package server.model;
 
-import shared.datatype.PmVerdict;
-
 import java.time.LocalDateTime;
 
 public class ScheduledPm {
 
     private int id;
     private int userId;
-
-    private PmVerdict pmVerdict;
+    private int chatId;
+    private boolean isSent;
     private String text;
     private LocalDateTime date;
 
-    public ScheduledPm(int userId, PmVerdict pmVerdict, String text, LocalDateTime date) {
+    public ScheduledPm(int userId, int chatId, String text, LocalDateTime date) {
         this.id = -1;
         this.userId = userId;
-        this.pmVerdict = pmVerdict;
+        this.chatId = chatId;
+        this.isSent = false;
         this.text = text;
         this.date = date;
     }
@@ -37,12 +36,20 @@ public class ScheduledPm {
         this.userId = userId;
     }
 
-    public PmVerdict getPmVerdict() {
-        return pmVerdict;
+    public int getChatId() {
+        return chatId;
     }
 
-    public void setPmVerdict(PmVerdict pmVerdict) {
-        this.pmVerdict = pmVerdict;
+    public void setChatId(int chatId) {
+        this.chatId = chatId;
+    }
+
+    public boolean isSent() {
+        return isSent;
+    }
+
+    public void setSent(boolean sent) {
+        isSent = sent;
     }
 
     public String getText() {

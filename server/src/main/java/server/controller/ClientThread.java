@@ -149,7 +149,7 @@ public class ClientThread extends Thread implements RequestHandler {
         if (!messageController.isOwnerOfChat(user.getId(), newPmRequest.getChatId())) {
             return new CheckConnectionResponse();
         }
-        messageController.sendNewPm(newPmRequest);
+        messageController.sendNewPm(newPmRequest, user.getId());
         return new CheckConnectionResponse();
     }
 

@@ -51,6 +51,8 @@ public class MessengerRootController extends BasicController implements Initiali
 
     @Override
     public void changed(ObservableValue<? extends MessageLabel> observable, MessageLabel oldValue, MessageLabel newValue) {
+        if (listView.getSelectionModel().getSelectedItem() == null)
+            return;
         int id = listView.getSelectionModel().getSelectedItem().getSingleChat().getChatId();
         ViewSwitcher.getInstance().switchTo(new Page(View.CHAT, id));
     }

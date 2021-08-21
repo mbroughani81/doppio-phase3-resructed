@@ -145,7 +145,7 @@ public class AuthController extends AbstractController {
     public void newBlock(NewBlockRequest newBlockRequest) {
         User blocker = getUserWithAuthToken(newBlockRequest.getAuthToken());
         BlockList blockList = context.BlockLists.get(blocker.getBlockListId());
-        if (blockList.getList().contains(newBlockRequest.getUserId()))
+        if (blockList.getList().contains(newBlockRequest.getUserId()) || newBlockRequest.getUserId() == blocker.getId())
             return;
         blockList.getList().add(newBlockRequest.getUserId());
         context.BlockLists.update(blockList);

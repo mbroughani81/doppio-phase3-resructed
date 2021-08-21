@@ -11,6 +11,7 @@ import shared.model.SingleUser;
 import shared.datatype.ChatType;
 import shared.request.*;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 public class MessageController extends AbstractController {
@@ -112,7 +113,7 @@ public class MessageController extends AbstractController {
         for (int i = 0; i < allChats.size(); i++) {
             Chat chat1 = allChats.get(i);
             if (chat1.getParentChatId() == requestChat.getParentChatId() &&
-            chat1.getId() != chatId) {
+                    chat1.getId() != chatId) {
                 chat1.getMemberIds().add(user.getId());
                 context.Chats.update(chat1);
             }
@@ -150,9 +151,10 @@ public class MessageController extends AbstractController {
         }
     }
 
-    public int sendNewPm(NewPmRequest newPmRequest) {
+    public int sendNewPm(NewPmRequest newPmRequest, int userId) {
         AuthController authController = new AuthController();
-        User user = authController.getUserWithAuthToken(newPmRequest.getAuthToken());
+//        User user = authController.getUserWithAuthToken(newPmRequest.getAuthToken());
+        User user = authController.getUser(userId);
         Pm pm = new Pm(user.getId(), newPmRequest.getText());
         int id = context.Pms.add(pm);
 
@@ -164,16 +166,16 @@ public class MessageController extends AbstractController {
             int userId2 = chat.getOwnerId();
             BlockList blockList1 = context.BlockLists.get(context.Users.get(userId1).getBlockListId());
             BlockList blockList2 = context.BlockLists.get(context.Users.get(userId2).getBlockListId());
-            if (blockList1.getList().contains(userId2) || blockList2.getList().contains(userId1))
+            if (chat.getParentChatId() != parentChatId)
                 continue;
-            if (chat.getParentChatId() == parentChatId) {
-                LinkedList<Integer> pmIds = chat.getPmIds();
-                pmIds.add(id);
-                chat.setPmIds(pmIds);
-                if (chat.getId() != newPmRequest.getChatId())
-                    chat.setUnreadCount(chat.getUnreadCount() + 1);
-                context.Chats.update(chat);
-            }
+            if (eventChat.getChatType() == ChatType.PRIVATE &&
+                    (blockList1.getList().contains(userId2) || blockList2.getList().contains(userId1)))
+                continue;
+            LinkedList<Integer> pmIds = chat.getPmIds();
+            pmIds.add(id);
+            chat.setPmIds(pmIds);
+            chat.setUnreadCount(chat.getUnreadCount() + 1);
+            context.Chats.update(chat);
         }
         FileController fileController = new FileController();
         if (newPmRequest.getImageString() != null)
@@ -188,7 +190,7 @@ public class MessageController extends AbstractController {
         User user = authController.getUserWithAuthToken(newScheduledPmRequest.getAuthToken());
         ScheduledPm scheduledPm = new ScheduledPm(
                 user.getId(),
-                PmVerdict.SENT,
+                newScheduledPmRequest.getChatId(),
                 newScheduledPmRequest.getText(),
                 newScheduledPmRequest.getDate()
         );
@@ -243,13 +245,13 @@ public class MessageController extends AbstractController {
                 savedMessageChatId,
                 config.getForwardedTweetText() + tweet.getText(),
                 fileController.getTweetString(tweet.getId())
-        ));
+        ), userId);
     }
 
     public void updateReadCount(int chatId) {
         Chat chat1 = context.Chats.get(chatId);
         if (chat1.getChatType() == ChatType.GROUP ||
-        chat1.getMemberIds().size() == 1)
+                chat1.getMemberIds().size() == 1)
             return;
         int otherMemberId;
         if (chat1.getOwnerId() != chat1.getMemberIds().get(0))
@@ -300,6 +302,21 @@ public class MessageController extends AbstractController {
         Chat chat = context.Chats.get(chatId);
         chat.setUnreadCount(0);
         context.Chats.update(chat);
+    }
+
+    public void handleScheduledPms() {
+        LinkedList<ScheduledPm> allScheduledPms = context.ScheduledPms.all();
+        for (ScheduledPm scheduledPm : allScheduledPms) {
+            if (LocalDateTime.now().isAfter(scheduledPm.getDate())) {
+                sendNewPm(
+                        new NewPmRequest(scheduledPm.getChatId(), scheduledPm.getText(), null),
+                        scheduledPm.getUserId()
+                );
+                scheduledPm.setSent(true);
+                context.ScheduledPms.update(scheduledPm);
+
+            }
+        }
     }
 
     public boolean isOwnerOfChat(int userId, int chatId) {

@@ -90,7 +90,7 @@ public class FileModelController extends AbstractModelController {
 
     public boolean tweetExists(int tweetId) {
         FileModelControllerConfig config = new FileModelControllerConfig();
-        String path = config.getDbroot() + usernameDir + "/" + config.getProfilepicsroot() + +
+        String path = config.getDbroot() + usernameDir + "/" + config.getTweetpicsroot() + +
                 tweetId + ".jpg";
         File file = new File(path);
         return file.exists();
